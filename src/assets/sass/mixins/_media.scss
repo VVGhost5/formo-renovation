@@ -1,0 +1,30 @@
+@use '../variables' as v;
+
+// ── min-width (mobile-first) ──────────────────────────────
+@mixin media-up($bp) {
+  $val: map-get(v.$breakpoints-min, $bp);
+  @if $val {
+    @media (min-width: #{$val}) { @content; }
+  } @else {
+    @warn 'Unknown breakpoint `#{$bp}`.';
+  }
+}
+
+// ── max-width ─────────────────────────────────────────────
+@mixin media-down($bp) {
+  $val: map-get(v.$breakpoints-max, $bp);
+  @if $val {
+    @media (max-width: #{$val}) { @content; }
+  } @else {
+    @warn 'Unknown breakpoint `#{$bp}`.';
+  }
+}
+
+// ── between two breakpoints ───────────────────────────────
+@mixin media-between($min-bp, $max-bp) {
+  $min: map-get(v.$breakpoints-min, $min-bp);
+  $max: map-get(v.$breakpoints-max, $max-bp);
+  @if $min and $max {
+    @media (min-width: #{$min}) and (max-width: #{$max}) { @content; }
+  }
+}

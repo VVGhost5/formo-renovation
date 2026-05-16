@@ -1,0 +1,40 @@
+// CSS custom properties — runtime values (responsive --px, radii, etc.)
+:root {
+  --hero-bg:    #e5dbd2;
+  --numbers-bg: #cabaae;
+  --works-bg:   #64564d;
+  --cta-btn:    #1c140d;
+  --nav-from:   #2b1d10;
+  --nav-to:     #80522a;
+
+  --sand-border: #b8a898;
+  --sand-light:  #d5c9bc;
+  --text-dark:   #1a1108;
+  --text-mid:    #3d2e22;
+  --text-light:  #6b5444;
+  --text-dim:    #8a7060;
+  --gold:        #573510;
+  --gold-light:  #624018;
+
+  --nav-grad: linear-gradient(to right, #2b1d10 0%, #80522a 100%);
+
+  --r-xs:   6px;
+  --r-sm:   10px;
+  --r-md:   16px;
+  --r-lg:   24px;
+  --r-xl:   36px;
+  --r-pill: 100px;
+
+  --font:      'Roboto', sans-serif;
+  --font-mono: 'Roboto Mono', monospace;
+
+  // Responsive horizontal padding — updated per breakpoint
+  --px: 56px;
+}
+
+@media (min-width: 1200px)                          { :root { --px: 80px; } }
+@media (min-width: 1024px) and (max-width: 1199px)  { :root { --px: 48px; } }
+@media (max-width: 1023px)                          { :root { --px: 28px; } }
+@media (max-width: 767px)                           { :root { --px: 18px; } }
+
+html { scroll-behavior: smooth; }

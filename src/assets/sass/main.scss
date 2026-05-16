@@ -1,0 +1,22 @@
+// ── Variable & mixin layers (no CSS output) ────────────────
+@use 'variables' as *;
+@use 'mixins' as *;
+
+// ── Base (reset, root CSS vars, animations) ───────────────
+@use 'utils';
+
+// ── Reusable elements ─────────────────────────────────────
+@use 'elements';
+
+// ── Section styles ────────────────────────────────────────
+@use 'sections';
+
+// ── Body defaults ─────────────────────────────────────────
+body {
+  font-family: var(--font);
+  background: var(--hero-bg);
+  color: var(--text-dark);
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}

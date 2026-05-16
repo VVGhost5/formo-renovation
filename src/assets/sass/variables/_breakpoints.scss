@@ -1,0 +1,40 @@
+// ── Breakpoints ───────────────────────────────────────────
+// min-widths (mobile-first)
+$breakpoints-min: (
+  xs:  0px,
+  sm:  375px,
+  md:  768px,
+  lg:  1024px,
+  xl:  1440px,
+  xxl: 1600px,
+) !default;
+
+// max-widths (for max-width media queries)
+$breakpoints-max: (
+  xs:  374px,
+  sm:  767px,
+  md:  1023px,
+  lg:  1439px,
+  xl:  1599px,
+  xxl: null,
+) !default;
+
+// ── Container ─────────────────────────────────────────────
+$container-padding-mobile: 18px !default;
+$container-padding-tablet: 36px !default;
+$container-max-lg: 930px  !default;
+$container-max-xl: 1110px !default;
+
+// ── Border radii ──────────────────────────────────────────
+$r-xs: 6px;
+$r-sm: 10px;
+$r-md: 16px;
+$r-lg: 24px;
+$r-xl: 36px;
+$r-pill: 100px;
+
+// ── Spacing ───────────────────────────────────────────────
+$px-mobile:  18px;
+$px-tablet:  28px;
+$px-desktop: 56px;
+$px-xl:      80px;

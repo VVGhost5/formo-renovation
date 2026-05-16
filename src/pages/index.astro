@@ -1,0 +1,53 @@
+---
+import Layout               from '../layouts/Layout.astro'
+import TheNav               from '../components/vue/TheNav.vue'
+import SectionHero          from '../components/SectionHero.astro'
+import SectionNumbers       from '../components/SectionNumbers.astro'
+import SectionServices      from '../components/SectionServices.astro'
+import SectionAbout         from '../components/SectionAbout.astro'
+import SectionPortfolio     from '../components/SectionPortfolio.astro'
+import SectionProcess       from '../components/SectionProcess.astro'
+import SectionPricing       from '../components/SectionPricing.astro'
+import BeforeAfterSlider    from '../components/vue/BeforeAfterSlider.vue'
+import TestimonialsSlider   from '../components/vue/TestimonialsSlider.vue'
+import SectionContact       from '../components/SectionContact.astro'
+import TheFooter            from '../components/TheFooter.astro'
+---
+
+<Layout title="Formo Renovations — Design & Renovation Solutions">
+  <!-- Nav — Vue for hamburger toggle + scroll shrink -->
+  <TheNav client:load />
+
+  <!-- Hero -->
+  <SectionHero />
+
+  <!-- Numbers / stats -->
+  <SectionNumbers />
+
+  <!-- Services -->
+  <SectionServices />
+
+  <!-- About us -->
+  <SectionAbout />
+
+  <!-- Portfolio -->
+  <SectionPortfolio />
+
+  <!-- How we work -->
+  <SectionProcess />
+
+  <!-- Pricing -->
+  <SectionPricing />
+
+  <!-- Before & After — Vue for drag slider + tabs -->
+  <BeforeAfterSlider client:load />
+
+  <!-- Testimonials — Vue for carousel -->
+  <TestimonialsSlider client:load />
+
+  <!-- Contact -->
+  <SectionContact />
+
+  <!-- Footer -->
+  <TheFooter />
+</Layout>

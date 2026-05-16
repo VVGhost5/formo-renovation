@@ -1,0 +1,55 @@
+---
+const factors = [
+  { num: '01', title: 'Scope & Complexity',    desc: 'A cosmetic refresh costs very differently from a structural renovation. We assess the full scope on-site before quoting — no assumptions.' },
+  { num: '02', title: 'Materials & Finishes',  desc: 'You choose the tier — budget, mid-range or premium. We present options with clear cost implications so you can decide with full information.' },
+  { num: '03', title: 'Square Footage',        desc: 'Total area, number of rooms and ceiling heights all affect labour and material quantities. We measure precisely during the site visit.' },
+  { num: '04', title: 'Trades Required',       desc: 'Projects involving electrical, plumbing or structural work require licensed tradespeople. We coordinate everything — their fees are included in your estimate.' },
+  { num: '05', title: 'Timeline & Scheduling', desc: 'Standard schedules are most cost-efficient. Accelerated timelines or strict occupancy constraints may affect crew allocation and cost.' },
+  { num: '06', title: 'Site Conditions',       desc: 'Access restrictions, existing damage discovered on-site, or permit requirements can affect the final number — we always flag these early and transparently.' },
+]
+---
+<section id="pricing">
+  <div class="pricing-hero">
+    <div class="pricing-hero-img"></div>
+    <div class="pricing-hero-content">
+      <div class="pricing-eyebrow">Pricing</div>
+      <h2 class="pricing-headline">
+        No Ballpark Figures,
+        <em>Just Honest Numbers</em>
+      </h2>
+      <p class="pricing-hero-desc">We don't publish flat rates — every project is unique. But we're fully transparent about what drives the cost, and we always deliver a fixed-price estimate before any work begins.</p>
+      <button class="btn-outline-light" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Request a Price Estimate →</button>
+    </div>
+  </div>
+
+  <div class="pricing-content">
+    <div class="pricing-intro-text">
+      <h3>What shapes the cost of your project</h3>
+      <p>Every estimate we produce is itemised line by line — materials, labour, timeline, waste disposal. Below are the main factors that influence the final number. We walk through all of these with you during the free consultation.</p>
+    </div>
+
+    <div class="pricing-grid">
+      {factors.map(f => (
+        <div class="pfactor-card">
+          <div class="pfactor-num">{f.num}</div>
+          <div class="pfactor-body">
+            <div class="pfactor-title">{f.title}</div>
+            <div class="pfactor-desc">{f.desc}</div>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <div class="pricing-cta-band">
+      <div class="pricing-cta-left">
+        <div class="pricing-cta-label">Free of charge · No obligation</div>
+        <div class="pricing-cta-title">Get a precise estimate for your project</div>
+        <p class="pricing-cta-sub">We visit the site, assess the full scope, and deliver a detailed line-by-line breakdown — within two business days. The estimate is fixed: the invoice will match.</p>
+      </div>
+      <div class="pricing-cta-right">
+        <button class="btn-dark" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Request a Price Estimate →</button>
+        <button class="btn-outline" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Book a Free Consultation</button>
+      </div>
+    </div>
+  </div>
+</section>

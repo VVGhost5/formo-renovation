@@ -1,0 +1,52 @@
+{
+  "name": "formo-renovation",
+  "description": "Formo Renovations — Astro SSG + Sanity CMS",
+  "type": "module",
+  "version": "0.0.1",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "studio:dev": "sanity dev",
+    "studio:build": "sanity build",
+    "studio:deploy": "sanity deploy"
+  },
+  "dependencies": {
+    "@astrojs/react": "^5.0.5",
+    "@astrojs/vue": "^6.0.1",
+    "@fortawesome/fontawesome-free": "^7.2.0",
+    "@sanity/astro": "^3.4.0",
+    "@sanity/client": "^7.22.0",
+    "@sanity/image-url": "^2.1.1",
+    "@sanity/vision": "^5.24.0",
+    "astro": "^6.2.2",
+    "astro-portabletext": "^0.13.0",
+    "groq": "^5.24.0",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "react-is": "^19.2.4",
+    "sanity": "^5.24.0",
+    "styled-components": "^6.1.18",
+    "vue": "^3.5.34"
+  },
+  "devDependencies": {
+    "@sanity/eslint-config-studio": "^6.0.0",
+    "@types/react": "^19.2.3",
+    "@types/react-dom": "^19.2.3",
+    "sass": "^1.99.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VVGhost5/formo-renovation.git"
+  },
+  "author": "VVGhost",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/VVGhost5/formo-renovation/issues"
+  },
+  "homepage": "https://github.com/VVGhost5/formo-renovation#readme"
+}

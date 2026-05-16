@@ -1,0 +1,53 @@
+@use '../variables' as v;
+
+// ── Base button reset ─────────────────────────────────────
+%btn-base {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: v.$r-pill;
+  padding: 14px 28px;
+  font-family: v.$font-base;
+  font-size: 0.875rem;
+  font-weight: v.$fw-medium;
+  letter-spacing: v.$ls-wide;
+  cursor: pointer;
+  border: none;
+  transition: opacity 0.2s ease, transform 0.15s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+}
+
+// ── Dark CTA button ───────────────────────────────────────
+.btn-dark {
+  @extend %btn-base;
+  background: v.$color-cta-btn;
+  color: v.$color-white;
+
+  &:hover { opacity: 0.85; }
+}
+
+// ── Outline button (on light bg) ──────────────────────────
+.btn-outline {
+  @extend %btn-base;
+  background: transparent;
+  color: v.$color-text-dark;
+  border: 1px solid rgba(28, 20, 13, 0.28);
+
+  &:hover { border-color: v.$color-text-mid; }
+}
+
+// ── Outline button (on dark / photo bg) ───────────────────
+.btn-outline-light {
+  @extend %btn-base;
+  background: transparent;
+  color: v.$color-white;
+  border: 1.5px solid rgba(255, 255, 255, 0.45);
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.7);
+  }
+}

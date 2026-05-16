@@ -1,0 +1,75 @@
+---
+const rows = [
+  {
+    label: 'Our Story',
+    h3first: 'A decade of ',
+    h3em: 'getting it right',
+    paras: [
+      'Formo Renovations was founded with a simple belief: renovations should be stress-free. Transparent pricing, honest timelines, and work you can be proud of — every single time.',
+      'With over 10 years operating across Victoria and Vancouver Island, we\'ve completed more than 200 projects ranging from bathroom refreshes to complete whole-home transformations.',
+    ],
+    pills: ['Est. 2014', '200+ projects', 'Victoria, BC'],
+    img: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=900&q=85',
+    imgAlt: 'Our story',
+    reverse: false,
+  },
+  {
+    label: 'Our Approach',
+    h3first: 'European standards, ',
+    h3em: 'local heart',
+    paras: [
+      'Our team was trained and refined across European renovation markets, where precision and material quality are non-negotiable. We brought those standards home to BC.',
+      'Every project gets a dedicated coordinator, a fixed-price contract, and stage-by-stage quality inspections — so you always know exactly where things stand.',
+    ],
+    pills: ['Fixed price', 'Stage QC', 'European finish'],
+    img: 'https://images.unsplash.com/photo-1484101403633-562f891dc89a?w=900&q=85',
+    imgAlt: 'Our approach',
+    reverse: true,
+  },
+  {
+    label: 'Our Team',
+    h3first: 'Tradespeople who ',
+    h3em: 'take pride',
+    paras: [
+      'We work with a carefully selected network of licensed tradespeople — carpenters, tilers, electricians and painters — who share our commitment to quality and reliability.',
+      'No subcontractor surprises. Everyone on your project has been personally vetted by our management team and has worked with us on multiple projects.',
+    ],
+    pills: ['Licensed trades', 'Vetted network', 'Insured & bonded'],
+    img: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=900&q=85',
+    imgAlt: 'Our team',
+    reverse: false,
+  },
+]
+---
+<section id="about">
+  <div class="about-hero">
+    <div class="about-hero-img"></div>
+    <div class="about-hero-content">
+      <div class="about-eyebrow">About Us</div>
+      <h2 class="about-headline">
+        Built on Craft,
+        <em>Driven by Standards</em>
+      </h2>
+      <p class="about-hero-desc">We are a Victoria-based renovation company bringing European precision and transparency to every project — from a single room to a full home transformation.</p>
+      <a href="/about" class="btn-outline-light">Read More About Us →</a>
+    </div>
+  </div>
+
+  <div class="about-rows">
+    {rows.map(row => (
+      <div class={`about-row${row.reverse ? ' reverse' : ''}`}>
+        <div class="about-row-text">
+          <div class="about-row-label">{row.label}</div>
+          <h3 class="about-row-h3">{row.h3first}<em>{row.h3em}</em></h3>
+          {row.paras.map(p => <p class="about-row-p">{p}</p>)}
+          <div class="about-pills">
+            {row.pills.map(pill => <span class="about-pill">{pill}</span>)}
+          </div>
+        </div>
+        <div class="about-row-img">
+          <img src={row.img} alt={row.imgAlt} loading="lazy" />
+        </div>
+      </div>
+    ))}
+  </div>
+</section>

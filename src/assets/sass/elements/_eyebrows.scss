@@ -1,0 +1,16 @@
+@use '../variables' as v;
+@use '../mixins' as m;
+
+// ── Eyebrow on dark backgrounds ───────────────────────────
+.eyebrow-dark {
+  @include m.eyebrow(v.$color-white);
+  background: rgba(255, 255, 255, 0.13);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+// ── Eyebrow on light / sand backgrounds ───────────────────
+.eyebrow-light {
+  @include m.eyebrow(v.$color-gold);
+  background: rgba(87, 53, 16, 0.1);
+  border: 1px solid rgba(87, 53, 16, 0.22);
+}

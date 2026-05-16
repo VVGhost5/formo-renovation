@@ -1,0 +1,27 @@
+// ── Brand / section backgrounds ──────────────────────────
+$color-hero-bg:    #e5dbd2;
+$color-numbers-bg: #cabaae;
+$color-works-bg:   #64564d;
+$color-cta-btn:    #1c140d;
+
+// ── Nav gradient ──────────────────────────────────────────
+$color-nav-from: #2b1d10;
+$color-nav-to:   #80522a;
+$color-nav-grad: linear-gradient(to right, #{$color-nav-from} 0%, #{$color-nav-to} 100%);
+
+// ── Derived tones ─────────────────────────────────────────
+$color-sand-border: #b8a898;
+$color-sand-light:  #d5c9bc;
+
+// ── Text ──────────────────────────────────────────────────
+$color-text-dark: #1a1108;
+$color-text-mid:  #3d2e22;
+$color-text-light:#6b5444;
+$color-text-dim:  #8a7060;
+
+// ── Gold ──────────────────────────────────────────────────
+$color-gold:       #573510;
+$color-gold-light: #624018;
+
+// ── Utility ───────────────────────────────────────────────
+$color-white: #ffffff;

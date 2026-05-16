@@ -1,0 +1,50 @@
+@use '../variables' as v;
+
+// ── Heading helper ────────────────────────────────────────
+@mixin heading($size, $weight: v.$fw-bold, $lh: v.$lh-tight, $ls: v.$ls-tight) {
+  font-family: v.$font-base;
+  font-size: $size;
+  font-weight: $weight;
+  line-height: $lh;
+  letter-spacing: $ls;
+}
+
+// ── Body text helper ──────────────────────────────────────
+@mixin body-text($size: v.$fs-base, $weight: v.$fw-regular, $lh: v.$lh-base, $color: null) {
+  font-family: v.$font-base;
+  font-size: $size;
+  font-weight: $weight;
+  line-height: $lh;
+  @if $color { color: $color; }
+}
+
+// ── Eyebrow / label ───────────────────────────────────────
+@mixin eyebrow($color: v.$color-white) {
+  font-family: v.$font-base;
+  font-size: v.$fs-base;
+  font-weight: v.$fw-semi;
+  letter-spacing: v.$ls-wider;
+  text-transform: uppercase;
+  color: $color;
+  display: inline-block;
+  border-radius: v.$r-pill;
+  padding: 7px 16px;
+  margin-bottom: 16px;
+}
+
+// ── Monospace label ───────────────────────────────────────
+@mixin mono-label($size: 9px, $color: v.$color-gold) {
+  font-family: v.$font-mono;
+  font-size: $size;
+  font-weight: v.$fw-medium;
+  letter-spacing: v.$ls-caps;
+  text-transform: uppercase;
+  color: $color;
+}
+
+// ── Truncate single line ──────────────────────────────────
+@mixin truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

@@ -1,0 +1,37 @@
+---
+const steps = [
+  { num: '01', title: 'Inquiry',             desc: 'You reach out or submit a request. We respond within 24 hours to schedule a first conversation.', arrow: '→' },
+  { num: '02', title: 'Free Consultation',   desc: 'We discuss your vision, scope and goals. No commitment required — this call is completely free.', arrow: '→' },
+  { num: '03', title: 'Site Assessment',     desc: 'We visit the property, take precise measurements and evaluate the full scope of work on-site.', arrow: '→' },
+  { num: '04', title: 'Estimate & Proposal', desc: 'A detailed, itemised estimate with timeline, materials and full cost breakdown. No hidden fees.', arrow: '→' },
+  { num: '05', title: 'Contract Signing',    desc: 'A clear, fair agreement that protects both parties and outlines every commitment.', arrow: '→' },
+  { num: '06', title: 'Execution',           desc: 'Work begins with our team and vetted tradespeople under full coordination.', arrow: '→' },
+  { num: '07', title: 'Quality Checks',      desc: 'Documented inspections at each stage to ensure standards are met before proceeding.', arrow: '→' },
+  { num: '08', title: 'Project Handover',    desc: 'Final walkthrough, documentation package, and warranty confirmation.', arrow: '✓' },
+]
+---
+<section id="process">
+  <div class="process-hero">
+    <div class="process-hero-img"></div>
+    <div class="process-hero-content">
+      <div class="process-eyebrow">How We Work</div>
+      <h2 class="process-headline">
+        A Clear Process,<br>
+        <em>No Surprises</em>
+      </h2>
+      <p class="process-desc">Eight carefully structured stages that keep you informed, protected, and confident — from the first inquiry to the final walkthrough.</p>
+      <button class="btn-outline-light" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Book a Free Consultation →</button>
+    </div>
+  </div>
+
+  <div class="process-grid">
+    {steps.map(s => (
+      <div class="pstep-card">
+        <div class="pstep-big-num">{s.num}</div>
+        <div class="pstep-title">{s.title}</div>
+        <div class="pstep-desc">{s.desc}</div>
+        <div class="pstep-arrow">{s.arrow}</div>
+      </div>
+    ))}
+  </div>
+</section>
