@@ -1,3 +1,4 @@
+@use 'sass:map';
 @use '../variables' as v;
 
 // ── Container ─────────────────────────────────────────────
@@ -12,20 +13,20 @@
   padding-left: v.$container-padding-mobile;
 
   // ── Tablet (768–1023px): wider side padding ──
-  @media (min-width: map-get(v.$breakpoints-min, md)) and (max-width: map-get(v.$breakpoints-max, md)) {
+  @media (min-width: #{map.get(v.$breakpoints-min, md)}) and (max-width: #{map.get(v.$breakpoints-max, md)}) {
     padding-right: v.$container-padding-tablet;
     padding-left: v.$container-padding-tablet;
   }
 
   // ── Desktop (1024–1439px): fixed max, no horizontal padding ──
-  @media (min-width: map-get(v.$breakpoints-min, lg)) and (max-width: map-get(v.$breakpoints-max, lg)) {
+  @media (min-width: #{map.get(v.$breakpoints-min, lg)}) and (max-width: #{map.get(v.$breakpoints-max, lg)}) {
     max-width: v.$container-max-lg;
     padding-right: 0;
     padding-left: 0;
   }
 
   // ── XL desktop (1440px+): wider max, no horizontal padding ──
-  @media (min-width: map-get(v.$breakpoints-min, xl)) {
+  @media (min-width: #{map.get(v.$breakpoints-min, xl)}) {
     max-width: v.$container-max-xl;
     padding-right: 0;
     padding-left: 0;
