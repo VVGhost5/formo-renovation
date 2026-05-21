@@ -1,33 +1,32 @@
 ---
-const projects = [
-  { tag: 'Full Renovation', title: 'Oak Bay Residence',        meta: 'Full renovation · Victoria, BC',   img: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=800&q=82' },
-  { tag: 'Kitchen',         title: 'Modern Kitchen Remodel',   meta: 'Kitchen redesign · Saanich, BC',    img: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=700&q=80' },
-  { tag: 'Bathroom',        title: 'Spa Bathroom',             meta: 'Bathroom · Langford, BC',           img: 'https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=700&q=80' },
-  { tag: 'Living Room',     title: 'Contemporary Living Room', meta: 'Interior design · Colwood, BC',     img: 'https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=700&q=80' },
-  { tag: 'Full Renovation', title: 'Esquimalt Full Reno',      meta: 'Complete renovation · Esquimalt, BC', img: 'https://images.unsplash.com/photo-1615874959474-d609969a20ed?w=700&q=80' },
-]
+import type {HomePortfolioContent} from '../utils/sanity'
+
+interface Props {
+	content: HomePortfolioContent
+}
+
+const {content} = Astro.props
+const heroBg = content.heroImageUrl ? `background-image: url(${content.heroImageUrl})` : undefined
 ---
 <section id="portfolio">
   <div class="portfolio-hero">
-    <div class="portfolio-hero-img"></div>
+    <div class="portfolio-hero-img" style={heroBg}></div>
     <div class="portfolio-hero-content">
-      <div class="portfolio-eyebrow">Our Work</div>
+      <div class="portfolio-eyebrow">{content.eyebrow}</div>
       <h2 class="portfolio-headline">
-        Real Projects,<br>
-        <em>Real Transformations</em>
+        {content.headline}<br />
+        <em>{content.headlineEmphasis}</em>
       </h2>
-      <p class="portfolio-desc">
-        Every space tells a story. Browse our completed projects — from full-home renovations to carefully detailed finishes — and see what's possible for your home.
-      </p>
-      <a href="/portfolio" class="btn-outline-light">View Full Portfolio →</a>
+      <p class="portfolio-desc">{content.description}</p>
+      <a href={content.ctaLink} class="btn-outline-light">{content.ctaLabel}</a>
     </div>
   </div>
 
   <div class="portfolio-grid">
-    {projects.map(p => (
+    {content.projects.map((p) => (
       <div class="port-card">
         <span class="port-tag">{p.tag}</span>
-        <img src={p.img} alt={p.title} loading="lazy" />
+        <img src={p.imageUrl} alt={p.title} loading="lazy" />
         <div class="port-card-body">
           <div class="port-card-title">{p.title}</div>
           <div class="port-card-meta">{p.meta}</div>

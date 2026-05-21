@@ -12,27 +12,59 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: 'meta',
+      title: 'Location & date',
+      type: 'string',
+      description: 'e.g. Oak Bay, Victoria · March 2025',
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: 'quote',
       title: 'Quote',
       type: 'text',
       rows: 4,
+      description: 'Client review text (include quotation marks if you like)',
       validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'initial',
+      title: 'Avatar initial',
+      type: 'string',
+      description: 'Single letter in the avatar circle. Leave empty to use the first letter of the name.',
+      validation: (Rule) => Rule.max(1),
     }),
     defineField({
       name: 'rating',
       title: 'Rating',
       type: 'number',
       description: '1–5 stars',
-      validation: (Rule) => Rule.required().min(1).max(5).integer(),
+      validation: (Rule) => Rule.min(1).max(5).integer(),
       initialValue: 5,
     }),
+    defineField({
+      name: 'sortOrder',
+      title: 'Sort order',
+      type: 'number',
+      description: 'Lower numbers appear first in the slider',
+      initialValue: 0,
+    }),
+  ],
+  orderings: [
+    {
+      title: 'Sort order',
+      name: 'sortOrderAsc',
+      by: [
+        {field: 'sortOrder', direction: 'asc'},
+        {field: '_createdAt', direction: 'asc'},
+      ],
+    },
   ],
   preview: {
-    select: {title: 'name', subtitle: 'quote'},
-    prepare({title, subtitle}) {
+    select: {title: 'name', subtitle: 'meta', quote: 'quote'},
+    prepare({title, subtitle, quote}) {
       return {
         title: title || 'Testimonial',
-        subtitle: subtitle ? `${subtitle.slice(0, 80)}${subtitle.length > 80 ? '…' : ''}` : '',
+        subtitle: subtitle || (quote ? `${quote.slice(0, 60)}…` : ''),
       }
     },
   },

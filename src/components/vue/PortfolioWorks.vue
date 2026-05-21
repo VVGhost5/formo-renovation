@@ -1,5 +1,10 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
+import type { PortfolioProject } from '../../utils/sanity'
+
+const props = defineProps<{
+  projects?: PortfolioProject[]
+}>()
 
 // ── Types ────────────────────────────────────────────────────────────────────
 interface Spec  { key: string; val: string }
@@ -22,7 +27,7 @@ interface Project {
 }
 
 // ── Data ─────────────────────────────────────────────────────────────────────
-const projects: Project[] = [
+const FALLBACK_PROJECTS: Project[] = [
   {
     id: 'project-1', num: '01', category: 'kitchen',
     name: 'Modern Kitchen Renovation',
@@ -121,6 +126,10 @@ const projects: Project[] = [
   },
 ]
 
+const allProjects = computed<Project[]>(() =>
+  props.projects?.length ? (props.projects as Project[]) : FALLBACK_PROJECTS,
+)
+
 // ── Filter ───────────────────────────────────────────────────────────────────
 type Category = 'all' | 'kitchen' | 'bathroom' | 'living' | 'full'
 const activeFilter = ref<Category>('all')
@@ -133,8 +142,8 @@ function setFilter(cat: Category) {
 
 const visibleProjects = computed(() =>
   activeFilter.value === 'all'
-    ? projects
-    : projects.filter(p => p.category === activeFilter.value)
+    ? allProjects.value
+    : allProjects.value.filter(p => p.category === activeFilter.value),
 )
 
 // ── Accordion ────────────────────────────────────────────────────────────────
@@ -145,13 +154,21 @@ function toggleProject(id: string) {
   openId.value  = wasOpen ? null : id
   if (!wasOpen) {
     // Reset B/A slider for this project when opening
-    const idx = projects.findIndex(p => p.id === id)
+    const idx = allProjects.value.findIndex(p => p.id === id)
     if (idx >= 0) baPositions.value[idx] = 50
   }
 }
 
 // ── Per-project Before/After sliders ─────────────────────────────────────────
-const baPositions = ref<number[]>(projects.map(() => 50))
+const baPositions = ref<number[]>([])
+
+watch(
+  allProjects,
+  (list) => {
+    baPositions.value = list.map(() => 50)
+  },
+  {immediate: true},
+)
 const baDragging  = ref<number | null>(null)
 
 function startBaDrag(e: MouseEvent | TouchEvent, idx: number) {

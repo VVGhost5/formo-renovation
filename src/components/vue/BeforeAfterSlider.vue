@@ -1,5 +1,10 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
+import type { BeforeAfterSlide } from '../../utils/sanity'
+
+const props = defineProps<{
+  items?: BeforeAfterSlide[]
+}>()
 
 interface Project {
   name: string
@@ -10,7 +15,7 @@ interface Project {
   before: string
 }
 
-const projects: Project[] = [
+const FALLBACK: Project[] = [
   {
     name: 'Kitchen Renovation',
     loc: 'Fairfield, Victoria',
@@ -45,11 +50,26 @@ const projects: Project[] = [
   },
 ]
 
+const projects = computed<Project[]>(() => {
+  const fromSanity = props.items?.filter((p) => p.name && p.after && p.before) ?? []
+  if (fromSanity.length > 0) {
+    return fromSanity.map((p) => ({
+      name: p.name,
+      loc: p.location,
+      dur: p.duration,
+      year: p.year,
+      after: p.after,
+      before: p.before,
+    }))
+  }
+  return FALLBACK
+})
+
 const activeIdx  = ref(0)
 const position   = ref(50) // percent
 const isDragging = ref(false)
 
-const active = () => projects[activeIdx.value]
+const active = () => projects.value[activeIdx.value]
 
 function loadProject(idx: number) {
   activeIdx.value = idx

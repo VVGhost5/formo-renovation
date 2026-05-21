@@ -3,6 +3,26 @@ import Layout        from '../layouts/Layout.astro'
 import TheNav        from '../components/vue/TheNav.vue'
 import SectionContact from '../components/SectionContact.astro'
 import TheFooter     from '../components/TheFooter.astro'
+import {
+	getServicesPage,
+	getSiteSettings,
+	getHomeContact,
+	DEFAULT_SERVICES_PAGE,
+	DEFAULT_SITE_SETTINGS,
+	DEFAULT_HOME_CONTACT,
+} from '../utils/sanity'
+
+let page = DEFAULT_SERVICES_PAGE
+let site = DEFAULT_SITE_SETTINGS
+let contact = DEFAULT_HOME_CONTACT
+
+try {
+	;[page, site, contact] = await Promise.all([getServicesPage(), getSiteSettings(), getHomeContact()])
+} catch (err) {
+	console.warn('[sanity] Services page fallback.', err)
+}
+
+const heroBg = page.heroImageUrl ? `background-image: url(${page.heroImageUrl})` : undefined
 ---
 
 <Layout
@@ -13,25 +33,23 @@ import TheFooter     from '../components/TheFooter.astro'
 
   <!-- ══ HERO ══ -->
   <section id="hero" class="svc-page-hero">
-    <div class="hero-bg-img"></div>
+    <div class="hero-bg-img" style={heroBg}></div>
     <div class="hero-content">
 
       <div class="hero-left">
         <div class="hero-eyebrow">
           <span class="hero-dot"></span>
-          Victoria &amp; Vancouver Island, BC
+          {page.locationLabel}
         </div>
         <h1 class="hero-h1">
-          What we
-          <em>build for you</em>
+          {page.titleBefore}
+          <em>{page.titleEmphasis}</em>
         </h1>
         <hr class="hero-line" />
-        <p class="hero-desc">
-          From a single bathroom refresh to a complete home transformation — we offer a full range of renovation and interior finishing services, all backed by our 12-month workmanship warranty.
-        </p>
+        <p class="hero-desc">{page.description}</p>
         <div class="hero-actions">
-          <a href="#services-list" class="btn-dark">Explore Services ↓</a>
-          <a href="#contact" class="btn-outline">Get a Free Quote</a>
+          <a href={page.primaryCtaLink} class="btn-dark">{page.primaryCtaLabel}</a>
+          <a href={page.secondaryCtaLink} class="btn-outline">{page.secondaryCtaLabel}</a>
         </div>
       </div>
 
@@ -384,10 +402,8 @@ import TheFooter     from '../components/TheFooter.astro'
   </section>
 
   <!-- ══ CONTACT ══ -->
-  <SectionContact />
-
-  <!-- ══ FOOTER ══ -->
-  <TheFooter />
+  <SectionContact content={contact} site={site} />
+  <TheFooter site={site} />
 
 </Layout>
 

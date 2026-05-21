@@ -3,6 +3,26 @@ import Layout        from '../layouts/Layout.astro'
 import TheNav        from '../components/vue/TheNav.vue'
 import SectionContact from '../components/SectionContact.astro'
 import TheFooter     from '../components/TheFooter.astro'
+import {
+	getAboutPage,
+	getSiteSettings,
+	getHomeContact,
+	DEFAULT_ABOUT_PAGE,
+	DEFAULT_SITE_SETTINGS,
+	DEFAULT_HOME_CONTACT,
+} from '../utils/sanity'
+
+let page = DEFAULT_ABOUT_PAGE
+let site = DEFAULT_SITE_SETTINGS
+let contact = DEFAULT_HOME_CONTACT
+
+try {
+	;[page, site, contact] = await Promise.all([getAboutPage(), getSiteSettings(), getHomeContact()])
+} catch (err) {
+	console.warn('[sanity] About page fallback.', err)
+}
+
+const heroBg = page.heroImageUrl ? `background-image: url(${page.heroImageUrl})` : undefined
 ---
 
 <Layout
@@ -13,45 +33,44 @@ import TheFooter     from '../components/TheFooter.astro'
 
   <!-- ══ HERO ══ -->
   <section id="hero" class="about-page-hero">
-    <div class="hero-bg-img"></div>
+    <div class="hero-bg-img" style={heroBg}></div>
 
     <div class="hero-content">
       <div class="hero-left">
         <div class="hero-eyebrow">
           <span class="hero-eyebrow-dot"></span>
-          Victoria &amp; Vancouver Island, BC
+          {page.locationLabel}
         </div>
         <h1 class="hero-h1">
-          Built on
-          <em>trust &amp; craft</em>
+          {page.titleBefore}
+          <em>{page.titleEmphasis}</em>
         </h1>
         <hr class="hero-line" />
-        <p class="hero-desc">
-          Formo Renovations was founded on a single belief: that every home deserves to be treated with the same care we'd give our own. Since 2016, we've been turning renovation visions into reality — on time, on budget, and built to last.
-        </p>
+        <p class="hero-desc">{page.description}</p>
         <div class="hero-actions">
-          <a href="#our-story" class="btn-dark">Our Story ↓</a>
-          <a href="/portfolio" class="btn-outline">See Our Work</a>
+          <a href={page.primaryCtaLink} class="btn-dark">{page.primaryCtaLabel}</a>
+          <a href={page.secondaryCtaLink} class="btn-outline">{page.secondaryCtaLabel}</a>
         </div>
       </div>
 
-      <!-- Founder card (hidden on mobile) -->
       <div class="hero-founder-card">
         <div>
-          <div class="hero-founder-photo">M</div>
+          <div class="hero-founder-photo">{page.founderInitial}</div>
         </div>
         <div>
-          <div class="hero-founder-name">Michael Formo</div>
-          <div class="hero-founder-role">Founder &amp; Lead Contractor</div>
+          <div class="hero-founder-name">{page.founderName}</div>
+          <div class="hero-founder-role">{page.founderRole}</div>
         </div>
-        <p class="hero-founder-quote">
-          "I started Formo because I believed clients deserved complete transparency — from the first estimate to the final walkthrough. That principle still guides everything we do."
-        </p>
+        <p class="hero-founder-quote">{page.founderQuote}</p>
         <div class="hero-founder-stats">
-          <div class="hfs-cell"><div class="hfs-val">8<sup>yr</sup></div><div class="hfs-label">In Business</div></div>
-          <div class="hfs-cell"><div class="hfs-val">120<sup>+</sup></div><div class="hfs-label">Projects</div></div>
-          <div class="hfs-cell"><div class="hfs-val">98<sup>%</sup></div><div class="hfs-label">Satisfaction</div></div>
-          <div class="hfs-cell"><div class="hfs-val">12<sup>mo</sup></div><div class="hfs-label">Warranty</div></div>
+          {page.founderStats.map((stat) => (
+            <div class="hfs-cell">
+              <div class="hfs-val">
+                {stat.value}{stat.suffix ? <sup>{stat.suffix}</sup> : null}
+              </div>
+              <div class="hfs-label">{stat.label}</div>
+            </div>
+          ))}
         </div>
       </div>
     </div>
@@ -416,9 +435,7 @@ import TheFooter     from '../components/TheFooter.astro'
   </section>
 
   <!-- ══ CONTACT ══ -->
-  <SectionContact />
-
-  <!-- ══ FOOTER ══ -->
-  <TheFooter />
+  <SectionContact content={contact} site={site} />
+  <TheFooter site={site} />
 
 </Layout>

@@ -1,27 +1,33 @@
 ---
+import type {HomeContactContent, SiteSettingsContent} from '../utils/sanity'
+
+interface Props {
+	content: HomeContactContent
+	site: SiteSettingsContent
+}
+
+const {content, site} = Astro.props
+const phoneHref = `tel:${site.phone.replace(/\D/g, '')}`
+const waHref = `https://wa.me/${site.whatsapp.replace(/\D/g, '')}`
 ---
 <section id="contact">
   <div class="contact-top">
-    <!-- Left: photo with text overlay -->
     <div class="contact-photo-side">
-      <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1000&q=85" alt="Contact Formo Renovations" loading="lazy" />
+      <img src={content.photoUrl} alt={content.photoAlt} loading="lazy" />
       <div class="contact-photo-overlay"></div>
       <div class="contact-photo-content">
-        <div class="contact-eyebrow">Contact Us</div>
+        <div class="contact-eyebrow">{content.eyebrow}</div>
         <h2 class="contact-headline">
-          Let's Start<br>Your <em>Project</em>
+          {content.headline}<br />Your <em>{content.headlineEmphasis}</em>
         </h2>
-        <p class="contact-lead">
-          Whether you're ready to begin or just exploring options — reach out. No pressure, just an honest conversation about what you need and how we can help.
-        </p>
-        <button class="btn-outline-light">Book a Free Consultation →</button>
+        <p class="contact-lead">{content.lead}</p>
+        <button class="btn-outline-light">{content.ctaLabel}</button>
       </div>
     </div>
 
-    <!-- Right: form -->
     <div class="contact-form-side">
-      <div class="contact-form-title">Send Us a Message</div>
-      <div class="contact-form-sub">We'll get back to you within one business day.</div>
+      <div class="contact-form-title">{content.formTitle}</div>
+      <div class="contact-form-sub">{content.formSubtext}</div>
 
       <div class="cform">
         <div class="cform-row">
@@ -40,7 +46,7 @@
         </div>
         <div class="fg">
           <label>Phone</label>
-          <input type="tel" placeholder="+1 (250) 000-0000" />
+          <input type="tel" placeholder={site.phone} />
         </div>
         <div class="fg">
           <label>Service Interested In</label>
@@ -64,31 +70,30 @@
     </div>
   </div>
 
-  <!-- Contact info bar -->
   <div class="contact-info-bar">
     <div class="cinfo-card">
       <div class="cinfo-icon"><i class="fa-solid fa-phone"></i></div>
       <div class="cinfo-label">Phone</div>
-      <div class="cinfo-value"><a href="tel:+12500000000">+1 (250) 000-0000</a></div>
-      <div class="cinfo-note">Mon – Fri, 8:00 AM – 6:00 PM</div>
+      <div class="cinfo-value"><a href={phoneHref}>{site.phone}</a></div>
+      <div class="cinfo-note">{site.phoneHours}</div>
     </div>
     <div class="cinfo-card">
       <div class="cinfo-icon"><i class="fa-solid fa-envelope"></i></div>
       <div class="cinfo-label">Email</div>
-      <div class="cinfo-value"><a href="mailto:hello@formorenovations.ca">hello@formorenovations.ca</a></div>
-      <div class="cinfo-note">Response within 1 business day</div>
+      <div class="cinfo-value"><a href={`mailto:${site.email}`}>{site.email}</a></div>
+      <div class="cinfo-note">{site.emailNote}</div>
     </div>
     <div class="cinfo-card">
       <div class="cinfo-icon"><i class="fa-brands fa-whatsapp"></i></div>
       <div class="cinfo-label">WhatsApp</div>
-      <div class="cinfo-value"><a href="https://wa.me/12500000000">+1 (250) 000-0000</a></div>
-      <div class="cinfo-note">Quick questions &amp; project photos</div>
+      <div class="cinfo-value"><a href={waHref}>{site.whatsapp}</a></div>
+      <div class="cinfo-note">{site.whatsappNote}</div>
     </div>
     <div class="cinfo-card">
       <div class="cinfo-icon"><i class="fa-solid fa-location-dot"></i></div>
       <div class="cinfo-label">Service Area</div>
-      <div class="cinfo-value">Victoria &amp; Vancouver Island</div>
-      <div class="cinfo-note">BC, Canada</div>
+      <div class="cinfo-value">{site.serviceArea}</div>
+      <div class="cinfo-note">{site.serviceAreaNote}</div>
     </div>
   </div>
 </section>

@@ -1,53 +1,64 @@
 ---
-import Layout               from '../layouts/Layout.astro'
-import TheNav               from '../components/vue/TheNav.vue'
-import SectionHero          from '../components/SectionHero.astro'
-import SectionNumbers       from '../components/SectionNumbers.astro'
-import SectionServices      from '../components/SectionServices.astro'
-import SectionAbout         from '../components/SectionAbout.astro'
-import SectionPortfolio     from '../components/SectionPortfolio.astro'
-import SectionProcess       from '../components/SectionProcess.astro'
-import SectionPricing       from '../components/SectionPricing.astro'
-import BeforeAfterSlider    from '../components/vue/BeforeAfterSlider.vue'
-import TestimonialsSlider   from '../components/vue/TestimonialsSlider.vue'
-import SectionContact       from '../components/SectionContact.astro'
-import TheFooter            from '../components/TheFooter.astro'
+import Layout             from '../layouts/Layout.astro'
+import TheNav             from '../components/vue/TheNav.vue'
+import SectionHero        from '../components/SectionHero.astro'
+import SectionNumbers     from '../components/SectionNumbers.astro'
+import SectionServices    from '../components/SectionServices.astro'
+import SectionAbout       from '../components/SectionAbout.astro'
+import SectionPortfolio   from '../components/SectionPortfolio.astro'
+import SectionProcess     from '../components/SectionProcess.astro'
+import SectionPricing     from '../components/SectionPricing.astro'
+import BeforeAfterSlider  from '../components/vue/BeforeAfterSlider.vue'
+import TestimonialsSlider from '../components/vue/TestimonialsSlider.vue'
+import SectionContact     from '../components/SectionContact.astro'
+import TheFooter          from '../components/TheFooter.astro'
+import {
+	getHomePageContent,
+	DEFAULT_HERO,
+	DEFAULT_HOME_NUMBERS,
+	DEFAULT_HOME_SERVICES,
+	DEFAULT_HOME_ABOUT,
+	DEFAULT_HOME_PORTFOLIO,
+	DEFAULT_HOME_PROCESS,
+	DEFAULT_HOME_PRICING,
+	DEFAULT_HOME_CONTACT,
+	DEFAULT_BEFORE_AFTER,
+	DEFAULT_SITE_SETTINGS,
+} from '../utils/sanity'
+
+let home = {
+	hero: DEFAULT_HERO,
+	numbers: DEFAULT_HOME_NUMBERS,
+	services: DEFAULT_HOME_SERVICES,
+	about: DEFAULT_HOME_ABOUT,
+	portfolio: DEFAULT_HOME_PORTFOLIO,
+	process: DEFAULT_HOME_PROCESS,
+	pricing: DEFAULT_HOME_PRICING,
+	contact: DEFAULT_HOME_CONTACT,
+	testimonials: [],
+	beforeAfter: DEFAULT_BEFORE_AFTER,
+	site: DEFAULT_SITE_SETTINGS,
+}
+
+try {
+	home = await getHomePageContent()
+} catch (err) {
+	console.warn('[sanity] Could not load homepage content, using defaults.', err)
+}
 ---
 
 <Layout title="Formo Renovations — Design & Renovation Solutions">
-  <!-- Nav — Vue for hamburger toggle + scroll shrink -->
   <TheNav client:load page="home" />
 
-  <!-- Hero -->
-  <SectionHero />
-
-  <!-- Numbers / stats -->
-  <SectionNumbers />
-
-  <!-- Services -->
-  <SectionServices />
-
-  <!-- About us -->
-  <SectionAbout />
-
-  <!-- Portfolio -->
-  <SectionPortfolio />
-
-  <!-- How we work -->
-  <SectionProcess />
-
-  <!-- Pricing -->
-  <SectionPricing />
-
-  <!-- Before & After — Vue for drag slider + tabs -->
-  <BeforeAfterSlider client:load />
-
-  <!-- Testimonials — Vue for carousel -->
-  <TestimonialsSlider client:load />
-
-  <!-- Contact -->
-  <SectionContact />
-
-  <!-- Footer -->
-  <TheFooter />
+  <SectionHero hero={home.hero} />
+  <SectionNumbers content={home.numbers} />
+  <SectionServices content={home.services} />
+  <SectionAbout content={home.about} />
+  <SectionPortfolio content={home.portfolio} />
+  <SectionProcess content={home.process} />
+  <SectionPricing content={home.pricing} />
+  <BeforeAfterSlider client:load items={home.beforeAfter} />
+  <TestimonialsSlider client:load items={home.testimonials} />
+  <SectionContact content={home.contact} site={home.site} />
+  <TheFooter site={home.site} />
 </Layout>

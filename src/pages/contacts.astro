@@ -2,6 +2,25 @@
 import Layout    from '../layouts/Layout.astro'
 import TheNav    from '../components/vue/TheNav.vue'
 import TheFooter from '../components/TheFooter.astro'
+import {
+	getContactsPage,
+	getSiteSettings,
+	DEFAULT_CONTACTS_PAGE,
+	DEFAULT_SITE_SETTINGS,
+} from '../utils/sanity'
+
+let page = DEFAULT_CONTACTS_PAGE
+let site = DEFAULT_SITE_SETTINGS
+
+try {
+	;[page, site] = await Promise.all([getContactsPage(), getSiteSettings()])
+} catch (err) {
+	console.warn('[sanity] Contacts page fallback.', err)
+}
+
+const heroBg = page.heroImageUrl ? `background-image: url(${page.heroImageUrl})` : undefined
+const phoneHref = `tel:${site.phone.replace(/\D/g, '')}`
+const waHref = `https://wa.me/${site.whatsapp.replace(/\D/g, '')}`
 ---
 
 <Layout
@@ -12,47 +31,45 @@ import TheFooter from '../components/TheFooter.astro'
 
   <!-- ══ HERO ══ -->
   <section id="hero" class="contact-page-hero">
-    <div class="hero-bg-img"></div>
+    <div class="hero-bg-img" style={heroBg}></div>
     <div class="hero-content">
 
       <div class="hero-left">
         <div class="hero-eyebrow">
           <span class="hero-dot"></span>
-          We respond within 24 hours
+          {page.eyebrow}
         </div>
         <h1 class="hero-h1">
-          Let's talk about
-          <em>your project</em>
+          {page.titleBefore}
+          <em>{page.titleEmphasis}</em>
         </h1>
         <hr class="hero-line" />
-        <p class="hero-desc">
-          Whether you have a firm plan or just a rough idea, we're happy to listen. Reach out however suits you best — call, email, or fill in the form below. Free on-site consultations across Victoria and Vancouver Island.
-        </p>
+        <p class="hero-desc">{page.description}</p>
       </div>
 
       <div class="hero-channels">
         <div class="hc-label">Reach us directly</div>
-        <a href="tel:+12500000000" class="hc-card">
+        <a href={phoneHref} class="hc-card">
           <div class="hc-icon-wrap"><i class="fa-solid fa-phone"></i></div>
           <div class="hc-body">
             <div class="hc-name">Call Us</div>
-            <div class="hc-value">+1 (250) 000-0000 · Mon–Fri 8AM–6PM</div>
+            <div class="hc-value">{site.phone} · {site.phoneHours}</div>
           </div>
           <span class="hc-arrow">→</span>
         </a>
-        <a href="mailto:hello@formorenovations.ca" class="hc-card">
+        <a href={`mailto:${site.email}`} class="hc-card">
           <div class="hc-icon-wrap"><i class="fa-solid fa-envelope"></i></div>
           <div class="hc-body">
             <div class="hc-name">Email Us</div>
-            <div class="hc-value">hello@formorenovations.ca</div>
+            <div class="hc-value">{site.email}</div>
           </div>
           <span class="hc-arrow">→</span>
         </a>
-        <a href="https://wa.me/12500000000" class="hc-card">
+        <a href={waHref} class="hc-card">
           <div class="hc-icon-wrap"><i class="fa-brands fa-whatsapp"></i></div>
           <div class="hc-body">
             <div class="hc-name">WhatsApp</div>
-            <div class="hc-value">Quick questions &amp; photos welcome</div>
+            <div class="hc-value">{site.whatsappNote}</div>
           </div>
           <span class="hc-arrow">→</span>
         </a>
@@ -75,9 +92,9 @@ import TheFooter from '../components/TheFooter.astro'
 
       <!-- FORM -->
       <div class="form-side">
-        <span class="form-eyebrow">Send Us a Message</span>
-        <h2 class="form-title">Tell us about your <em>project</em></h2>
-        <p class="form-sub">The more detail you can share, the more accurate our quote will be. We'll get back to you within one business day.</p>
+        <span class="form-eyebrow">{page.formEyebrow}</span>
+        <h2 class="form-title">{page.formTitleBefore} <em>{page.formTitleEmphasis}</em></h2>
+        <p class="form-sub">{page.formSubtext}</p>
 
         <div class="form-success" id="form-success">
           <div class="success-icon"><i class="fa-solid fa-check"></i></div>
@@ -292,7 +309,7 @@ import TheFooter from '../components/TheFooter.astro'
     </div>
   </section>
 
-  <TheFooter />
+  <TheFooter site={site} />
 
 </Layout>
 

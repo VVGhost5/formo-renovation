@@ -1,5 +1,14 @@
 ---
 import logoWhite from '../assets/images/formo-logo-white.svg'
+import type {SiteSettingsContent} from '../utils/sanity'
+import {DEFAULT_SITE_SETTINGS} from '../utils/sanity'
+
+interface Props {
+	site?: SiteSettingsContent
+}
+
+const {site = DEFAULT_SITE_SETTINGS} = Astro.props
+const phoneHref = `tel:${site.phone.replace(/\D/g, '')}`
 ---
 <footer>
   <div class="footer-main">
@@ -8,15 +17,15 @@ import logoWhite from '../assets/images/formo-logo-white.svg'
       <a class="footer-logo" href="/">
         <img src={logoWhite.src} alt="Formo Renovations" class="footer-logo-img" />
       </a>
-      <p>Premium renovation and interior finishing solutions for homes across Victoria and Vancouver Island, BC. European standards. Transparent process.</p>
+      <p>{site.footerDescription}</p>
       <div class="footer-socials">
-        <a class="social-btn" href="#" title="Instagram" aria-label="Instagram">
+        <a class="social-btn" href={site.instagramUrl} title="Instagram" aria-label="Instagram">
           <i class="fa-brands fa-instagram"></i>
         </a>
-        <a class="social-btn" href="#" title="Facebook" aria-label="Facebook">
+        <a class="social-btn" href={site.facebookUrl} title="Facebook" aria-label="Facebook">
           <i class="fa-brands fa-facebook-f"></i>
         </a>
-        <a class="social-btn" href="#" title="Houzz" aria-label="Houzz">
+        <a class="social-btn" href={site.houzzUrl} title="Houzz" aria-label="Houzz">
           <i class="fa-brands fa-houzz"></i>
         </a>
       </div>
@@ -39,22 +48,22 @@ import logoWhite from '../assets/images/formo-logo-white.svg'
         <div class="fc-item">
           <span class="fc-icon"><i class="fa-solid fa-phone"></i></span>
           <div class="fc-text">
-            <a href="tel:+12500000000">+1 (250) 000-0000</a>
+            <a href={phoneHref}>{site.phone}</a>
           </div>
         </div>
         <div class="fc-item">
           <span class="fc-icon"><i class="fa-solid fa-envelope"></i></span>
           <div class="fc-text">
-            <a href="mailto:hello@formorenovations.ca">hello@formorenovations.ca</a>
+            <a href={`mailto:${site.email}`}>{site.email}</a>
           </div>
         </div>
         <div class="fc-item">
           <span class="fc-icon"><i class="fa-solid fa-location-dot"></i></span>
-          <div class="fc-text">Victoria &amp; Vancouver Island, BC, Canada</div>
+          <div class="fc-text">{site.serviceArea}, {site.serviceAreaNote}</div>
         </div>
         <div class="fc-item">
           <span class="fc-icon"><i class="fa-regular fa-clock"></i></span>
-          <div class="fc-text">Mon – Fri: 8:00 AM – 6:00 PM</div>
+          <div class="fc-text">{site.phoneHours}</div>
         </div>
       </div>
     </div>

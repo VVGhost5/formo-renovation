@@ -1,31 +1,28 @@
 ---
+import type {HomeNumbersContent} from '../utils/sanity'
+
+interface Props {
+	content: HomeNumbersContent
+}
+
+const {content} = Astro.props
 ---
 <section id="trust-numbers">
   <div class="numbers-inner">
     <div class="numbers-left">
-      <div class="numbers-eyebrow">By the Numbers</div>
-      <h2 class="numbers-headline">
-        15 years of delivering spaces
-      </h2>
+      <div class="numbers-eyebrow">{content.eyebrow}</div>
+      <h2 class="numbers-headline">{content.headline}</h2>
     </div>
 
     <div class="numbers-stats">
-      <div class="stat-item">
-        <div class="stat-val">150<sup>+</sup></div>
-        <div class="stat-label">Projects Completed</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-val">98<sup>%</sup></div>
-        <div class="stat-label">Client Satisfaction</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-val">15<sup>+</sup></div>
-        <div class="stat-label">Years Experience</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-val">12<sup>mo</sup></div>
-        <div class="stat-label">Warranty Included</div>
-      </div>
+      {content.stats.map((stat) => (
+        <div class="stat-item">
+          <div class="stat-val">
+            {stat.value}{stat.suffix ? <sup>{stat.suffix}</sup> : null}
+          </div>
+          <div class="stat-label">{stat.label}</div>
+        </div>
+      ))}
     </div>
   </div>
 </section>

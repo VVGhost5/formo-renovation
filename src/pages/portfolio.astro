@@ -4,68 +4,81 @@ import TheNav          from '../components/vue/TheNav.vue'
 import PortfolioWorks  from '../components/vue/PortfolioWorks.vue'
 import SectionContact  from '../components/SectionContact.astro'
 import TheFooter       from '../components/TheFooter.astro'
+import {
+	getPortfolioPage,
+	getPortfolioProjects,
+	getSiteSettings,
+	getHomeContact,
+	DEFAULT_PORTFOLIO_PAGE,
+	DEFAULT_SITE_SETTINGS,
+	DEFAULT_HOME_CONTACT,
+} from '../utils/sanity'
+
+let page = DEFAULT_PORTFOLIO_PAGE
+let projects: Awaited<ReturnType<typeof getPortfolioProjects>> = []
+let site = DEFAULT_SITE_SETTINGS
+let contact = DEFAULT_HOME_CONTACT
+
+try {
+	;[page, projects, site, contact] = await Promise.all([
+		getPortfolioPage(),
+		getPortfolioProjects(),
+		getSiteSettings(),
+		getHomeContact(),
+	])
+} catch (err) {
+	console.warn('[sanity] Portfolio page fallback.', err)
+}
+
+const heroBg = page.heroImageUrl ? `background-image: url(${page.heroImageUrl})` : undefined
 ---
 
 <Layout
   title="Portfolio — Formo Renovations"
   description="Browse our completed renovation projects across Victoria and Vancouver Island, BC — kitchens, bathrooms, living rooms, and full apartment transformations."
 >
-  <!-- Nav with Portfolio active -->
   <TheNav client:load page="portfolio" />
 
-  <!-- Hero -->
   <section id="hero" class="portfolio-hero-page">
-    <div class="hero-bg-img"></div>
+    <div class="hero-bg-img" style={heroBg}></div>
 
     <div class="port-hero-content">
       <div>
         <div class="port-hero-eyebrow">
           <span class="port-hero-eyebrow-dot"></span>
-          Victoria &amp; Vancouver Island, BC
+          {page.locationLabel}
         </div>
 
         <h1 class="port-hero-h1">
-          Our
-          <em>Portfolio</em>
+          {page.titleBefore}
+          <em>{page.titleEmphasis}</em>
         </h1>
 
         <hr class="port-hero-line" />
 
-        <p class="port-hero-desc">
-          Every project tells a story. Browse our completed renovations — from full apartment transformations to precise kitchen and bathroom upgrades — each one delivered on time, on budget, and built to last.
-        </p>
+        <p class="port-hero-desc">{page.description}</p>
 
         <div class="port-hero-actions">
-          <a href="#our-works" class="btn-dark">Browse Projects ↓</a>
-          <a href="#contact"   class="btn-outline">Start Your Project</a>
+          <a href={page.primaryCtaLink} class="btn-dark">{page.primaryCtaLabel}</a>
+          <a href={page.secondaryCtaLink} class="btn-outline">{page.secondaryCtaLabel}</a>
         </div>
       </div>
 
       <div class="port-hero-stats">
-        <div class="port-hero-stat">
-          <div class="port-hero-stat-val">120<sup>+</sup></div>
-          <div class="port-hero-stat-label">Projects Done</div>
-        </div>
-        <div class="port-hero-stat-divider"></div>
-        <div class="port-hero-stat">
-          <div class="port-hero-stat-val">8<sup>yr</sup></div>
-          <div class="port-hero-stat-label">Experience</div>
-        </div>
-        <div class="port-hero-stat-divider"></div>
-        <div class="port-hero-stat">
-          <div class="port-hero-stat-val">98<sup>%</sup></div>
-          <div class="port-hero-stat-label">Satisfaction Rate</div>
-        </div>
+        {page.stats.map((stat, i) => [
+          i > 0 ? <div class="port-hero-stat-divider" /> : null,
+          <div class="port-hero-stat">
+            <div class="port-hero-stat-val">
+              {stat.value}{stat.suffix ? <sup>{stat.suffix}</sup> : null}
+            </div>
+            <div class="port-hero-stat-label">{stat.label}</div>
+          </div>,
+        ])}
       </div>
     </div>
   </section>
 
-  <!-- Interactive works: filter + accordion + gallery + B/A sliders -->
-  <PortfolioWorks client:load />
-
-  <!-- Contact -->
-  <SectionContact />
-
-  <!-- Footer -->
-  <TheFooter />
+  <PortfolioWorks client:load projects={projects} />
+  <SectionContact content={contact} site={site} />
+  <TheFooter site={site} />
 </Layout>
