@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 400" fill="none">
+  <g id="icon" transform="translate(148, 8)">
+    <!-- Square border -->
+    <rect x="0"   y="0"   width="204" height="22" fill="#ffffff"/>
+    <rect x="0"   y="0"   width="22"  height="204" fill="#ffffff"/>
+    <rect x="0"   y="182" width="204" height="22" fill="#ffffff"/>
+    <rect x="182" y="0"   width="22"  height="204" fill="#ffffff"/>
+
+    <!-- F vertical stem -->
+    <rect x="28" y="28" width="24" height="127" fill="#ffffff"/>
+    <!-- F top horizontal bar -->
+    <rect x="28" y="28" width="78" height="22" fill="#ffffff"/>
+    <!-- F middle horizontal bar -->
+    <rect x="28" y="78" width="62" height="20" fill="#ffffff"/>
+
+    <!-- M left stem -->
+    <rect x="108" y="28" width="22" height="127" fill="#ffffff"/>
+    <!-- M right stem -->
+    <rect x="154" y="28" width="22" height="127" fill="#ffffff"/>
+    <!-- M left peak diagonal -->
+    <polygon points="108,28 130,28 145,75 123,75" fill="#ffffff"/>
+    <!-- M right peak diagonal -->
+    <polygon points="145,75 168,75 176,28 154,28" fill="#ffffff"/>
+
+    <!-- Bottom architectural grid -->
+    <rect x="28"  y="152" width="148" height="12" fill="#ffffff"/>
+    <rect x="80"  y="168" width="96"  height="12" fill="#ffffff"/>
+    <rect x="80"  y="152" width="12"  height="28" fill="#ffffff"/>
+    <rect x="118" y="152" width="12"  height="28" fill="#ffffff"/>
+  </g>
+
+  <!-- FORMO wordmark -->
+  <text
+    x="250" y="300"
+    font-family="'Futura PT', 'Futura', 'Century Gothic', 'Gill Sans', sans-serif"
+    font-size="112"
+    font-weight="900"
+    letter-spacing="1"
+    text-anchor="middle"
+    fill="#ffffff"
+  >FORMO</text>
+
+  <!-- Tagline -->
+  <text
+    x="250" y="348"
+    font-family="'Futura PT', 'Futura', 'Century Gothic', 'Gill Sans', sans-serif"
+    font-size="17"
+    font-weight="300"
+    letter-spacing="5.5"
+    text-anchor="middle"
+    fill="#ffffff"
+  >RENOVATION &amp; INTERIOR FINISHING</text>
+</svg>

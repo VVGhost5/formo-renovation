@@ -1,0 +1,405 @@
+---
+import Layout        from '../layouts/Layout.astro'
+import TheNav        from '../components/vue/TheNav.vue'
+import SectionContact from '../components/SectionContact.astro'
+import TheFooter     from '../components/TheFooter.astro'
+---
+
+<Layout
+  title="Our Services — Formo Renovations"
+  description="Full-range renovation and interior finishing services for Victoria and Vancouver Island — bathrooms, kitchens, flooring, full home renovations, and more."
+>
+  <TheNav client:load page="services" />
+
+  <!-- ══ HERO ══ -->
+  <section id="hero" class="svc-page-hero">
+    <div class="hero-bg-img"></div>
+    <div class="hero-content">
+
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="hero-dot"></span>
+          Victoria &amp; Vancouver Island, BC
+        </div>
+        <h1 class="hero-h1">
+          What we
+          <em>build for you</em>
+        </h1>
+        <hr class="hero-line" />
+        <p class="hero-desc">
+          From a single bathroom refresh to a complete home transformation — we offer a full range of renovation and interior finishing services, all backed by our 12-month workmanship warranty.
+        </p>
+        <div class="hero-actions">
+          <a href="#services-list" class="btn-dark">Explore Services ↓</a>
+          <a href="#contact" class="btn-outline">Get a Free Quote</a>
+        </div>
+      </div>
+
+      <div class="hero-quick">
+        <div class="hero-quick-label">Jump to a service</div>
+        <a href="#svc-bathroom" class="hero-quick-item">
+          <div class="hqi-icon"><i class="fa-solid fa-shower"></i></div>
+          <div class="hqi-body"><div class="hqi-name">Bathroom Renovation</div><div class="hqi-sub">Full remodels, tile, wetrooms</div></div>
+          <span class="hqi-arr">→</span>
+        </a>
+        <a href="#svc-kitchen" class="hero-quick-item">
+          <div class="hqi-icon"><i class="fa-solid fa-kitchen-set"></i></div>
+          <div class="hqi-body"><div class="hqi-name">Kitchen Renovation</div><div class="hqi-sub">Cabinets, countertops, layout</div></div>
+          <span class="hqi-arr">→</span>
+        </a>
+        <a href="#svc-living" class="hero-quick-item">
+          <div class="hqi-icon"><i class="fa-solid fa-couch"></i></div>
+          <div class="hqi-body"><div class="hqi-name">Living Room &amp; Bedroom</div><div class="hqi-sub">Open plans, built-ins, finishes</div></div>
+          <span class="hqi-arr">→</span>
+        </a>
+        <a href="#svc-full" class="hero-quick-item">
+          <div class="hqi-icon"><i class="fa-solid fa-house"></i></div>
+          <div class="hqi-body"><div class="hqi-name">Full Home Renovation</div><div class="hqi-sub">Turnkey, end-to-end projects</div></div>
+          <span class="hqi-arr">→</span>
+        </a>
+        <a href="#svc-flooring" class="hero-quick-item">
+          <div class="hqi-icon"><i class="fa-solid fa-layer-group"></i></div>
+          <div class="hqi-body"><div class="hqi-name">Flooring</div><div class="hqi-sub">Hardwood, LVP, tile</div></div>
+          <span class="hqi-arr">→</span>
+        </a>
+        <a href="#svc-finishing" class="hero-quick-item">
+          <div class="hqi-icon"><i class="fa-solid fa-paint-roller"></i></div>
+          <div class="hqi-body"><div class="hqi-name">Interior Finishing</div><div class="hqi-sub">Painting, trim, moulding</div></div>
+          <span class="hqi-arr">→</span>
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══ SERVICES STRIP ══ -->
+  <section id="services-strip">
+    <div class="strip-inner">
+      <a href="#svc-bathroom"  class="strip-cell"><div class="sc-icon"><i class="fa-solid fa-shower"></i></div><div class="sc-name">Bathroom</div><div class="sc-count">Service 01</div></a>
+      <a href="#svc-kitchen"   class="strip-cell"><div class="sc-icon"><i class="fa-solid fa-kitchen-set"></i></div><div class="sc-name">Kitchen</div><div class="sc-count">Service 02</div></a>
+      <a href="#svc-living"    class="strip-cell"><div class="sc-icon"><i class="fa-solid fa-couch"></i></div><div class="sc-name">Living &amp; Bedroom</div><div class="sc-count">Service 03</div></a>
+      <a href="#svc-full"      class="strip-cell"><div class="sc-icon"><i class="fa-solid fa-house"></i></div><div class="sc-name">Full Home</div><div class="sc-count">Service 04</div></a>
+      <a href="#svc-flooring"  class="strip-cell"><div class="sc-icon"><i class="fa-solid fa-layer-group"></i></div><div class="sc-name">Flooring</div><div class="sc-count">Service 05</div></a>
+      <a href="#svc-finishing" class="strip-cell"><div class="sc-icon"><i class="fa-solid fa-paint-roller"></i></div><div class="sc-name">Interior Finishing</div><div class="sc-count">Service 06</div></a>
+    </div>
+  </section>
+
+  <!-- ══ SERVICES LIST ══ -->
+  <section id="services-list">
+
+    <!-- 01 BATHROOM -->
+    <div class="svc-block" id="svc-bathroom">
+      <div class="svc-img-col">
+        <img src="https://images.unsplash.com/photo-1507652313519-d4e9174996dd?w=1000&q=85" alt="Bathroom Renovation" loading="lazy" />
+        <div class="svc-img-badge">
+          <span class="svc-img-badge-icon"><i class="fa-solid fa-shower"></i></span>
+          <span class="svc-img-badge-text">Bathroom Renovation</span>
+        </div>
+      </div>
+      <div class="svc-text-col">
+        <div class="svc-num">01</div>
+        <div class="svc-eyebrow">Bathroom Renovation</div>
+        <h2 class="svc-title">From dated to spa-worthy — completely reimagined</h2>
+        <p class="svc-lead">Whether you're working with a compact ensuite or a master bathroom with room to breathe, we design and deliver bathroom renovations that combine precise tile work, quality fixtures, and smart layout decisions.</p>
+        <div class="svc-includes-label">What's included</div>
+        <ul class="svc-includes">
+          <li>Full demolition &amp; removal</li>
+          <li>Waterproofing &amp; tanking</li>
+          <li>Large-format &amp; mosaic tiling</li>
+          <li>Frameless glass shower enclosures</li>
+          <li>Freestanding &amp; built-in tubs</li>
+          <li>Floating &amp; vanity unit installation</li>
+          <li>Heated floor systems</li>
+          <li>LED &amp; recessed lighting</li>
+          <li>Custom mirror &amp; storage solutions</li>
+          <li>Plumbing rough-in &amp; finishing</li>
+        </ul>
+        <div class="svc-meta">
+          <div class="svc-meta-item"><span class="svc-meta-key">Typical Duration</span><span class="svc-meta-val">2 – 4 Weeks</span></div>
+          <div class="svc-meta-item"><span class="svc-meta-key">Starting From</span><span class="svc-meta-val">$8,500 CAD</span></div>
+          <div class="svc-meta-item"><span class="svc-meta-key">Warranty</span><span class="svc-meta-val">12 Months</span></div>
+        </div>
+        <a href="#contact" class="svc-cta">Get a Quote for This Service →</a>
+      </div>
+    </div>
+
+    <!-- 02 KITCHEN -->
+    <div class="svc-block flip" id="svc-kitchen">
+      <div class="svc-img-col">
+        <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1000&q=85" alt="Kitchen Renovation" loading="lazy" />
+        <div class="svc-img-badge">
+          <span class="svc-img-badge-icon"><i class="fa-solid fa-kitchen-set"></i></span>
+          <span class="svc-img-badge-text">Kitchen Renovation</span>
+        </div>
+      </div>
+      <div class="svc-text-col">
+        <div class="svc-num">02</div>
+        <div class="svc-eyebrow">Kitchen Renovation</div>
+        <h2 class="svc-title">The heart of your home, done right</h2>
+        <p class="svc-lead">We handle everything from a full kitchen gut-and-rebuild to a targeted cabinet refresh or countertop upgrade. Our team coordinates cabinetry, counters, tile, appliances, lighting, and plumbing.</p>
+        <div class="svc-includes-label">What's included</div>
+        <ul class="svc-includes">
+          <li>Custom &amp; semi-custom cabinetry</li>
+          <li>Quartz, stone &amp; solid-surface counters</li>
+          <li>Waterfall island designs</li>
+          <li>Backsplash tile installation</li>
+          <li>Appliance connection &amp; integration</li>
+          <li>Under-cabinet &amp; pot lighting</li>
+          <li>Open-plan layout reconfiguration</li>
+          <li>Pantry &amp; storage optimisation</li>
+          <li>Sink, tap &amp; plumbing rough-in</li>
+          <li>Soft-close hardware throughout</li>
+        </ul>
+        <div class="svc-meta">
+          <div class="svc-meta-item"><span class="svc-meta-key">Typical Duration</span><span class="svc-meta-val">4 – 8 Weeks</span></div>
+          <div class="svc-meta-item"><span class="svc-meta-key">Starting From</span><span class="svc-meta-val">$14,000 CAD</span></div>
+          <div class="svc-meta-item"><span class="svc-meta-key">Warranty</span><span class="svc-meta-val">12 Months</span></div>
+        </div>
+        <a href="#contact" class="svc-cta">Get a Quote for This Service →</a>
+      </div>
+    </div>
+
+    <!-- 03 LIVING & BEDROOM -->
+    <div class="svc-block" id="svc-living">
+      <div class="svc-img-col">
+        <img src="https://images.unsplash.com/photo-1618219908412-a29a1bb7b86e?w=1000&q=85" alt="Living Room Renovation" loading="lazy" />
+        <div class="svc-img-badge">
+          <span class="svc-img-badge-icon"><i class="fa-solid fa-couch"></i></span>
+          <span class="svc-img-badge-text">Living &amp; Bedroom</span>
+        </div>
+      </div>
+      <div class="svc-text-col">
+        <div class="svc-num">03</div>
+        <div class="svc-eyebrow">Living Room &amp; Bedroom</div>
+        <h2 class="svc-title">Spaces that feel like they were meant to be yours</h2>
+        <p class="svc-lead">We transform dark, compartmentalised, or simply tired spaces into open, light-filled rooms with thoughtful detailing — custom built-ins, feature walls, updated lighting, and finishes that last.</p>
+        <div class="svc-includes-label">What's included</div>
+        <ul class="svc-includes">
+          <li>Wall removal &amp; structural work</li>
+          <li>Custom built-in shelving &amp; wardrobes</li>
+          <li>Feature wall &amp; accent finishes</li>
+          <li>Fireplace surround remodelling</li>
+          <li>Coffered &amp; tray ceiling detail</li>
+          <li>Recessed &amp; feature lighting</li>
+          <li>Window trim &amp; casement upgrades</li>
+          <li>Closet organisation systems</li>
+          <li>Drywall, skim coat &amp; paint</li>
+          <li>Baseboard &amp; moulding installation</li>
+        </ul>
+        <div class="svc-meta">
+          <div class="svc-meta-item"><span class="svc-meta-key">Typical Duration</span><span class="svc-meta-val">2 – 5 Weeks</span></div>
+          <div class="svc-meta-item"><span class="svc-meta-key">Starting From</span><span class="svc-meta-val">$6,000 CAD</span></div>
+          <div class="svc-meta-item"><span class="svc-meta-key">Warranty</span><span class="svc-meta-val">12 Months</span></div>
+        </div>
+        <a href="#contact" class="svc-cta">Get a Quote for This Service →</a>
+      </div>
+    </div>
+
+    <!-- 04 FULL HOME -->
+    <div class="svc-block flip" id="svc-full">
+      <div class="svc-img-col">
+        <img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1000&q=85" alt="Full Home Renovation" loading="lazy" />
+        <div class="svc-img-badge">
+          <span class="svc-img-badge-icon"><i class="fa-solid fa-house"></i></span>
+          <span class="svc-img-badge-text">Full Home Renovation</span>
+        </div>
+      </div>
+      <div class="svc-text-col">
+        <div class="svc-num">04</div>
+        <div class="svc-eyebrow">Full Home Renovation</div>
+        <h2 class="svc-title">Turnkey transformations, one team, zero chaos</h2>
+        <p class="svc-lead">We make it manageable by acting as your single point of contact across every trade — from demolition and structural work right through to the final coat of paint. You won't need to manage subcontractors. We do that.</p>
+        <div class="svc-includes-label">What's included</div>
+        <ul class="svc-includes">
+          <li>Full project management</li>
+          <li>Demolition &amp; site preparation</li>
+          <li>Structural &amp; framing work</li>
+          <li>Electrical rough-in &amp; fit-out</li>
+          <li>Plumbing rough-in &amp; fit-out</li>
+          <li>Insulation &amp; drywall</li>
+          <li>All flooring throughout</li>
+          <li>Full kitchen &amp; bathroom renovation</li>
+          <li>Interior painting &amp; trim</li>
+          <li>Permit coordination &amp; inspection</li>
+        </ul>
+        <div class="svc-meta">
+          <div class="svc-meta-item"><span class="svc-meta-key">Typical Duration</span><span class="svc-meta-val">8 – 16 Weeks</span></div>
+          <div class="svc-meta-item"><span class="svc-meta-key">Starting From</span><span class="svc-meta-val">$45,000 CAD</span></div>
+          <div class="svc-meta-item"><span class="svc-meta-key">Warranty</span><span class="svc-meta-val">12 Months</span></div>
+        </div>
+        <a href="#contact" class="svc-cta">Get a Quote for This Service →</a>
+      </div>
+    </div>
+
+    <!-- 05 FLOORING -->
+    <div class="svc-block" id="svc-flooring">
+      <div class="svc-img-col">
+        <img src="https://images.unsplash.com/photo-1564540586988-aa4e53c3d799?w=1000&q=85" alt="Flooring" loading="lazy" />
+        <div class="svc-img-badge">
+          <span class="svc-img-badge-icon"><i class="fa-solid fa-layer-group"></i></span>
+          <span class="svc-img-badge-text">Flooring</span>
+        </div>
+      </div>
+      <div class="svc-text-col">
+        <div class="svc-num">05</div>
+        <div class="svc-eyebrow">Flooring</div>
+        <h2 class="svc-title">The foundation of every beautiful room</h2>
+        <p class="svc-lead">We supply and install a full range of materials — from engineered hardwood and wide-plank oak to luxury vinyl plank and large-format porcelain. Every installation includes proper subfloor preparation.</p>
+        <div class="svc-includes-label">What's included</div>
+        <ul class="svc-includes">
+          <li>Engineered &amp; solid hardwood</li>
+          <li>Wide-plank white oak &amp; walnut</li>
+          <li>Luxury vinyl plank (LVP)</li>
+          <li>Large-format porcelain tile</li>
+          <li>Natural stone installation</li>
+          <li>Subfloor repair &amp; levelling</li>
+          <li>Radiant heat system integration</li>
+          <li>Stair nosing &amp; transition strips</li>
+          <li>Site finishing &amp; staining</li>
+          <li>Old floor removal &amp; disposal</li>
+        </ul>
+        <div class="svc-meta">
+          <div class="svc-meta-item"><span class="svc-meta-key">Typical Duration</span><span class="svc-meta-val">3 – 10 Days</span></div>
+          <div class="svc-meta-item"><span class="svc-meta-key">Starting From</span><span class="svc-meta-val">$3,500 CAD</span></div>
+          <div class="svc-meta-item"><span class="svc-meta-key">Warranty</span><span class="svc-meta-val">12 Months</span></div>
+        </div>
+        <a href="#contact" class="svc-cta">Get a Quote for This Service →</a>
+      </div>
+    </div>
+
+    <!-- 06 INTERIOR FINISHING -->
+    <div class="svc-block flip" id="svc-finishing">
+      <div class="svc-img-col">
+        <img src="https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=1000&q=85" alt="Interior Finishing" loading="lazy" />
+        <div class="svc-img-badge">
+          <span class="svc-img-badge-icon"><i class="fa-solid fa-paint-roller"></i></span>
+          <span class="svc-img-badge-text">Interior Finishing</span>
+        </div>
+      </div>
+      <div class="svc-text-col">
+        <div class="svc-num">06</div>
+        <div class="svc-eyebrow">Interior Finishing</div>
+        <h2 class="svc-title">The details that define the final result</h2>
+        <p class="svc-lead">Our finishing team handles painting, trim carpentry, moulding, and all the fine detail work that separates a professional result from a DIY job. We use only low-VOC, premium-grade paints and prepare surfaces properly.</p>
+        <div class="svc-includes-label">What's included</div>
+        <ul class="svc-includes">
+          <li>Full-home interior painting</li>
+          <li>Surface preparation &amp; skim coat</li>
+          <li>Crown moulding &amp; coffering</li>
+          <li>Baseboard &amp; casing installation</li>
+          <li>Wainscoting &amp; panel moulding</li>
+          <li>Feature wall treatments</li>
+          <li>Door &amp; window trim upgrades</li>
+          <li>Closet &amp; built-in finishing</li>
+          <li>Low-VOC premium paint products</li>
+          <li>Final touch-up &amp; inspection</li>
+        </ul>
+        <div class="svc-meta">
+          <div class="svc-meta-item"><span class="svc-meta-key">Typical Duration</span><span class="svc-meta-val">3 Days – 3 Weeks</span></div>
+          <div class="svc-meta-item"><span class="svc-meta-key">Starting From</span><span class="svc-meta-val">$2,800 CAD</span></div>
+          <div class="svc-meta-item"><span class="svc-meta-key">Warranty</span><span class="svc-meta-val">12 Months</span></div>
+        </div>
+        <a href="#contact" class="svc-cta">Get a Quote for This Service →</a>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ══ OUR PROCESS ══ -->
+  <section id="our-process">
+    <div class="svc-process-hero">
+      <div class="svc-process-hero-img"></div>
+      <div class="svc-process-hero-content">
+        <span class="svc-process-eyebrow">How We Work</span>
+        <h2 class="svc-process-headline">From first call to <em>final walkthrough</em></h2>
+        <p class="svc-process-sub">A clear, predictable process is how we eliminate stress and deliver consistent results — every time, for every client.</p>
+      </div>
+    </div>
+
+    <div class="process-steps">
+      <div class="pstep">
+        <div class="pstep-num">01</div>
+        <div class="pstep-icon"><i class="fa-solid fa-phone"></i></div>
+        <div class="pstep-title">Free Consultation</div>
+        <p class="pstep-body">We visit your home, listen to your goals, and assess the scope. No charge, no obligation. Usually 45–60 minutes.</p>
+      </div>
+      <div class="pstep">
+        <div class="pstep-num">02</div>
+        <div class="pstep-icon"><i class="fa-solid fa-file-lines"></i></div>
+        <div class="pstep-title">Detailed Quote</div>
+        <p class="pstep-body">Within 48 hours you receive a line-by-line estimate — materials, labour, timeline, and payment schedule. Everything in writing.</p>
+      </div>
+      <div class="pstep">
+        <div class="pstep-num">03</div>
+        <div class="pstep-icon"><i class="fa-solid fa-file-signature"></i></div>
+        <div class="pstep-title">Signed Contract</div>
+        <p class="pstep-body">Once you're happy, we formalise everything in a clear contract. Scope, schedule, payment milestones, and warranty terms.</p>
+      </div>
+      <div class="pstep">
+        <div class="pstep-num">04</div>
+        <div class="pstep-icon"><i class="fa-solid fa-hammer"></i></div>
+        <div class="pstep-title">Construction</div>
+        <p class="pstep-body">Work begins on the agreed date. Daily updates, weekly site reports, and proactive communication throughout.</p>
+      </div>
+      <div class="pstep">
+        <div class="pstep-num">05</div>
+        <div class="pstep-icon"><i class="fa-solid fa-flag-checkered"></i></div>
+        <div class="pstep-title">Final Walkthrough</div>
+        <p class="pstep-body">We walk the finished project with you. Any snags are addressed before final payment. Your warranty begins the day you sign off.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ PRICING HINT ══ -->
+  <section id="pricing-hint">
+    <div class="ph-inner">
+      <div class="ph-left">
+        <div class="ph-eyebrow">Transparent Pricing</div>
+        <h2 class="ph-headline">
+          Every quote is honest,<br />
+          <em>detailed, and fixed</em>
+        </h2>
+        <p class="ph-body">
+          We don't use vague estimates or open-ended budgets. Every Formo quote is itemised line by line — materials, labour, disposal, and contingency — so you know exactly what you're committing to before we start.
+        </p>
+      </div>
+    </div>
+    <div class="ph-cards">
+      <div class="ph-card">
+        <div class="ph-card-icon"><i class="fa-solid fa-file-invoice"></i></div>
+        <div class="ph-card-title">Line-by-Line Breakdown</div>
+        <p class="ph-card-body">Every cost is itemised — no lump-sum "labour and materials" lines that hide markups or assumptions.</p>
+      </div>
+      <div class="ph-card">
+        <div class="ph-card-icon"><i class="fa-solid fa-lock"></i></div>
+        <div class="ph-card-title">Fixed-Price Options</div>
+        <p class="ph-card-body">For defined scopes, we offer fixed-price contracts. What's quoted is what you pay — full stop.</p>
+      </div>
+      <div class="ph-card">
+        <div class="ph-card-icon"><i class="fa-solid fa-check-double"></i></div>
+        <div class="ph-card-title">Written Change Orders</div>
+        <p class="ph-card-body">Any change to scope requires your written approval before work proceeds. You're always in control.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ CONTACT ══ -->
+  <SectionContact />
+
+  <!-- ══ FOOTER ══ -->
+  <TheFooter />
+
+</Layout>
+
+<script>
+  window.addEventListener('scroll', () => {
+    const services = ['svc-bathroom','svc-kitchen','svc-living','svc-full','svc-flooring','svc-finishing'];
+    const cells = document.querySelectorAll('.strip-cell');
+    let active = 0;
+    services.forEach((id, i) => {
+      const el = document.getElementById(id);
+      if (el && window.scrollY >= el.offsetTop - 120) active = i;
+    });
+    cells.forEach((c, i) => c.classList.toggle('active-strip', i === active));
+  });
+</script>

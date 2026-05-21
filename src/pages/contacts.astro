@@ -1,0 +1,356 @@
+---
+import Layout    from '../layouts/Layout.astro'
+import TheNav    from '../components/vue/TheNav.vue'
+import TheFooter from '../components/TheFooter.astro'
+---
+
+<Layout
+  title="Contact Us — Formo Renovations"
+  description="Get in touch with Formo Renovations. Free on-site consultations across Victoria and Vancouver Island, BC. Call, email, or fill in the form."
+>
+  <TheNav client:load page="contacts" />
+
+  <!-- ══ HERO ══ -->
+  <section id="hero" class="contact-page-hero">
+    <div class="hero-bg-img"></div>
+    <div class="hero-content">
+
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="hero-dot"></span>
+          We respond within 24 hours
+        </div>
+        <h1 class="hero-h1">
+          Let's talk about
+          <em>your project</em>
+        </h1>
+        <hr class="hero-line" />
+        <p class="hero-desc">
+          Whether you have a firm plan or just a rough idea, we're happy to listen. Reach out however suits you best — call, email, or fill in the form below. Free on-site consultations across Victoria and Vancouver Island.
+        </p>
+      </div>
+
+      <div class="hero-channels">
+        <div class="hc-label">Reach us directly</div>
+        <a href="tel:+12500000000" class="hc-card">
+          <div class="hc-icon-wrap"><i class="fa-solid fa-phone"></i></div>
+          <div class="hc-body">
+            <div class="hc-name">Call Us</div>
+            <div class="hc-value">+1 (250) 000-0000 · Mon–Fri 8AM–6PM</div>
+          </div>
+          <span class="hc-arrow">→</span>
+        </a>
+        <a href="mailto:hello@formorenovations.ca" class="hc-card">
+          <div class="hc-icon-wrap"><i class="fa-solid fa-envelope"></i></div>
+          <div class="hc-body">
+            <div class="hc-name">Email Us</div>
+            <div class="hc-value">hello@formorenovations.ca</div>
+          </div>
+          <span class="hc-arrow">→</span>
+        </a>
+        <a href="https://wa.me/12500000000" class="hc-card">
+          <div class="hc-icon-wrap"><i class="fa-brands fa-whatsapp"></i></div>
+          <div class="hc-body">
+            <div class="hc-name">WhatsApp</div>
+            <div class="hc-value">Quick questions &amp; photos welcome</div>
+          </div>
+          <span class="hc-arrow">→</span>
+        </a>
+        <a href="#contact-main" class="hc-card">
+          <div class="hc-icon-wrap"><i class="fa-solid fa-clipboard-list"></i></div>
+          <div class="hc-body">
+            <div class="hc-name">Fill in the Form</div>
+            <div class="hc-value">Get a detailed quote within 48 hours</div>
+          </div>
+          <span class="hc-arrow">→</span>
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══ MAIN CONTACT FORM ══ -->
+  <section id="contact-main">
+    <div class="contact-grid">
+
+      <!-- FORM -->
+      <div class="form-side">
+        <span class="form-eyebrow">Send Us a Message</span>
+        <h2 class="form-title">Tell us about your <em>project</em></h2>
+        <p class="form-sub">The more detail you can share, the more accurate our quote will be. We'll get back to you within one business day.</p>
+
+        <div class="form-success" id="form-success">
+          <div class="success-icon"><i class="fa-solid fa-check"></i></div>
+          <div class="success-title">Message Sent!</div>
+          <p class="success-body">Thank you for reaching out. We'll review your project details and be in touch within one business day.</p>
+        </div>
+
+        <div class="cform" id="main-form">
+          <div class="cform-row">
+            <div class="fg"><label>First Name *</label><input type="text" id="f-first" placeholder="John" required /></div>
+            <div class="fg"><label>Last Name *</label><input type="text" id="f-last" placeholder="Smith" required /></div>
+          </div>
+          <div class="cform-row">
+            <div class="fg"><label>Email Address *</label><input type="email" id="f-email" placeholder="john@example.com" required /></div>
+            <div class="fg"><label>Phone Number</label><input type="tel" id="f-phone" placeholder="+1 (250) 000-0000" /></div>
+          </div>
+          <div class="fg">
+            <label>Project Location</label>
+            <input type="text" id="f-location" placeholder="e.g. Fairfield, Victoria, BC" />
+          </div>
+          <div class="fg">
+            <label>Services You're Interested In</label>
+            <div class="service-checks" id="service-checks">
+              <label class="sc-item"><input type="checkbox" value="bathroom" /><div class="sc-check">✓</div><span class="sc-emoji"><i class="fa-solid fa-shower"></i></span><span class="sc-label">Bathroom</span></label>
+              <label class="sc-item"><input type="checkbox" value="kitchen" /><div class="sc-check">✓</div><span class="sc-emoji"><i class="fa-solid fa-kitchen-set"></i></span><span class="sc-label">Kitchen</span></label>
+              <label class="sc-item"><input type="checkbox" value="living" /><div class="sc-check">✓</div><span class="sc-emoji"><i class="fa-solid fa-couch"></i></span><span class="sc-label">Living / Bedroom</span></label>
+              <label class="sc-item"><input type="checkbox" value="full" /><div class="sc-check">✓</div><span class="sc-emoji"><i class="fa-solid fa-house"></i></span><span class="sc-label">Full Home</span></label>
+              <label class="sc-item"><input type="checkbox" value="flooring" /><div class="sc-check">✓</div><span class="sc-emoji"><i class="fa-solid fa-layer-group"></i></span><span class="sc-label">Flooring</span></label>
+              <label class="sc-item"><input type="checkbox" value="finishing" /><div class="sc-check">✓</div><span class="sc-emoji"><i class="fa-solid fa-paint-roller"></i></span><span class="sc-label">Interior Finishing</span></label>
+            </div>
+          </div>
+          <div class="fg">
+            <label>Approximate Budget</label>
+            <div class="budget-wrap">
+              <div class="budget-val" id="budget-display">$20,000 CAD</div>
+              <input type="range" id="budget-slider" min="3000" max="150000" step="1000" value="20000" />
+              <div class="budget-labels"><span>$3,000</span><span>$150,000+</span></div>
+            </div>
+          </div>
+          <div class="fg">
+            <label>Ideal Start Date</label>
+            <input type="text" id="f-date" placeholder="e.g. September 2025, ASAP, or flexible" />
+          </div>
+          <div class="fg">
+            <label>Tell Us About Your Project *</label>
+            <textarea id="f-message" placeholder="Describe your project — what you'd like to change, your goals, any specific materials or styles in mind…" required></textarea>
+          </div>
+          <div class="fg">
+            <label>How Did You Hear About Us?</label>
+            <select id="f-source">
+              <option value="">Select an option…</option>
+              <option>Google Search</option>
+              <option>Word of Mouth / Referral</option>
+              <option>Instagram</option>
+              <option>Facebook</option>
+              <option>Houzz</option>
+              <option>HomeStars</option>
+              <option>Walked Past a Job Site</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-submit-row">
+            <button class="cform-submit" id="form-submit">Send Message →</button>
+            <p class="form-privacy">We never share your details. By submitting, you agree to our <a href="#">Privacy Policy</a>.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- INFO SIDEBAR -->
+      <div class="info-side">
+        <a href="tel:+12500000000" class="info-channel">
+          <div class="ic-icon"><i class="fa-solid fa-phone"></i></div>
+          <div class="ic-body">
+            <div class="ic-label">Phone</div>
+            <div class="ic-value">+1 (250) 000-0000</div>
+            <div class="ic-note">Mon – Fri, 8:00 AM – 6:00 PM. We aim to answer every call personally.</div>
+          </div>
+          <span class="ic-arrow">→</span>
+        </a>
+
+        <a href="mailto:hello@formorenovations.ca" class="info-channel">
+          <div class="ic-icon"><i class="fa-solid fa-envelope"></i></div>
+          <div class="ic-body">
+            <div class="ic-label">Email</div>
+            <div class="ic-value">hello@formorenovations.ca</div>
+            <div class="ic-note">We reply to all emails within one business day.</div>
+          </div>
+          <span class="ic-arrow">→</span>
+        </a>
+
+        <a href="https://wa.me/12500000000" class="info-channel">
+          <div class="ic-icon"><i class="fa-brands fa-whatsapp"></i></div>
+          <div class="ic-body">
+            <div class="ic-label">WhatsApp</div>
+            <div class="ic-value">+1 (250) 000-0000</div>
+            <div class="ic-note">Send photos of your space, quick questions, or project updates.</div>
+          </div>
+          <span class="ic-arrow">→</span>
+        </a>
+
+        <div class="info-hours">
+          <div class="ih-header">
+            <div class="ih-icon"><i class="fa-regular fa-clock"></i></div>
+            <div class="ih-title">Office Hours</div>
+          </div>
+          <div class="ih-rows">
+            <div class="ih-row"><span class="ih-day">Monday – Thursday</span><span class="ih-time">8:00 AM – 6:00 PM</span></div>
+            <div class="ih-row"><span class="ih-day">Friday</span><span class="ih-time">8:00 AM – 5:00 PM</span></div>
+            <div class="ih-row"><span class="ih-day">Saturday</span><span class="ih-time">10:00 AM – 3:00 PM</span></div>
+            <div class="ih-row"><span class="ih-day">Sunday</span><span class="ih-closed">Closed</span></div>
+          </div>
+          <div class="ih-badge">
+            <div class="ih-badge-dot"></div>
+            Currently accepting new projects
+          </div>
+        </div>
+
+        <div class="info-social">
+          <div class="is-label">Follow Our Work</div>
+          <div class="is-buttons">
+            <a href="#" class="is-btn"><span class="is-btn-icon"><i class="fa-brands fa-instagram"></i></span>Instagram</a>
+            <a href="#" class="is-btn"><span class="is-btn-icon"><i class="fa-brands fa-facebook-f"></i></span>Facebook</a>
+            <a href="#" class="is-btn"><span class="is-btn-icon"><i class="fa-brands fa-houzz"></i></span>Houzz</a>
+            <a href="#" class="is-btn"><span class="is-btn-icon"><i class="fa-solid fa-star"></i></span>HomeStars</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══ MAP ══ -->
+  <section id="map-section">
+    <div class="map-grid">
+      <div class="map-frame">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d83751.37534786647!2d-123.43661597031249!3d48.45202979999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x548f738bdae41c71%3A0x38e8f3741ebb48ed!2sVictoria%2C%20BC!5e0!3m2!1sen!2sca!4v1700000000000!5m2!1sen!2sca"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title="Formo Renovations service area – Victoria, BC"
+        ></iframe>
+        <div class="map-overlay-badge">
+          <div class="mob-title">Victoria &amp; Vancouver Island</div>
+          <div class="mob-sub">Our service area</div>
+        </div>
+      </div>
+
+      <div class="map-info">
+        <div class="map-info-eyebrow">Service Area</div>
+        <h2 class="map-info-title">We serve all of <em>Victoria &amp; the Island</em></h2>
+        <p class="map-info-desc">
+          Based in Victoria, BC, our team travels across Vancouver Island for the right project. Free on-site consultations are available throughout our full service area — no travel charge for locations within 60 km of Victoria.
+        </p>
+        <div class="map-areas">
+          <div class="map-area-tag">Fairfield</div>
+          <div class="map-area-tag">Oak Bay</div>
+          <div class="map-area-tag">Saanich</div>
+          <div class="map-area-tag">James Bay</div>
+          <div class="map-area-tag">Esquimalt</div>
+          <div class="map-area-tag">Langford</div>
+          <div class="map-area-tag">Colwood</div>
+          <div class="map-area-tag">Sidney</div>
+          <div class="map-area-tag">Nanaimo</div>
+          <div class="map-area-tag">Parksville</div>
+          <div class="map-area-tag">Comox</div>
+          <div class="map-area-tag">+ surrounding areas</div>
+        </div>
+        <a href="#contact-main" class="map-consult-btn">Book a Free Consultation →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ FAQ ══ -->
+  <section id="faq">
+    <div class="faq-grid">
+      <div class="faq-left">
+        <span class="faq-eyebrow">FAQ</span>
+        <h2 class="faq-title">Common <em>questions</em></h2>
+        <p class="faq-sub">Answers to the things most clients ask us before getting started.</p>
+      </div>
+
+      <div class="faq-list">
+        <div class="faq-item">
+          <button class="faq-q"><span class="fq-text">How quickly can you start my project?</span><div class="fq-icon">+</div></button>
+          <div class="faq-a"><div class="faq-a-inner">Our current lead time is typically 3–6 weeks from signed contract to project start. This varies by season — spring and summer are our busiest periods. We recommend reaching out as early as possible, especially if you have a firm move-in date or deadline.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q"><span class="fq-text">Do you provide free quotes?</span><div class="fq-icon">+</div></button>
+          <div class="faq-a"><div class="faq-a-inner">Yes — always. We visit your home, assess the scope, and provide a detailed written estimate at no charge and with no obligation. The quote is itemised line by line so you can see exactly what you're paying for.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q"><span class="fq-text">What areas do you serve?</span><div class="fq-icon">+</div></button>
+          <div class="faq-a"><div class="faq-a-inner">We're based in Victoria, BC, and serve all of Greater Victoria including Fairfield, Oak Bay, Saanich, James Bay, Esquimalt, Langford, and Colwood. We also travel across Vancouver Island for larger projects. Free on-site consultations are available anywhere within 60 km of Victoria.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q"><span class="fq-text">Are you licensed and insured?</span><div class="fq-icon">+</div></button>
+          <div class="faq-a"><div class="faq-a-inner">Yes, fully. Formo Renovations is a licensed BC contractor with $5 million in general liability insurance. We carry WorkSafeBC coverage for all team members on site. All electrical and plumbing work is completed by licensed tradespeople and complies with BC Building Code.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q"><span class="fq-text">Can I stay in my home during the renovation?</span><div class="fq-icon">+</div></button>
+          <div class="faq-a"><div class="faq-a-inner">For most projects — bathroom, kitchen, flooring, living room — yes. We take extra care to contain dust, protect surrounding areas, and clean the site at the end of every day. For full-home renovations, we'll discuss what makes sense at the consultation stage.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q"><span class="fq-text">What does your warranty cover?</span><div class="fq-icon">+</div></button>
+          <div class="faq-a"><div class="faq-a-inner">Every Formo project is backed by a 12-month workmanship warranty. If anything we've built or installed fails due to our workmanship within that period, we fix it at no cost. There's no fine print — if it's our work, it's our responsibility.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q"><span class="fq-text">How does the payment schedule work?</span><div class="fq-icon">+</div></button>
+          <div class="faq-a"><div class="faq-a-inner">We structure payments across project milestones — typically a deposit to secure your start date, a mid-project payment at an agreed milestone, and a final payment on the day you sign off. We never ask for full payment upfront.</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <TheFooter />
+
+</Layout>
+
+<script>
+  // FAQ accordion
+  document.querySelectorAll('.faq-q').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.closest('.faq-item') as HTMLElement;
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    });
+  });
+
+  // Service checkboxes
+  document.querySelectorAll('.sc-item').forEach(item => {
+    item.addEventListener('click', () => {
+      item.classList.toggle('checked');
+      const cb = item.querySelector('input[type="checkbox"]') as HTMLInputElement;
+      if (cb) cb.checked = item.classList.contains('checked');
+    });
+  });
+
+  // Budget slider
+  const slider = document.getElementById('budget-slider') as HTMLInputElement;
+  const display = document.getElementById('budget-display') as HTMLElement;
+
+  function updateBudget() {
+    if (!slider || !display) return;
+    const val = parseInt(slider.value);
+    const min = parseInt(slider.min);
+    const max = parseInt(slider.max);
+    const pct = ((val - min) / (max - min)) * 100;
+    slider.style.setProperty('--pct', pct + '%');
+    display.textContent = val >= 150000 ? '$150,000+ CAD' : '$' + val.toLocaleString('en-CA') + ' CAD';
+  }
+
+  slider?.addEventListener('input', updateBudget);
+  updateBudget();
+
+  // Form submit
+  document.getElementById('form-submit')?.addEventListener('click', () => {
+    const required = ['f-first','f-last','f-email','f-message'];
+    let valid = true;
+    required.forEach(id => {
+      const el = document.getElementById(id) as HTMLInputElement;
+      if (!el?.value.trim()) {
+        el.style.borderColor = '#c0392b';
+        el.style.boxShadow = '0 0 0 3px rgba(192,57,43,0.1)';
+        valid = false;
+        el.addEventListener('input', () => { el.style.borderColor = ''; el.style.boxShadow = ''; }, { once: true });
+      }
+    });
+    if (!valid) return;
+    const form = document.getElementById('main-form');
+    const success = document.getElementById('form-success');
+    if (form) form.classList.add('sent');
+    if (success) success.classList.add('show');
+    window.scrollTo({ top: (document.getElementById('contact-main')?.offsetTop ?? 0) - 80, behavior: 'smooth' });
+  });
+</script>
