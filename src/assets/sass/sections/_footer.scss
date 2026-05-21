@@ -12,13 +12,14 @@ footer {
 }
 
 .footer-logo {
-  font-family: var(--font);
-  font-size: 20px; text-decoration: none;
-  display: flex; align-items: baseline; gap: 7px;
+  display: flex; align-items: center;
+  text-decoration: none;
   margin-bottom: 18px;
+}
 
-  strong { font-weight: 700; color: #fff; letter-spacing: 0.06em; font-size: 21px; }
-  span   { font-weight: 300; color: rgba(255,255,255,0.6); font-size: 16px; }
+.footer-logo-img {
+  height: 44px; width: auto;
+  display: block;
 }
 
 .footer-brand p {

@@ -1,12 +1,12 @@
 ---
+import logoWhite from '../assets/images/formo-logo-white.svg'
 ---
 <footer>
   <div class="footer-main">
 
     <div class="footer-brand">
-      <a class="footer-logo" href="#">
-        <strong>FORMO</strong>
-        <span>Renovations</span>
+      <a class="footer-logo" href="/">
+        <img src={logoWhite.src} alt="Formo Renovations" class="footer-logo-img" />
       </a>
       <p>Premium renovation and interior finishing solutions for homes across Victoria and Vancouver Island, BC. European standards. Transparent process.</p>
       <div class="footer-socials">
@@ -25,24 +25,23 @@
     <div class="footer-col">
       <h4>Services</h4>
       <ul>
-        <li><a href="#">Interior Finishing</a></li>
-        <li><a href="#">Bathroom Renovations</a></li>
-        <li><a href="#">Kitchen Renovations</a></li>
-        <li><a href="#">Flooring</a></li>
-        <li><a href="#">Painting</a></li>
-        <li><a href="#">Project Management</a></li>
+        <li><a href="/services#svc-finishing">Interior Finishing</a></li>
+        <li><a href="/services#svc-bathroom">Bathroom Renovations</a></li>
+        <li><a href="/services#svc-kitchen">Kitchen Renovations</a></li>
+        <li><a href="/services#svc-flooring">Flooring</a></li>
+        <li><a href="/services#svc-living">Living &amp; Bedroom</a></li>
+        <li><a href="/services#svc-full">Full Home Renovation</a></li>
       </ul>
     </div>
 
     <div class="footer-col">
       <h4>Company</h4>
       <ul>
-        <li><a href="#">About Us</a></li>
-        <li><a href="#">Our Process</a></li>
-        <li><a href="#">Projects</a></li>
-        <li><a href="#">Materials</a></li>
-        <li><a href="#">Guarantee</a></li>
-        <li><a href="#">Contact</a></li>
+        <li><a href="/about-us">About Us</a></li>
+        <li><a href="/about-us#our-story">Our Story</a></li>
+        <li><a href="/portfolio">Portfolio</a></li>
+        <li><a href="/about-us#certifications">Guarantee</a></li>
+        <li><a href="/contacts">Contact</a></li>
       </ul>
     </div>
 
@@ -50,23 +49,23 @@
       <h4>Contact Us</h4>
       <div class="footer-contact-items">
         <div class="fc-item">
-          <span class="fc-icon">📞</span>
+          <span class="fc-icon"><i class="fa-solid fa-phone"></i></span>
           <div class="fc-text">
             <a href="tel:+12500000000">+1 (250) 000-0000</a>
           </div>
         </div>
         <div class="fc-item">
-          <span class="fc-icon">✉️</span>
+          <span class="fc-icon"><i class="fa-solid fa-envelope"></i></span>
           <div class="fc-text">
             <a href="mailto:hello@formorenovations.ca">hello@formorenovations.ca</a>
           </div>
         </div>
         <div class="fc-item">
-          <span class="fc-icon">📍</span>
+          <span class="fc-icon"><i class="fa-solid fa-location-dot"></i></span>
           <div class="fc-text">Victoria &amp; Vancouver Island, BC, Canada</div>
         </div>
         <div class="fc-item">
-          <span class="fc-icon">🕒</span>
+          <span class="fc-icon"><i class="fa-regular fa-clock"></i></span>
           <div class="fc-text">Mon – Fri: 8:00 AM – 6:00 PM</div>
         </div>
       </div>

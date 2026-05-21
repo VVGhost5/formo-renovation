@@ -11,6 +11,9 @@
 // ── Section styles ────────────────────────────────────────
 @use 'sections';
 
+// ── Page-specific styles ──────────────────────────────────
+@use 'pages';
+
 // ── Body defaults ─────────────────────────────────────────
 body {
   font-family: var(--font);
