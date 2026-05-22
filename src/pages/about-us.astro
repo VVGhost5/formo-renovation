@@ -11,6 +11,7 @@ import {
 	DEFAULT_SITE_SETTINGS,
 	DEFAULT_HOME_CONTACT,
 } from '../utils/sanity'
+import {bgStyle} from '../utils/sanity/backgrounds'
 
 let page = DEFAULT_ABOUT_PAGE
 let site = DEFAULT_SITE_SETTINGS
@@ -22,7 +23,9 @@ try {
 	console.warn('[sanity] About page fallback.', err)
 }
 
-const heroBg = page.heroImageUrl ? `background-image: url(${page.heroImageUrl})` : undefined
+const heroBg = bgStyle(page.heroImageUrl)
+const valuesBg = bgStyle(page.valuesHeroBackgroundUrl)
+const whyBg = bgStyle(page.whyBannerBackgroundUrl)
 ---
 
 <Layout
@@ -204,7 +207,7 @@ const heroBg = page.heroImageUrl ? `background-image: url(${page.heroImageUrl})`
   <!-- ══ OUR VALUES ══ -->
   <section id="our-values">
     <div class="values-hero">
-      <div class="values-hero-img"></div>
+      <div class="values-hero-img" style={valuesBg}></div>
       <div class="values-hero-content">
         <span class="eyebrow-dark">Our Values</span>
         <h2 class="values-headline">
@@ -311,7 +314,7 @@ const heroBg = page.heroImageUrl ? `background-image: url(${page.heroImageUrl})`
   <!-- ══ WHY CHOOSE US ══ -->
   <section id="why-us">
     <div class="why-banner">
-      <div class="why-banner-img"></div>
+      <div class="why-banner-img" style={whyBg}></div>
       <div class="why-banner-content">
         <span class="eyebrow-dark">Why Choose Formo</span>
         <h2 class="why-banner-headline">What makes us <em>different</em></h2>

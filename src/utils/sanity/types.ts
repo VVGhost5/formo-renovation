@@ -15,7 +15,7 @@ export type HeroContent = {
 	formTitle: string
 	formSubtext: string
 	formNote: string
-	backgroundImageUrl: string | null
+	backgroundImageUrl: string
 	backgroundImageAlt: string | null
 }
 
@@ -75,7 +75,7 @@ export type HomeAboutContent = {
 	heroDescription: string
 	heroCtaLabel: string
 	heroCtaLink: string
-	heroImageUrl: string | null
+	heroImageUrl: string
 	rows: AboutRow[]
 }
 
@@ -93,7 +93,7 @@ export type HomePortfolioContent = {
 	description: string
 	ctaLabel: string
 	ctaLink: string
-	heroImageUrl: string | null
+	heroImageUrl: string
 	projects: PortfolioSlide[]
 }
 
@@ -110,7 +110,7 @@ export type HomeProcessContent = {
 	headlineEmphasis: string
 	description: string
 	ctaLabel: string
-	heroImageUrl: string | null
+	heroImageUrl: string
 	steps: ProcessStep[]
 }
 
@@ -122,7 +122,7 @@ export type HomePricingContent = {
 	headlineEmphasis: string
 	heroDescription: string
 	heroCtaLabel: string
-	heroImageUrl: string | null
+	heroImageUrl: string
 	introTitle: string
 	introText: string
 	factors: PricingFactor[]
@@ -145,6 +145,15 @@ export type HomeContactContent = {
 	photoAlt: string
 }
 
+export type HomeBeforeAfterBannerContent = {
+	eyebrow: string
+	headline: string
+	headlineEmphasis: string
+	description: string
+	ctaLabel: string
+	heroBackgroundUrl: string
+}
+
 export type BeforeAfterSlide = {
 	name: string
 	location: string
@@ -163,12 +172,16 @@ export type PageHeroContent = {
 	primaryCtaLink: string
 	secondaryCtaLabel: string
 	secondaryCtaLink: string
-	heroImageUrl: string | null
+	heroImageUrl: string
 }
 
-export type ServicesPageContent = PageHeroContent
+export type ServicesPageContent = PageHeroContent & {
+	processHeroBackgroundUrl: string
+}
 export type PortfolioPageContent = PageHeroContent & {stats: Stat[]}
 export type AboutPageContent = PageHeroContent & {
+	valuesHeroBackgroundUrl: string
+	whyBannerBackgroundUrl: string
 	founderInitial: string
 	founderName: string
 	founderRole: string
@@ -180,7 +193,7 @@ export type ContactsPageContent = {
 	titleBefore: string
 	titleEmphasis: string
 	description: string
-	heroImageUrl: string | null
+	heroImageUrl: string
 	formEyebrow: string
 	formTitleBefore: string
 	formTitleEmphasis: string
@@ -214,5 +227,6 @@ export type HomePageContent = {
 	contact: HomeContactContent
 	testimonials: TestimonialSlide[]
 	beforeAfter: BeforeAfterSlide[]
+	beforeAfterBanner: HomeBeforeAfterBannerContent
 	site: SiteSettingsContent
 }

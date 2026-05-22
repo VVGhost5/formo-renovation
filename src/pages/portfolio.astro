@@ -13,6 +13,7 @@ import {
 	DEFAULT_SITE_SETTINGS,
 	DEFAULT_HOME_CONTACT,
 } from '../utils/sanity'
+import {bgStyle} from '../utils/sanity/backgrounds'
 
 let page = DEFAULT_PORTFOLIO_PAGE
 let projects: Awaited<ReturnType<typeof getPortfolioProjects>> = []
@@ -30,7 +31,7 @@ try {
 	console.warn('[sanity] Portfolio page fallback.', err)
 }
 
-const heroBg = page.heroImageUrl ? `background-image: url(${page.heroImageUrl})` : undefined
+const heroBg = bgStyle(page.heroImageUrl)
 ---
 
 <Layout

@@ -1,8 +1,10 @@
+import {DEFAULT_BACKGROUNDS} from './backgrounds'
 import type {
 	AboutPageContent,
 	BeforeAfterSlide,
 	ContactsPageContent,
 	HomeAboutContent,
+	HomeBeforeAfterBannerContent,
 	HomeContactContent,
 	HomeNumbersContent,
 	HomePortfolioContent,
@@ -28,7 +30,7 @@ export const DEFAULT_HERO: HeroContent = {
 	formTitle: 'Request a Free Estimate',
 	formSubtext: "We'll call you back within one business day",
 	formNote: 'No commitment — just an honest conversation',
-	backgroundImageUrl: null,
+	backgroundImageUrl: DEFAULT_BACKGROUNDS.homeHero,
 	backgroundImageAlt: null,
 }
 
@@ -81,7 +83,7 @@ export const DEFAULT_HOME_ABOUT: HomeAboutContent = {
 		'We are a Victoria-based renovation company bringing European precision and transparency to every project — from a single room to a full home transformation.',
 	heroCtaLabel: 'Read More About Us →',
 	heroCtaLink: '/about-us',
-	heroImageUrl: null,
+	heroImageUrl: DEFAULT_BACKGROUNDS.homeAbout,
 	rows: [
 		{
 			label: 'Our Story',
@@ -133,7 +135,7 @@ export const DEFAULT_HOME_PORTFOLIO: HomePortfolioContent = {
 		"Every space tells a story. Browse our completed projects — from full-home renovations to carefully detailed finishes — and see what's possible for your home.",
 	ctaLabel: 'View Full Portfolio →',
 	ctaLink: '/portfolio',
-	heroImageUrl: null,
+	heroImageUrl: DEFAULT_BACKGROUNDS.homePortfolio,
 	projects: [
 		{tag: 'Full Renovation', title: 'Oak Bay Residence', meta: 'Full renovation · Victoria, BC', imageUrl: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=800&q=82'},
 		{tag: 'Kitchen', title: 'Modern Kitchen Remodel', meta: 'Kitchen redesign · Saanich, BC', imageUrl: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=700&q=80'},
@@ -150,7 +152,7 @@ export const DEFAULT_HOME_PROCESS: HomeProcessContent = {
 	description:
 		'Eight carefully structured stages that keep you informed, protected, and confident — from the first inquiry to the final walkthrough.',
 	ctaLabel: 'Book a Free Consultation →',
-	heroImageUrl: null,
+	heroImageUrl: DEFAULT_BACKGROUNDS.homeProcess,
 	steps: [
 		{num: '01', title: 'Inquiry', description: 'You reach out or submit a request. We respond within 24 hours to schedule a first conversation.', arrow: '→'},
 		{num: '02', title: 'Free Consultation', description: 'We discuss your vision, scope and goals. No commitment required — this call is completely free.', arrow: '→'},
@@ -170,7 +172,7 @@ export const DEFAULT_HOME_PRICING: HomePricingContent = {
 	heroDescription:
 		"We don't publish flat rates — every project is unique. But we're fully transparent about what drives the cost, and we always deliver a fixed-price estimate before any work begins.",
 	heroCtaLabel: 'Request a Price Estimate →',
-	heroImageUrl: null,
+	heroImageUrl: DEFAULT_BACKGROUNDS.homePricing,
 	introTitle: 'What shapes the cost of your project',
 	introText:
 		'Every estimate we produce is itemised line by line — materials, labour, timeline, waste disposal. Below are the main factors that influence the final number. We walk through all of these with you during the free consultation.',
@@ -202,6 +204,16 @@ export const DEFAULT_HOME_CONTACT: HomeContactContent = {
 	photoAlt: 'Contact Formo Renovations',
 }
 
+export const DEFAULT_HOME_BEFORE_AFTER_BANNER: HomeBeforeAfterBannerContent = {
+	eyebrow: 'Before & After',
+	headline: 'Real Results,',
+	headlineEmphasis: 'Real Spaces',
+	description:
+		'Every transformation starts with a vision. Drag the slider to see exactly how we turned each space from its original condition into a finished result our clients love.',
+	ctaLabel: 'View All Projects →',
+	heroBackgroundUrl: DEFAULT_BACKGROUNDS.homeBeforeAfter,
+}
+
 export const DEFAULT_BEFORE_AFTER: BeforeAfterSlide[] = [
 	{name: 'Kitchen Renovation', location: 'Fairfield, Victoria', duration: '6 weeks', year: '2024', before: 'https://images.unsplash.com/photo-1484101403633-562f891dc89a?w=1400&q=85', after: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1400&q=85'},
 	{name: 'Bathroom Remodel', location: 'Oak Bay, Victoria', duration: '4 weeks', year: '2024', before: 'https://images.unsplash.com/photo-1564540586988-aa4e53c3d799?w=1400&q=85', after: 'https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=1400&q=85'},
@@ -219,7 +231,7 @@ export const DEFAULT_PORTFOLIO_PAGE: PortfolioPageContent = {
 	primaryCtaLink: '#our-works',
 	secondaryCtaLabel: 'Start Your Project',
 	secondaryCtaLink: '#contact',
-	heroImageUrl: null,
+	heroImageUrl: DEFAULT_BACKGROUNDS.portfolioHero,
 	stats: [
 		{value: '120', suffix: '+', label: 'Projects Done'},
 		{value: '8', suffix: 'yr', label: 'Experience'},
@@ -237,7 +249,8 @@ export const DEFAULT_SERVICES_PAGE: ServicesPageContent = {
 	primaryCtaLink: '#services-list',
 	secondaryCtaLabel: 'Get a Free Quote',
 	secondaryCtaLink: '#contact',
-	heroImageUrl: null,
+	heroImageUrl: DEFAULT_BACKGROUNDS.servicesHero,
+	processHeroBackgroundUrl: DEFAULT_BACKGROUNDS.servicesProcess,
 }
 
 export const DEFAULT_ABOUT_PAGE: AboutPageContent = {
@@ -250,7 +263,9 @@ export const DEFAULT_ABOUT_PAGE: AboutPageContent = {
 	primaryCtaLink: '#our-story',
 	secondaryCtaLabel: 'See Our Work',
 	secondaryCtaLink: '/portfolio',
-	heroImageUrl: null,
+	heroImageUrl: DEFAULT_BACKGROUNDS.aboutHero,
+	valuesHeroBackgroundUrl: DEFAULT_BACKGROUNDS.aboutValues,
+	whyBannerBackgroundUrl: DEFAULT_BACKGROUNDS.aboutWhy,
 	founderInitial: 'M',
 	founderName: 'Michael Formo',
 	founderRole: 'Founder & Lead Contractor',
@@ -270,7 +285,7 @@ export const DEFAULT_CONTACTS_PAGE: ContactsPageContent = {
 	titleEmphasis: 'your project',
 	description:
 		"Whether you have a firm plan or just a rough idea, we're happy to listen. Reach out however suits you best — call, email, or fill in the form below. Free on-site consultations across Victoria and Vancouver Island.",
-	heroImageUrl: null,
+	heroImageUrl: DEFAULT_BACKGROUNDS.contactsHero,
 	formEyebrow: 'Send Us a Message',
 	formTitleBefore: 'Tell us about your',
 	formTitleEmphasis: 'project',

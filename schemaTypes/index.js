@@ -8,6 +8,7 @@ import homePortfolio from './homePortfolio'
 import homeProcess from './homeProcess'
 import homePricing from './homePricing'
 import homeContact from './homeContact'
+import homeBeforeAfter from './homeBeforeAfter'
 import portfolioProject from './portfolioProject'
 import beforeAfterProject from './beforeAfterProject'
 import service from './service'
@@ -42,6 +43,7 @@ export const schemaTypes = [
   homeProcess,
   homePricing,
   homeContact,
+  homeBeforeAfter,
   portfolioProject,
   beforeAfterProject,
   service,

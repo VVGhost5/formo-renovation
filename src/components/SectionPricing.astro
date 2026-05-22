@@ -1,12 +1,13 @@
 ---
 import type {HomePricingContent} from '../utils/sanity'
+import {bgStyle} from '../utils/sanity/backgrounds'
 
 interface Props {
 	content: HomePricingContent
 }
 
 const {content} = Astro.props
-const heroBg = content.heroImageUrl ? `background-image: url(${content.heroImageUrl})` : undefined
+const heroBg = bgStyle(content.heroImageUrl)
 ---
 <section id="pricing">
   <div class="pricing-hero">

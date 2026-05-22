@@ -1,21 +1,20 @@
 ---
 import type {HeroContent} from '../utils/sanity'
+import {bgStyle} from '../utils/sanity/backgrounds'
 
 interface Props {
 	hero: HeroContent
 }
 
 const {hero} = Astro.props
-const bgStyle = hero.backgroundImageUrl
-	? `background-image: url(${hero.backgroundImageUrl})`
-	: undefined
+const bgStyleAttr = bgStyle(hero.backgroundImageUrl)
 ---
 
 <section id="hero">
   <div
     class="hero-bg-img"
-    style={bgStyle}
-    role={hero.backgroundImageUrl ? 'img' : undefined}
+    style={bgStyleAttr}
+    role="img"
     aria-label={hero.backgroundImageAlt ?? undefined}
   ></div>
 

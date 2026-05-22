@@ -23,6 +23,7 @@ import {
 	DEFAULT_HOME_PRICING,
 	DEFAULT_HOME_CONTACT,
 	DEFAULT_BEFORE_AFTER,
+	DEFAULT_HOME_BEFORE_AFTER_BANNER,
 	DEFAULT_SITE_SETTINGS,
 } from '../utils/sanity'
 
@@ -37,6 +38,7 @@ let home = {
 	contact: DEFAULT_HOME_CONTACT,
 	testimonials: [],
 	beforeAfter: DEFAULT_BEFORE_AFTER,
+	beforeAfterBanner: DEFAULT_HOME_BEFORE_AFTER_BANNER,
 	site: DEFAULT_SITE_SETTINGS,
 }
 
@@ -57,7 +59,7 @@ try {
   <SectionPortfolio content={home.portfolio} />
   <SectionProcess content={home.process} />
   <SectionPricing content={home.pricing} />
-  <BeforeAfterSlider client:load items={home.beforeAfter} />
+  <BeforeAfterSlider client:load items={home.beforeAfter} banner={home.beforeAfterBanner} />
   <TestimonialsSlider client:load items={home.testimonials} />
   <SectionContact content={home.contact} site={home.site} />
   <TheFooter site={home.site} />

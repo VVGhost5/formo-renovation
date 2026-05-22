@@ -2,12 +2,14 @@
 import {sanityClient} from 'sanity:client'
 import {defineQuery} from 'groq'
 import {urlForImage} from './image'
+import {resolveBgUrl, type BackgroundKey} from './backgrounds'
 import {
 	DEFAULT_ABOUT_PAGE,
 	DEFAULT_BEFORE_AFTER,
 	DEFAULT_CONTACTS_PAGE,
 	DEFAULT_HERO,
 	DEFAULT_HOME_ABOUT,
+	DEFAULT_HOME_BEFORE_AFTER_BANNER,
 	DEFAULT_HOME_CONTACT,
 	DEFAULT_HOME_NUMBERS,
 	DEFAULT_HOME_PORTFOLIO,
@@ -25,6 +27,7 @@ import type {
 	ContactsPageContent,
 	HomeAboutContent,
 	Stat,
+	HomeBeforeAfterBannerContent,
 	HomeContactContent,
 	HomeNumbersContent,
 	HomePageContent,
@@ -98,6 +101,11 @@ const CONTACT_HOME_Q = defineQuery(`*[_id == "homeContact"][0]{
   photo{ asset, alt }, photoAlt
 }`)
 
+const HOME_BEFORE_AFTER_BANNER_Q = defineQuery(`*[_id == "homeBeforeAfter"][0]{
+  eyebrow, headline, headlineEmphasis, description, ctaLabel,
+  heroBackground{ asset, alt }
+}`)
+
 const TESTIMONIALS_Q = defineQuery(`*[_type == "testimonial"] | order(sortOrder asc, _createdAt asc){
   name, meta, quote, initial, rating
 }`)
@@ -118,7 +126,8 @@ const PORTFOLIO_PROJECTS_Q = defineQuery(`*[_type == "portfolioProject"] | order
 const SERVICES_PAGE_Q = defineQuery(`*[_id == "servicesPage"][0]{
   locationLabel, titleBefore, titleEmphasis, description,
   primaryCtaLabel, primaryCtaLink, secondaryCtaLabel, secondaryCtaLink,
-  heroImage{ asset, alt }
+  heroImage{ asset, alt },
+  processHeroBackground{ asset, alt }
 }`)
 
 const PORTFOLIO_PAGE_Q = defineQuery(`*[_id == "portfolioPage"][0]{
@@ -131,6 +140,8 @@ const ABOUT_PAGE_Q = defineQuery(`*[_id == "aboutPage"][0]{
   locationLabel, titleBefore, titleEmphasis, description,
   primaryCtaLabel, primaryCtaLink, secondaryCtaLabel, secondaryCtaLink,
   heroImage{ asset, alt },
+  valuesHeroBackground{ asset, alt },
+  whyBannerBackground{ asset, alt },
   founderInitial, founderName, founderRole, founderQuote, founderStats
 }`)
 
@@ -155,7 +166,7 @@ export function mapHero(doc: Record<string, unknown> | null): HeroContent {
 		formTitle: str(d.formTitle as string, DEFAULT_HERO.formTitle),
 		formSubtext: str(d.formSubtext as string, DEFAULT_HERO.formSubtext),
 		formNote: str(d.formNote as string, DEFAULT_HERO.formNote),
-		backgroundImageUrl: urlForImage(d.backgroundImage as never) ?? DEFAULT_HERO.backgroundImageUrl,
+		backgroundImageUrl: resolveBgUrl(urlForImage(d.backgroundImage as never), 'homeHero'),
 		backgroundImageAlt: str((d.backgroundImage as {alt?: string})?.alt, DEFAULT_HERO.backgroundImageAlt ?? ''),
 	}
 }
@@ -242,7 +253,7 @@ export function mapHomeAbout(doc: Record<string, unknown> | null): HomeAboutCont
 		heroDescription: str(d.heroDescription, DEFAULT_HOME_ABOUT.heroDescription),
 		heroCtaLabel: str(d.heroCtaLabel, DEFAULT_HOME_ABOUT.heroCtaLabel),
 		heroCtaLink: str(d.heroCtaLink, DEFAULT_HOME_ABOUT.heroCtaLink),
-		heroImageUrl: urlForImage(d.heroImage as never) ?? DEFAULT_HOME_ABOUT.heroImageUrl,
+		heroImageUrl: resolveBgUrl(urlForImage(d.heroImage as never), 'homeAbout'),
 		rows: rows?.length ? rows : DEFAULT_HOME_ABOUT.rows,
 	}
 }
@@ -274,7 +285,7 @@ export function mapHomePortfolio(
 		description: str(d.description, DEFAULT_HOME_PORTFOLIO.description),
 		ctaLabel: str(d.ctaLabel, DEFAULT_HOME_PORTFOLIO.ctaLabel),
 		ctaLink: str(d.ctaLink, DEFAULT_HOME_PORTFOLIO.ctaLink),
-		heroImageUrl: urlForImage(d.heroImage as never) ?? DEFAULT_HOME_PORTFOLIO.heroImageUrl,
+		heroImageUrl: resolveBgUrl(urlForImage(d.heroImage as never), 'homePortfolio'),
 		projects,
 	}
 }
@@ -299,7 +310,7 @@ export function mapHomeProcess(doc: Record<string, unknown> | null): HomeProcess
 		headlineEmphasis: str(d.headlineEmphasis, DEFAULT_HOME_PROCESS.headlineEmphasis),
 		description: str(d.description, DEFAULT_HOME_PROCESS.description),
 		ctaLabel: str(d.ctaLabel, DEFAULT_HOME_PROCESS.ctaLabel),
-		heroImageUrl: urlForImage(d.heroImage as never) ?? DEFAULT_HOME_PROCESS.heroImageUrl,
+		heroImageUrl: resolveBgUrl(urlForImage(d.heroImage as never), 'homeProcess'),
 		steps: steps.length ? steps : DEFAULT_HOME_PROCESS.steps,
 	}
 }
@@ -319,7 +330,7 @@ export function mapHomePricing(doc: Record<string, unknown> | null): HomePricing
 		headlineEmphasis: str(d.headlineEmphasis, DEFAULT_HOME_PRICING.headlineEmphasis),
 		heroDescription: str(d.heroDescription, DEFAULT_HOME_PRICING.heroDescription),
 		heroCtaLabel: str(d.heroCtaLabel, DEFAULT_HOME_PRICING.heroCtaLabel),
-		heroImageUrl: urlForImage(d.heroImage as never) ?? DEFAULT_HOME_PRICING.heroImageUrl,
+		heroImageUrl: resolveBgUrl(urlForImage(d.heroImage as never), 'homePricing'),
 		introTitle: str(d.introTitle, DEFAULT_HOME_PRICING.introTitle),
 		introText: str(d.introText, DEFAULT_HOME_PRICING.introText),
 		factors: factors.length ? factors : DEFAULT_HOME_PRICING.factors,
@@ -448,37 +459,75 @@ export function mapFeaturedSlides(docs: Record<string, unknown>[]): PortfolioSli
 		.filter((x): x is PortfolioSlide => Boolean(x))
 }
 
-function mapPageHero(
+function mapPageHero<T extends {heroImageUrl: string}>(
 	doc: Record<string, unknown> | null,
-	defaults: ServicesPageContent,
-): ServicesPageContent {
+	defaults: T,
+	bgKey: BackgroundKey,
+): T {
 	if (!doc) return defaults
-	const d = doc as ServicesPageContent & {heroImage?: unknown}
+	const d = doc as T & {heroImage?: unknown}
 	return {
-		locationLabel: str(d.locationLabel, defaults.locationLabel),
-		titleBefore: str(d.titleBefore, defaults.titleBefore),
-		titleEmphasis: str(d.titleEmphasis, defaults.titleEmphasis),
-		description: str(d.description, defaults.description),
-		primaryCtaLabel: str(d.primaryCtaLabel, defaults.primaryCtaLabel),
-		primaryCtaLink: str(d.primaryCtaLink, defaults.primaryCtaLink),
-		secondaryCtaLabel: str(d.secondaryCtaLabel, defaults.secondaryCtaLabel),
-		secondaryCtaLink: str(d.secondaryCtaLink, defaults.secondaryCtaLink),
-		heroImageUrl: urlForImage(d.heroImage as never) ?? defaults.heroImageUrl,
+		...defaults,
+		locationLabel: str((d as {locationLabel?: string}).locationLabel, (defaults as {locationLabel?: string}).locationLabel ?? ''),
+		titleBefore: str((d as {titleBefore?: string}).titleBefore, (defaults as {titleBefore?: string}).titleBefore ?? ''),
+		titleEmphasis: str((d as {titleEmphasis?: string}).titleEmphasis, (defaults as {titleEmphasis?: string}).titleEmphasis ?? ''),
+		description: str((d as {description?: string}).description, (defaults as {description?: string}).description ?? ''),
+		primaryCtaLabel: str((d as {primaryCtaLabel?: string}).primaryCtaLabel, (defaults as {primaryCtaLabel?: string}).primaryCtaLabel ?? ''),
+		primaryCtaLink: str((d as {primaryCtaLink?: string}).primaryCtaLink, (defaults as {primaryCtaLink?: string}).primaryCtaLink ?? ''),
+		secondaryCtaLabel: str((d as {secondaryCtaLabel?: string}).secondaryCtaLabel, (defaults as {secondaryCtaLabel?: string}).secondaryCtaLabel ?? ''),
+		secondaryCtaLink: str((d as {secondaryCtaLink?: string}).secondaryCtaLink, (defaults as {secondaryCtaLink?: string}).secondaryCtaLink ?? ''),
+		heroImageUrl: resolveBgUrl(urlForImage(d.heroImage as never), bgKey),
+	} as T
+}
+
+export function mapHomeBeforeAfterBanner(
+	doc: Record<string, unknown> | null,
+): HomeBeforeAfterBannerContent {
+	if (!doc) return DEFAULT_HOME_BEFORE_AFTER_BANNER
+	const d = doc as HomeBeforeAfterBannerContent & {heroBackground?: unknown}
+	return {
+		eyebrow: str(d.eyebrow, DEFAULT_HOME_BEFORE_AFTER_BANNER.eyebrow),
+		headline: str(d.headline, DEFAULT_HOME_BEFORE_AFTER_BANNER.headline),
+		headlineEmphasis: str(d.headlineEmphasis, DEFAULT_HOME_BEFORE_AFTER_BANNER.headlineEmphasis),
+		description: str(d.description, DEFAULT_HOME_BEFORE_AFTER_BANNER.description),
+		ctaLabel: str(d.ctaLabel, DEFAULT_HOME_BEFORE_AFTER_BANNER.ctaLabel),
+		heroBackgroundUrl: resolveBgUrl(urlForImage(d.heroBackground as never), 'homeBeforeAfter'),
 	}
 }
 
 export function mapPortfolioPage(doc: Record<string, unknown> | null): PortfolioPageContent {
 	if (!doc) return DEFAULT_PORTFOLIO_PAGE
-	const base = mapPageHero(doc, DEFAULT_PORTFOLIO_PAGE)
+	const base = mapPageHero(doc, DEFAULT_PORTFOLIO_PAGE, 'portfolioHero')
 	return {...base, stats: mapStats((doc as PortfolioPageContent).stats as never, DEFAULT_PORTFOLIO_PAGE.stats)}
+}
+
+export function mapServicesPage(doc: Record<string, unknown> | null): ServicesPageContent {
+	if (!doc) return DEFAULT_SERVICES_PAGE
+	const d = doc as ServicesPageContent & {heroImage?: unknown; processHeroBackground?: unknown}
+	const base = mapPageHero(doc, DEFAULT_SERVICES_PAGE, 'servicesHero')
+	return {
+		...base,
+		processHeroBackgroundUrl: resolveBgUrl(
+			urlForImage(d.processHeroBackground as never),
+			'servicesProcess',
+		),
+	}
 }
 
 export function mapAboutPage(doc: Record<string, unknown> | null): AboutPageContent {
 	if (!doc) return DEFAULT_ABOUT_PAGE
-	const base = mapPageHero(doc, DEFAULT_ABOUT_PAGE)
-	const d = doc as AboutPageContent
+	const base = mapPageHero(doc, DEFAULT_ABOUT_PAGE, 'aboutHero')
+	const d = doc as AboutPageContent & {valuesHeroBackground?: unknown; whyBannerBackground?: unknown}
 	return {
 		...base,
+		valuesHeroBackgroundUrl: resolveBgUrl(
+			urlForImage(d.valuesHeroBackground as never),
+			'aboutValues',
+		),
+		whyBannerBackgroundUrl: resolveBgUrl(
+			urlForImage(d.whyBannerBackground as never),
+			'aboutWhy',
+		),
 		founderInitial: str(d.founderInitial, DEFAULT_ABOUT_PAGE.founderInitial),
 		founderName: str(d.founderName, DEFAULT_ABOUT_PAGE.founderName),
 		founderRole: str(d.founderRole, DEFAULT_ABOUT_PAGE.founderRole),
@@ -495,7 +544,7 @@ export function mapContactsPage(doc: Record<string, unknown> | null): ContactsPa
 		titleBefore: str(d.titleBefore, DEFAULT_CONTACTS_PAGE.titleBefore),
 		titleEmphasis: str(d.titleEmphasis, DEFAULT_CONTACTS_PAGE.titleEmphasis),
 		description: str(d.description, DEFAULT_CONTACTS_PAGE.description),
-		heroImageUrl: urlForImage(d.heroImage as never) ?? DEFAULT_CONTACTS_PAGE.heroImageUrl,
+		heroImageUrl: resolveBgUrl(urlForImage(d.heroImage as never), 'contactsHero'),
 		formEyebrow: str(d.formEyebrow, DEFAULT_CONTACTS_PAGE.formEyebrow),
 		formTitleBefore: str(d.formTitleBefore, DEFAULT_CONTACTS_PAGE.formTitleBefore),
 		formTitleEmphasis: str(d.formTitleEmphasis, DEFAULT_CONTACTS_PAGE.formTitleEmphasis),
@@ -569,8 +618,12 @@ export async function getHomePortfolio() {
 	return mapHomePortfolio(doc, featured)
 }
 
+export async function getHomeBeforeAfterBanner() {
+	return mapHomeBeforeAfterBanner(await safeFetch(HOME_BEFORE_AFTER_BANNER_Q, null))
+}
+
 export async function getServicesPage() {
-	return mapPageHero(await safeFetch(SERVICES_PAGE_Q, null), DEFAULT_SERVICES_PAGE)
+	return mapServicesPage(await safeFetch(SERVICES_PAGE_Q, null))
 }
 
 export async function getPortfolioPage() {
@@ -597,6 +650,7 @@ export async function getHomePageContent(): Promise<HomePageContent> {
 		contact,
 		testimonials,
 		beforeAfter,
+		beforeAfterBanner,
 		site,
 	] = await Promise.all([
 		getHeroContent(),
@@ -609,7 +663,21 @@ export async function getHomePageContent(): Promise<HomePageContent> {
 		getHomeContact(),
 		getTestimonialSlides(),
 		getBeforeAfterSlides(),
+		getHomeBeforeAfterBanner(),
 		getSiteSettings(),
 	])
-	return {hero, numbers, services, about, portfolio, process, pricing, contact, testimonials, beforeAfter, site}
+	return {
+		hero,
+		numbers,
+		services,
+		about,
+		portfolio,
+		process,
+		pricing,
+		contact,
+		testimonials,
+		beforeAfter,
+		beforeAfterBanner,
+		site,
+	}
 }

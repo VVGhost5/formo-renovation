@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import type { BeforeAfterSlide } from '../../utils/sanity'
+import type { BeforeAfterSlide, HomeBeforeAfterBannerContent } from '../../utils/sanity'
 
 const props = defineProps<{
   items?: BeforeAfterSlide[]
+  banner?: HomeBeforeAfterBannerContent
 }>()
 
 interface Project {
@@ -14,6 +15,20 @@ interface Project {
   after: string
   before: string
 }
+
+const DEFAULT_BANNER: HomeBeforeAfterBannerContent = {
+  eyebrow: 'Before & After',
+  headline: 'Real Results,',
+  headlineEmphasis: 'Real Spaces',
+  description:
+    'Every transformation starts with a vision. Drag the slider to see exactly how we turned each space from its original condition into a finished result our clients love.',
+  ctaLabel: 'View All Projects →',
+  heroBackgroundUrl:
+    'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1800&q=85',
+}
+
+const banner = computed(() => props.banner ?? DEFAULT_BANNER)
+const bannerBg = computed(() => `background-image: url(${banner.value.heroBackgroundUrl})`)
 
 const FALLBACK: Project[] = [
   {
@@ -114,15 +129,15 @@ function startDrag(e: MouseEvent | TouchEvent) {
   <section id="beforeafter">
     <!-- Banner -->
     <div class="ba-hero">
-      <div class="ba-hero-img"></div>
+      <div class="ba-hero-img" :style="bannerBg"></div>
       <div class="ba-hero-content">
-        <div class="ba-eyebrow">Before &amp; After</div>
+        <div class="ba-eyebrow">{{ banner.eyebrow }}</div>
         <h2 class="ba-headline">
-          Real Results,
-          <em>Real Spaces</em>
+          {{ banner.headline }}
+          <em>{{ banner.headlineEmphasis }}</em>
         </h2>
-        <p class="ba-desc">Every transformation starts with a vision. Drag the slider to see exactly how we turned each space from its original condition into a finished result our clients love.</p>
-        <button class="btn-outline-light">View All Projects →</button>
+        <p class="ba-desc">{{ banner.description }}</p>
+        <a href="/portfolio" class="btn-outline-light">{{ banner.ctaLabel }}</a>
       </div>
     </div>
 

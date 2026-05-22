@@ -8,6 +8,7 @@ import {
 	DEFAULT_CONTACTS_PAGE,
 	DEFAULT_SITE_SETTINGS,
 } from '../utils/sanity'
+import {bgStyle} from '../utils/sanity/backgrounds'
 
 let page = DEFAULT_CONTACTS_PAGE
 let site = DEFAULT_SITE_SETTINGS
@@ -18,7 +19,7 @@ try {
 	console.warn('[sanity] Contacts page fallback.', err)
 }
 
-const heroBg = page.heroImageUrl ? `background-image: url(${page.heroImageUrl})` : undefined
+const heroBg = bgStyle(page.heroImageUrl)
 const phoneHref = `tel:${site.phone.replace(/\D/g, '')}`
 const waHref = `https://wa.me/${site.whatsapp.replace(/\D/g, '')}`
 ---

@@ -14,6 +14,13 @@ export default defineType({
     defineField({name: 'secondaryCtaLabel', title: 'Secondary CTA', type: 'string'}),
     defineField({name: 'secondaryCtaLink', title: 'Secondary CTA link', type: 'string'}),
     defineField({name: 'heroImage', title: 'Hero background', type: 'image', options: {hotspot: true}}),
+    defineField({
+      name: 'processHeroBackground',
+      title: 'Process section background',
+      type: 'image',
+      options: {hotspot: true},
+      description: 'Background for the “How We Work” band on the services page',
+    }),
   ],
   preview: {
     prepare() {

@@ -11,6 +11,7 @@ import {
 	DEFAULT_SITE_SETTINGS,
 	DEFAULT_HOME_CONTACT,
 } from '../utils/sanity'
+import {bgStyle} from '../utils/sanity/backgrounds'
 
 let page = DEFAULT_SERVICES_PAGE
 let site = DEFAULT_SITE_SETTINGS
@@ -22,7 +23,8 @@ try {
 	console.warn('[sanity] Services page fallback.', err)
 }
 
-const heroBg = page.heroImageUrl ? `background-image: url(${page.heroImageUrl})` : undefined
+const heroBg = bgStyle(page.heroImageUrl)
+const processBg = bgStyle(page.processHeroBackgroundUrl)
 ---
 
 <Layout
@@ -326,7 +328,7 @@ const heroBg = page.heroImageUrl ? `background-image: url(${page.heroImageUrl})`
   <!-- ══ OUR PROCESS ══ -->
   <section id="our-process">
     <div class="svc-process-hero">
-      <div class="svc-process-hero-img"></div>
+      <div class="svc-process-hero-img" style={processBg}></div>
       <div class="svc-process-hero-content">
         <span class="svc-process-eyebrow">How We Work</span>
         <h2 class="svc-process-headline">From first call to <em>final walkthrough</em></h2>

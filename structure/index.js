@@ -26,14 +26,15 @@ export const structure = (S) =>
               singleton(S, 'homeProcess', 'Process', 'homeProcess'),
               singleton(S, 'homePricing', 'Pricing', 'homePricing'),
               singleton(S, 'homeContact', 'Contact', 'homeContact'),
+              singleton(S, 'homeBeforeAfter', 'Before & After', 'homeBeforeAfter'),
               S.divider(),
               S.listItem()
                 .title('Testimonials')
                 .child(S.documentTypeList('testimonial').title('Testimonials')),
               S.listItem()
-                .title('Before & After')
+                .title('Before & After — Projects')
                 .child(
-                  S.documentTypeList('beforeAfterProject').title('Before & After Projects'),
+                  S.documentTypeList('beforeAfterProject').title('Slider projects'),
                 ),
             ]),
         ),
@@ -46,7 +47,7 @@ export const structure = (S) =>
           S.list()
             .title('Pages')
             .items([
-              singleton(S, 'servicesPage', 'Services — Hero', 'servicesPage'),
+              singleton(S, 'servicesPage', 'Services — Page', 'servicesPage'),
               S.listItem()
                 .title('Services — Details')
                 .child(S.documentTypeList('service').title('Service sections')),
@@ -56,7 +57,7 @@ export const structure = (S) =>
                 .child(
                   S.documentTypeList('portfolioProject').title('Portfolio Projects'),
                 ),
-              singleton(S, 'aboutPage', 'About — Hero', 'aboutPage'),
+              singleton(S, 'aboutPage', 'About — Page', 'aboutPage'),
               singleton(S, 'contactsPage', 'Contacts — Hero & Form', 'contactsPage'),
             ]),
         ),

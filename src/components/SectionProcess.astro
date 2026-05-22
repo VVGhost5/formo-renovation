@@ -1,12 +1,13 @@
 ---
 import type {HomeProcessContent} from '../utils/sanity'
+import {bgStyle} from '../utils/sanity/backgrounds'
 
 interface Props {
 	content: HomeProcessContent
 }
 
 const {content} = Astro.props
-const heroBg = content.heroImageUrl ? `background-image: url(${content.heroImageUrl})` : undefined
+const heroBg = bgStyle(content.heroImageUrl)
 ---
 <section id="process">
   <div class="process-hero">

@@ -14,6 +14,18 @@ export default defineType({
     defineField({name: 'secondaryCtaLabel', title: 'Secondary CTA', type: 'string'}),
     defineField({name: 'secondaryCtaLink', title: 'Secondary CTA link', type: 'string'}),
     defineField({name: 'heroImage', title: 'Hero background', type: 'image', options: {hotspot: true}}),
+    defineField({
+      name: 'valuesHeroBackground',
+      title: 'Values section background',
+      type: 'image',
+      options: {hotspot: true},
+    }),
+    defineField({
+      name: 'whyBannerBackground',
+      title: 'Why Choose Us banner background',
+      type: 'image',
+      options: {hotspot: true},
+    }),
     defineField({name: 'founderInitial', title: 'Founder avatar initial', type: 'string'}),
     defineField({name: 'founderName', title: 'Founder name', type: 'string'}),
     defineField({name: 'founderRole', title: 'Founder role', type: 'string'}),
