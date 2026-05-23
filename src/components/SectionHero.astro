@@ -35,12 +35,6 @@ const bgStyleAttr = bgStyle(hero.backgroundImageUrl)
 
     <div class="hero-actions">
       <button
-        class="btn-dark"
-        onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})"
-      >
-        {hero.primaryCtaLabel}
-      </button>
-      <button
         class="btn-outline"
         onclick="document.getElementById('portfolio').scrollIntoView({behavior:'smooth'})"
       >
@@ -57,7 +51,7 @@ const bgStyleAttr = bgStyle(hero.backgroundImageUrl)
         <input type="text" placeholder="Your Name" />
         <input type="tel" placeholder="Phone Number" />
         <input type="email" placeholder="Email Address" />
-        <button class="hfo-submit">{hero.primaryCtaLabel}</button>
+        <button class="hfo-submit">Send Message →</button>
       </div>
       <div class="hfo-note">{hero.formNote}</div>
     </div>

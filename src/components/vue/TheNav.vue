@@ -1,23 +1,24 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import logoWhite from '../../assets/images/formo-logo-white.svg'
+import ContactDrawer from './ContactDrawer.vue'
 
 type Page = 'home' | 'portfolio' | 'services' | 'contacts' | 'about-us'
-const props = defineProps<{ page?: Page }>()
+const props = defineProps<{
+  page?: Page
+  phone?: string
+  email?: string
+}>()
 
-const menuOpen = ref(false)
-const scrolled  = ref(false)
+const menuOpen   = ref(false)
+const scrolled   = ref(false)
+const drawerOpen = ref(false)
 
-function toggleMenu() { menuOpen.value = !menuOpen.value }
-function closeMenu()  { menuOpen.value = false }
-function onScroll()   { scrolled.value = window.scrollY > 20 }
-
-function scrollToContact() {
-  closeMenu()
-  const id = props.page === 'contacts' ? 'contact-main' : 'contact'
-  const el = document.getElementById(id)
-  if (el) el.scrollIntoView({ behavior: 'smooth' })
-}
+function toggleMenu()  { menuOpen.value = !menuOpen.value }
+function closeMenu()   { menuOpen.value = false }
+function onScroll()    { scrolled.value = window.scrollY > 20 }
+function openDrawer()  { drawerOpen.value = true; closeMenu() }
+function closeDrawer() { drawerOpen.value = false }
 
 onMounted(()  => window.addEventListener('scroll', onScroll, { passive: true }))
 onUnmounted(() => window.removeEventListener('scroll', onScroll))
@@ -37,7 +38,7 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
       <li><a href="/contacts"  :class="{ active: page === 'contacts' }">Contact</a></li>
     </ul>
 
-    <button class="nav-cta" @click="scrollToContact">Get a Free Estimate →</button>
+    <button class="nav-cta" @click="openDrawer">Contact us →</button>
 
     <button
       class="nav-hamburger"
@@ -55,6 +56,13 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
     <a href="/services"  @click="closeMenu" :class="{ active: page === 'services' }">Services</a>
     <a href="/about-us"  @click="closeMenu" :class="{ active: page === 'about-us' }">About Us</a>
     <a href="/contacts"  @click="closeMenu" :class="{ active: page === 'contacts' }">Contact</a>
-    <a class="mob-cta"   href="/contacts" @click="closeMenu">Get a Free Estimate →</a>
+    <button class="mob-cta" @click="openDrawer">Contact us →</button>
   </div>
+
+  <ContactDrawer
+    :open="drawerOpen"
+    :phone="phone"
+    :email="email"
+    @close="closeDrawer"
+  />
 </template>
