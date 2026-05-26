@@ -28,10 +28,10 @@ const heroBg = bgStyle(content.heroImageUrl)
   <div class="process-grid">
     {content.steps.map((s) => (
       <div class="pstep-card">
-        <div class="pstep-big-num">{s.num}</div>
+        <div class="pstep-big-num" aria-hidden="true">{s.num}</div>
         <div class="pstep-title">{s.title}</div>
         <div class="pstep-desc">{s.description}</div>
-        <div class="pstep-arrow">{s.arrow}</div>
+        <div class="pstep-arrow" aria-hidden="true">{s.arrow}</div>
       </div>
     ))}
   </div>

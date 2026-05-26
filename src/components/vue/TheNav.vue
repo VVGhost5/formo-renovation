@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
-import logoWhite from '../../assets/images/formo-logo-white.svg'
+import logoWhite from '../../assets/images/brand-icon.svg'
 import ContactDrawer from './ContactDrawer.vue'
 
 type Page = 'home' | 'portfolio' | 'services' | 'contacts' | 'about-us'

@@ -117,16 +117,16 @@
   &:hover { opacity: 0.85; transform: translateY(-2px); }
 }
 
-.btn-outline {
-  background: transparent; color: rgba(255,255,255,0.88);
-  border: 1px solid rgba(255,255,255,0.38); border-radius: var(--r-pill);
+#hero .btn-outline {
+  background: transparent; color: rgba(255,255,255,0.92);
+  border: 1px solid rgba(255,255,255,0.45); border-radius: var(--r-pill);
   padding: 14px 28px;
   font-family: var(--font); font-size: 14px; font-weight: 400;
   cursor: pointer; display: flex; align-items: center; gap: 8px;
   transition: border-color .2s, transform .15s;
   letter-spacing: 0.02em;
 
-  &:hover { border-color: rgba(255,255,255,0.72); transform: translateY(-2px); }
+  &:hover { border-color: rgba(255,255,255,0.8); transform: translateY(-2px); }
 }
 
 .btn-outline-light {

@@ -66,12 +66,12 @@ export const DEFAULT_HOME_SERVICES: HomeServicesContent = {
 	title: 'Comprehensive Renovation',
 	titleAccent: '& Interior Finishing Solutions',
 	cards: [
-		{name: 'Interior Finishing', imageUrl: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=400&q=80'},
-		{name: 'Bathroom Renovations', imageUrl: 'https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=400&q=80'},
-		{name: 'Kitchen Renovations', imageUrl: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&q=80'},
-		{name: 'Flooring', imageUrl: 'https://images.unsplash.com/photo-1564540586988-aa4e53c3d799?w=400&q=80'},
-		{name: 'Painting', imageUrl: 'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=400&q=80'},
-		{name: 'Project Management', imageUrl: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=400&q=80'},
+		{name: 'Interior Finishing', imageUrl: '/services/living.png'},
+		{name: 'Bathroom Renovations', imageUrl: '/services/bathroom.png'},
+		{name: 'Kitchen Renovations', imageUrl: '/services/kitchen.png'},
+		{name: 'Flooring', imageUrl: '/services/flooring.png'},
+		{name: 'Painting', imageUrl: '/services/finishing.png'},
+		{name: 'Project Management', imageUrl: '/services/full-home.png'},
 	],
 }
 

@@ -78,22 +78,54 @@
   transition: background .2s;
 }
 
+// ── Tablet: 3-column grid of portrait cards ──────────────
 @media (max-width: 1023px) {
-  .services-row { display: flex; flex-direction: column; gap: 0; overflow: visible; }
-  .svc-card {
-    aspect-ratio: unset; height: 90px;
-    border-radius: 0; display: flex; align-items: center;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
+  .services-row {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
   }
-  .svc-card:first-child { border-radius: var(--r-md) var(--r-md) 0 0; }
-  .svc-card:last-child  { border-radius: 0 0 var(--r-md) var(--r-md); border-bottom: none; }
-  .svc-card img { object-position: center; filter: brightness(.45); }
-  .svc-card-body { background: none; padding: 0 20px; align-items: center; }
-  .svc-card-name { font-size: 15px; font-weight: 600; }
-  .svc-card-arr  { width: 32px; height: 32px; }
+  .svc-card { aspect-ratio: 3/4; }
+  .svc-card img { object-position: center 25%; }
+  .svc-card-name { font-size: 14px; font-weight: 600; }
+  .svc-card-arr  { width: 30px; height: 30px; }
 }
 
+// ── Small tablet: 2-column ───────────────────────────────
 @media (max-width: 767px) {
-  .svc-card { height: 80px; }
-  .svc-card-name { font-size: 14px; }
+  .services-row {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  .svc-card { aspect-ratio: 4/5; }
+  .svc-card-body { padding: 0 14px 14px; }
+}
+
+// ── Mobile: horizontal cards with square thumbnail ───────
+@media (max-width: 540px) {
+  .services-row {
+    display: flex; flex-direction: column;
+    gap: 10px;
+  }
+  .svc-card {
+    aspect-ratio: unset;
+    display: grid;
+    grid-template-columns: 96px 1fr;
+    align-items: stretch;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    min-height: 96px;
+  }
+  .svc-card img {
+    width: 96px; height: 96px;
+    object-fit: cover; object-position: center 25%;
+    filter: none;
+  }
+  .svc-card-body {
+    position: static;
+    background: none;
+    padding: 0 16px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .svc-card-name { font-size: 15px; font-weight: 600; }
+  .svc-card-arr  { width: 30px; height: 30px; }
 }

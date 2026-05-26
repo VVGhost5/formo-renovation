@@ -1,5 +1,5 @@
 ---
-import logoWhite from '../assets/images/formo-logo-white.svg'
+import logoIcon from '../assets/images/header-icon.svg'
 import type {SiteSettingsContent} from '../utils/sanity'
 import {DEFAULT_SITE_SETTINGS} from '../utils/sanity'
 
@@ -15,7 +15,7 @@ const phoneHref = `tel:${site.phone.replace(/\D/g, '')}`
 
     <div class="footer-brand">
       <a class="footer-logo" href="/">
-        <img src={logoWhite.src} alt="Formo Renovations" class="footer-logo-img" />
+        <img src={logoIcon.src} alt="Formo Renovations" class="footer-logo-img" />
       </a>
       <p>{site.footerDescription}</p>
       <div class="footer-socials">
@@ -32,7 +32,7 @@ const phoneHref = `tel:${site.phone.replace(/\D/g, '')}`
     </div>
 
     <div class="footer-col">
-      <h4>Navigation</h4>
+      <h3>Navigation</h3>
       <ul>
         <li><a href="/">Home</a></li>
         <li><a href="/portfolio">Portfolio</a></li>
@@ -43,7 +43,7 @@ const phoneHref = `tel:${site.phone.replace(/\D/g, '')}`
     </div>
 
     <div class="footer-contact">
-      <h4>Contact Us</h4>
+      <h3>Contact Us</h3>
       <div class="footer-contact-items">
         <div class="fc-item">
           <span class="fc-icon"><i class="fa-solid fa-phone"></i></span>
@@ -71,11 +71,6 @@ const phoneHref = `tel:${site.phone.replace(/\D/g, '')}`
   </div>
 
   <div class="footer-sub">
-    <p>© 2025 Formo Renovations. All rights reserved.</p>
-    <div class="footer-sub-links">
-      <a href="#">Privacy Policy</a>
-      <a href="#">Terms of Service</a>
-      <a href="#">Sitemap</a>
-    </div>
+    <p>© 2026 Formo Renovations. All rights reserved.</p>
   </div>
 </footer>

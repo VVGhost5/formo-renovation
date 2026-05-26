@@ -12,14 +12,14 @@ footer {
 }
 
 .footer-logo {
-  display: flex; align-items: center;
+  display: inline-flex; align-items: center;
   text-decoration: none;
   margin-bottom: 18px;
 }
 
 .footer-logo-img {
-  height: 44px; width: auto;
-  display: block;
+  height: 120px; width: 120px;
+  display: block; object-fit: contain; flex-shrink: 0;
 }
 
 .footer-brand p {
@@ -41,8 +41,8 @@ footer {
   &:hover { border-color: rgba(255,255,255,0.45); background: rgba(255,255,255,0.08); }
 }
 
-.footer-col h4,
-.footer-contact h4 {
+.footer-col h3,
+.footer-contact h3 {
   font-size: 1rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
   color: #fff; margin-bottom: 18px;
 }
@@ -73,21 +73,10 @@ footer {
 }
 
 .footer-sub {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 20px var(--px); gap: 20px;
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px var(--px);
 
   p { font-size: 0.875rem; color: #ddd9d7; }
-}
-
-.footer-sub-links {
-  display: flex; gap: 24px;
-
-  a {
-    font-size: 0.875rem; color: #ddd9d7;
-    text-decoration: none; transition: color .2s;
-
-    &:hover { color: #fff; }
-  }
 }
 
 @media (max-width: 1023px) {
@@ -100,6 +89,5 @@ footer {
 
 @media (max-width: 767px) {
   .footer-main { padding: 36px var(--px) 28px; gap: 28px; }
-  .footer-sub  { flex-direction: column; gap: 10px; text-align: center; }
-  .footer-sub-links { flex-wrap: wrap; justify-content: center; }
+  .footer-sub  { text-align: center; }
 }
