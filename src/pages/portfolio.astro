@@ -60,21 +60,8 @@ const heroBg = bgStyle(page.heroImageUrl)
         <p class="port-hero-desc">{page.description}</p>
 
         <div class="port-hero-actions">
-          <a href={page.primaryCtaLink} class="btn-dark">{page.primaryCtaLabel}</a>
           <a href={page.secondaryCtaLink} class="btn-outline">{page.secondaryCtaLabel}</a>
         </div>
-      </div>
-
-      <div class="port-hero-stats">
-        {page.stats.map((stat, i) => [
-          i > 0 ? <div class="port-hero-stat-divider" /> : null,
-          <div class="port-hero-stat">
-            <div class="port-hero-stat-val">
-              {stat.value}{stat.suffix ? <sup>{stat.suffix}</sup> : null}
-            </div>
-            <div class="port-hero-stat-label">{stat.label}</div>
-          </div>,
-        ])}
       </div>
     </div>
   </section>

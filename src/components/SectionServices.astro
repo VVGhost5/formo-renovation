@@ -18,7 +18,7 @@ const {content} = Astro.props
 
   <div class="services-row">
     {content.cards.map((s) => (
-      <div class="svc-card">
+      <a class="svc-card" href={s.link || '/services'} aria-label={s.name}>
         <img src={s.imageUrl} alt={s.name} loading="lazy" />
         <div class="svc-card-body">
           <div class="svc-card-label">
@@ -26,7 +26,7 @@ const {content} = Astro.props
             <span class="svc-card-arr">→</span>
           </div>
         </div>
-      </div>
+      </a>
     ))}
   </div>
 </section>

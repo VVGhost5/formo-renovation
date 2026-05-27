@@ -1,0 +1,167 @@
+---
+import Layout from '../layouts/Layout.astro'
+import TheNav from '../components/vue/TheNav.vue'
+import TheFooter from '../components/TheFooter.astro'
+import {DEFAULT_SITE_SETTINGS, getSiteSettings} from '../utils/sanity'
+
+let site = DEFAULT_SITE_SETTINGS
+try {
+	site = await getSiteSettings()
+} catch (err) {
+	console.warn('[sanity] 404 site settings fallback.', err)
+}
+---
+
+<Layout
+  title="Page Not Found — Formo Renovations"
+  description="The page you are looking for cannot be found. Return to the Formo Renovations homepage to continue browsing."
+>
+  <TheNav client:load />
+
+  <main class="nf-page">
+    <div class="nf-inner">
+      <div class="nf-code" aria-hidden="true">404</div>
+      <h1 class="nf-title">Sorry, this page doesn't exist</h1>
+      <p class="nf-desc">
+        The page you're looking for might have been moved, renamed, or it never existed.
+        Let's get you back on track.
+      </p>
+      <a href="/" class="nf-cta">
+        <span class="nf-cta-arr" aria-hidden="true">←</span>
+        Return to Homepage
+      </a>
+
+      <div class="nf-quick">
+        <span class="nf-quick-label">Or jump to:</span>
+        <ul>
+          <li><a href="/services">Services</a></li>
+          <li><a href="/portfolio">Portfolio</a></li>
+          <li><a href="/about-us">About</a></li>
+          <li><a href="/contacts">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </main>
+
+  <TheFooter site={site} />
+</Layout>
+
+<style lang="scss">
+  .nf-page {
+    min-height: calc(100vh - 60px);
+    padding: 140px var(--px) 100px;
+    background: var(--hero-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(87, 53, 16, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(43, 29, 16, 0.06) 0%, transparent 50%);
+      pointer-events: none;
+    }
+  }
+
+  .nf-inner {
+    position: relative; z-index: 1;
+    max-width: 620px;
+    text-align: center;
+  }
+
+  .nf-code {
+    font-family: var(--font-mono);
+    font-size: clamp(120px, 18vw, 200px);
+    font-weight: 300;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    color: var(--gold);
+    margin-bottom: 18px;
+    opacity: 0.85;
+  }
+
+  .nf-title {
+    font-family: var(--font);
+    font-size: clamp(28px, 3.6vw, 44px);
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--text-dark);
+    letter-spacing: -0.025em;
+    margin-bottom: 18px;
+  }
+
+  .nf-desc {
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    color: var(--text-mid);
+    margin: 0 auto 36px;
+    max-width: 480px;
+  }
+
+  .nf-cta {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--cta-btn); color: #fff;
+    border-radius: var(--r-pill);
+    padding: 14px 28px;
+    font-family: var(--font); font-size: 15px; font-weight: 500;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    transition: opacity 0.2s, transform 0.15s;
+
+    &:hover { opacity: 0.88; transform: translateY(-2px); }
+
+    .nf-cta-arr { font-size: 16px; line-height: 1; }
+  }
+
+  .nf-quick {
+    margin-top: 48px;
+    padding-top: 28px;
+    border-top: 1px solid rgba(28, 20, 13, 0.12);
+  }
+
+  .nf-quick-label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text-light);
+    margin-bottom: 14px;
+  }
+
+  .nf-quick ul {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    justify-content: center;
+    list-style: none;
+    padding: 0; margin: 0;
+
+    li a {
+      display: inline-block;
+      font-family: var(--font);
+      font-size: 13px; font-weight: 500;
+      color: var(--text-dark);
+      background: rgba(255, 255, 255, 0.6);
+      border: 1px solid rgba(28, 20, 13, 0.14);
+      padding: 8px 18px;
+      border-radius: var(--r-pill);
+      text-decoration: none;
+      transition: background 0.2s, border-color 0.2s, transform 0.15s;
+
+      &:hover {
+        background: #fff;
+        border-color: var(--gold);
+        transform: translateY(-1px);
+      }
+    }
+  }
+
+  @media (max-width: 767px) {
+    .nf-page { padding: 110px var(--px) 70px; }
+    .nf-desc { font-size: 1rem; }
+  }
+</style>

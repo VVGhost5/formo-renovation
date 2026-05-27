@@ -113,6 +113,7 @@
   display: grid; grid-template-columns: 1fr 1fr;
   min-height: 560px;
   border-bottom: 1px solid rgba(28,20,13,0.09);
+  scroll-margin-top: 80px;
 
   &:last-child { border-bottom: none; }
 

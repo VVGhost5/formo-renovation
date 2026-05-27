@@ -66,12 +66,12 @@ export const DEFAULT_HOME_SERVICES: HomeServicesContent = {
 	title: 'Comprehensive Renovation',
 	titleAccent: '& Interior Finishing Solutions',
 	cards: [
-		{name: 'Interior Finishing', imageUrl: '/services/living.png'},
-		{name: 'Bathroom Renovations', imageUrl: '/services/bathroom.png'},
-		{name: 'Kitchen Renovations', imageUrl: '/services/kitchen.png'},
-		{name: 'Flooring', imageUrl: '/services/flooring.png'},
-		{name: 'Painting', imageUrl: '/services/finishing.png'},
-		{name: 'Project Management', imageUrl: '/services/full-home.png'},
+		{name: 'Interior Finishing', imageUrl: '/services/living.png', link: '/services#svc-finishing'},
+		{name: 'Bathroom Renovations', imageUrl: '/services/bathroom.png', link: '/services#svc-bathroom'},
+		{name: 'Kitchen Renovations', imageUrl: '/services/kitchen.png', link: '/services#svc-kitchen'},
+		{name: 'Flooring', imageUrl: '/services/flooring.png', link: '/services#svc-flooring'},
+		{name: 'Painting', imageUrl: '/services/finishing.png', link: '/services#svc-finishing'},
+		{name: 'Project Management', imageUrl: '/services/full-home.png', link: '/services#svc-full'},
 	],
 }
 

@@ -1,0 +1,255 @@
+---
+import Layout from '../layouts/Layout.astro'
+import TheNav from '../components/vue/TheNav.vue'
+import TheFooter from '../components/TheFooter.astro'
+import {DEFAULT_SITE_SETTINGS, getSiteSettings} from '../utils/sanity'
+
+let site = DEFAULT_SITE_SETTINGS
+try {
+	site = await getSiteSettings()
+} catch (err) {
+	console.warn('[sanity] Sitemap site settings fallback.', err)
+}
+
+const sections = [
+	{
+		title: 'Main',
+		items: [
+			{href: '/',          name: 'Home',      desc: 'Overview, services and recent projects'},
+			{href: '/about-us',  name: 'About Us',  desc: 'Our story, team, values and approach'},
+			{href: '/services',  name: 'Services',  desc: 'Full breakdown of every renovation service'},
+			{href: '/portfolio', name: 'Portfolio', desc: 'Completed projects and case studies'},
+			{href: '/contacts',  name: 'Contact',   desc: 'Get in touch, request a free estimate'},
+		],
+	},
+	{
+		title: 'Services (jump to)',
+		items: [
+			{href: '/services#svc-bathroom',  name: 'Bathroom Renovation', desc: 'Full bathroom remodels and finishes'},
+			{href: '/services#svc-kitchen',   name: 'Kitchen Renovation',  desc: 'Cabinets, counters and layout work'},
+			{href: '/services#svc-living',    name: 'Living & Bedroom',    desc: 'Open plans, built-ins and finishes'},
+			{href: '/services#svc-full',      name: 'Full Home Renovation', desc: 'Turnkey, end-to-end projects'},
+			{href: '/services#svc-flooring',  name: 'Flooring',            desc: 'Hardwood, LVP and tile'},
+			{href: '/services#svc-finishing', name: 'Interior Finishing',  desc: 'Painting, trim and moulding'},
+		],
+	},
+]
+---
+
+<Layout
+  title="Sitemap — Formo Renovations"
+  description="A complete list of all pages on the Formo Renovations website — main pages and direct links to each renovation service."
+>
+  <TheNav client:load />
+
+  <main class="sm-page">
+    <header class="sm-hero">
+      <div class="sm-hero-inner">
+        <span class="sm-eyebrow">Sitemap</span>
+        <h1 class="sm-title">All pages on this site</h1>
+        <p class="sm-sub">
+          Browse the full structure of the Formo Renovations site, with direct links to every page and service.
+        </p>
+      </div>
+    </header>
+
+    <section class="sm-body">
+      <div class="sm-grid">
+        {sections.map((s) => (
+          <div class="sm-group">
+            <h2 class="sm-group-title">{s.title}</h2>
+            <ul class="sm-list">
+              {s.items.map((item, idx) => (
+                <li class="sm-item">
+                  <a href={item.href} class="sm-link">
+                    <span class="sm-num">{String(idx + 1).padStart(2, '0')}</span>
+                    <span class="sm-link-body">
+                      <span class="sm-link-name">{item.name}</span>
+                      <span class="sm-link-desc">{item.desc}</span>
+                    </span>
+                    <span class="sm-link-arr" aria-hidden="true">→</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </section>
+  </main>
+
+  <TheFooter site={site} />
+</Layout>
+
+<style lang="scss">
+  .sm-page {
+    background: var(--hero-bg);
+    min-height: calc(100vh - 60px);
+    padding-top: 60px;
+  }
+
+  // ── Hero band ──────────────────────────────────────────
+  .sm-hero {
+    background: var(--nav-grad);
+    padding: 72px var(--px) 60px;
+    position: relative;
+    overflow: hidden;
+
+    &::after {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(circle at 20% 0%, rgba(255, 255, 255, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 90% 100%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
+      pointer-events: none;
+    }
+  }
+
+  .sm-hero-inner {
+    position: relative; z-index: 1;
+    max-width: 760px;
+  }
+
+  .sm-eyebrow {
+    display: inline-block;
+    font-family: var(--font);
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.78);
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    padding: 6px 14px;
+    border-radius: var(--r-pill);
+    margin-bottom: 18px;
+  }
+
+  .sm-title {
+    font-family: var(--font);
+    font-size: clamp(34px, 4vw, 52px);
+    font-weight: 700; line-height: 1.07;
+    color: #fff;
+    letter-spacing: -0.03em;
+    margin-bottom: 14px;
+  }
+
+  .sm-sub {
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.7);
+    max-width: 560px;
+  }
+
+  // ── Body ────────────────────────────────────────────────
+  .sm-body {
+    padding: 64px var(--px) 88px;
+  }
+
+  .sm-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .sm-group {
+    background: #fff;
+    border: 1px solid rgba(28, 20, 13, 0.08);
+    border-radius: var(--r-lg);
+    padding: 32px 28px;
+    box-shadow: 0 4px 32px rgba(28, 20, 13, 0.06);
+  }
+
+  .sm-group-title {
+    font-family: var(--font);
+    font-size: 12px; font-weight: 700;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 22px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(28, 20, 13, 0.08);
+  }
+
+  .sm-list {
+    list-style: none;
+    padding: 0; margin: 0;
+    display: flex; flex-direction: column;
+  }
+
+  .sm-item + .sm-item {
+    border-top: 1px solid rgba(28, 20, 13, 0.07);
+  }
+
+  .sm-link {
+    display: grid;
+    grid-template-columns: 40px 1fr auto;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 4px;
+    text-decoration: none;
+    color: inherit;
+    transition: background 0.2s, padding 0.2s;
+    border-radius: var(--r-sm);
+
+    &:hover {
+      background: var(--hero-bg);
+      padding-left: 12px; padding-right: 12px;
+
+      .sm-link-name { color: var(--gold); }
+      .sm-link-arr  { transform: translateX(4px); color: var(--gold); }
+      .sm-num       { background: var(--gold); color: #fff; border-color: var(--gold); }
+    }
+  }
+
+  .sm-num {
+    font-family: var(--font-mono);
+    font-size: 11px; font-weight: 500;
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    border: 1px solid rgba(87, 53, 16, 0.18);
+    background: rgba(87, 53, 16, 0.05);
+    color: var(--gold);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+  }
+
+  .sm-link-body {
+    display: flex; flex-direction: column; gap: 3px;
+    min-width: 0;
+  }
+
+  .sm-link-name {
+    font-family: var(--font);
+    font-size: 15px; font-weight: 600;
+    color: var(--text-dark);
+    letter-spacing: -0.01em;
+    transition: color 0.2s;
+  }
+
+  .sm-link-desc {
+    font-size: 13px;
+    line-height: 1.45;
+    color: var(--text-mid);
+  }
+
+  .sm-link-arr {
+    font-size: 16px;
+    color: var(--text-light);
+    transition: transform 0.2s, color 0.2s;
+  }
+
+  @media (max-width: 1023px) {
+    .sm-grid { grid-template-columns: 1fr; gap: 24px; }
+  }
+
+  @media (max-width: 767px) {
+    .sm-hero { padding: 56px var(--px) 44px; }
+    .sm-body { padding: 44px var(--px) 64px; }
+    .sm-group { padding: 24px 20px; }
+    .sm-link { grid-template-columns: 36px 1fr auto; gap: 12px; }
+    .sm-num { width: 32px; height: 32px; font-size: 10px; }
+    .sm-link-name { font-size: 14px; }
+    .sm-link-desc { font-size: 12px; }
+  }
+</style>
