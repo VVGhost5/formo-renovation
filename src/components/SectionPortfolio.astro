@@ -25,7 +25,7 @@ const heroBg = bgStyle(content.heroImageUrl)
 
   <div class="portfolio-grid">
     {content.projects.map((p) => (
-      <div class="port-card">
+      <a class="port-card" href="/portfolio" aria-label={`View portfolio: ${p.title}`}>
         <span class="port-tag">{p.tag}</span>
         <img src={p.imageUrl} alt={p.title} loading="lazy" />
         <div class="port-card-body">
@@ -33,7 +33,7 @@ const heroBg = bgStyle(content.heroImageUrl)
           <div class="port-card-meta">{p.meta}</div>
         </div>
         <div class="port-card-arr">→</div>
-      </div>
+      </a>
     ))}
   </div>
 </section>

@@ -59,6 +59,9 @@
   border-radius: var(--r-md);
   overflow: hidden; cursor: pointer;
   background: var(--sand-light);
+  display: block;
+  text-decoration: none;
+  color: inherit;
 
   &:first-child { grid-row: span 2; }
 
@@ -70,6 +73,11 @@
   &:hover img { transform: scale(1.05); }
   &:hover .port-card-body { opacity: 1; }
   &:hover .port-card-arr  { background: rgba(255,255,255,0.28); }
+
+  &:focus-visible {
+    outline: 3px solid rgba(255,255,255,0.75);
+    outline-offset: 4px;
+  }
 }
 
 .port-card-body {
