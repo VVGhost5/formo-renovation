@@ -83,30 +83,23 @@ const whyBg = bgStyle(page.whyBannerBackgroundUrl)
   <section id="who-we-are">
     <div class="who-grid">
       <div class="who-left">
-        <span class="eyebrow-light">Who We Are</span>
+        <span class="eyebrow-light">{page.whoEyebrow}</span>
         <h2 class="who-headline">
-          A team of people who
-          <em>care about your home</em>
+          {page.whoHeadline}
+          <em>{page.whoHeadlineEmphasis}</em>
         </h2>
       </div>
       <div class="who-right">
-        <p class="who-lead">
-          We're a Victoria-based renovation company built around honest communication, skilled tradespeople, and a commitment to delivering work we're genuinely proud of.
-        </p>
-        <p class="who-body">
-          Unlike large contractors who treat every project as a number, our team is small by design. We take on fewer projects so we can give each one the full attention it deserves. Every renovation is managed directly by our senior team — you'll never be passed off to a junior coordinator or left chasing an update.
-        </p>
-        <p class="who-body">
-          We serve homeowners across Victoria, Oak Bay, Saanich, Esquimalt, and Vancouver Island. Whether it's a single bathroom refresh or a complete home transformation, our process stays the same: transparent quotes, clear timelines, and craftsmanship you can see and feel.
-        </p>
+        <p class="who-lead">{page.whoLead}</p>
+        {page.whoBody.map((para) => (
+          <p class="who-body">{para}</p>
+        ))}
         <div class="who-pills">
-          <span class="who-pill">Licensed &amp; Insured</span>
-          <span class="who-pill">BC HomeWarranty</span>
-          <span class="who-pill">Trusted Since 2016</span>
-          <span class="who-pill">Local Team</span>
-          <span class="who-pill">No Subcontracting Surprises</span>
+          {page.whoPills.map((pill) => (
+            <span class="who-pill">{pill}</span>
+          ))}
         </div>
-        <a href="#contact" class="btn-dark" style="width:fit-content;">Start a Conversation →</a>
+        <a href={page.whoCtaLink} class="btn-dark" style="width:fit-content;">{page.whoCtaLabel}</a>
       </div>
     </div>
   </section>
@@ -114,26 +107,13 @@ const whyBg = bgStyle(page.whyBannerBackgroundUrl)
   <!-- ══ NUMBERS ══ -->
   <section id="numbers">
     <div class="numbers-grid">
-      <div class="num-cell">
-        <div class="num-val">120<sup>+</sup></div>
-        <div class="num-label">Projects Completed</div>
-        <p class="num-desc">From single-room upgrades to full-home renovations across Victoria and the Island.</p>
-      </div>
-      <div class="num-cell">
-        <div class="num-val">98<sup>%</sup></div>
-        <div class="num-label">Client Satisfaction</div>
-        <p class="num-desc">Based on post-project surveys from every client since 2019.</p>
-      </div>
-      <div class="num-cell">
-        <div class="num-val">8<sup>+</sup></div>
-        <div class="num-label">Years in Business</div>
-        <p class="num-desc">Established in 2016 with a focus on quality over volume.</p>
-      </div>
-      <div class="num-cell">
-        <div class="num-val">12<sup>mo</sup></div>
-        <div class="num-label">Workmanship Warranty</div>
-        <p class="num-desc">Every project backed by a full 12-month workmanship guarantee — no questions asked.</p>
-      </div>
+      {page.aboutStats.map((stat) => (
+        <div class="num-cell">
+          <div class="num-val">{stat.value}{stat.suffix ? <sup>{stat.suffix}</sup> : null}</div>
+          <div class="num-label">{stat.label}</div>
+          <p class="num-desc">{stat.description}</p>
+        </div>
+      ))}
     </div>
   </section>
 
@@ -141,66 +121,26 @@ const whyBg = bgStyle(page.whyBannerBackgroundUrl)
   <section id="our-story">
     <div class="story-head">
       <div>
-        <span class="eyebrow-light">Our Story</span>
+        <span class="eyebrow-light">{page.storyEyebrow}</span>
         <h2 class="story-headline">
-          Eight years of
-          <em>building better spaces</em>
+          {page.storyHeadline}
+          <em>{page.storyHeadlineEmphasis}</em>
         </h2>
       </div>
-      <p class="story-lead">
-        From a one-man operation with a truck and a toolkit, to a trusted team of craftspeople serving Vancouver Island — this is how Formo Renovations came to be.
-      </p>
+      <p class="story-lead">{page.storyLead}</p>
     </div>
 
     <div class="timeline">
-      <div class="tl-item highlight">
-        <div class="tl-dot"></div>
-        <div class="tl-year">2016</div>
-        <div class="tl-body">
-          <div class="tl-title">Formo Renovations is Founded</div>
-          <p class="tl-text">Michael Formo launches the company in Victoria, BC, focusing on bathroom and kitchen renovations. The first year brings five projects, four referrals, and one very important lesson: clients don't just want a renovation — they want peace of mind throughout the process.</p>
+      {page.timeline.map((item) => (
+        <div class={`tl-item${item.highlight ? ' highlight' : ''}`}>
+          <div class="tl-dot"></div>
+          <div class="tl-year">{item.year}</div>
+          <div class="tl-body">
+            <div class="tl-title">{item.title}</div>
+            <p class="tl-text">{item.text}</p>
+          </div>
         </div>
-      </div>
-      <div class="tl-item">
-        <div class="tl-dot"></div>
-        <div class="tl-year">2017</div>
-        <div class="tl-body">
-          <div class="tl-title">First Full Apartment Renovation</div>
-          <p class="tl-text">We take on our first complete apartment transformation in James Bay — a 1,200 sq ft unit that tests every skill the team has. It comes in on time and earns our first five-star Google review. Word begins to spread.</p>
-        </div>
-      </div>
-      <div class="tl-item">
-        <div class="tl-dot"></div>
-        <div class="tl-year">2019</div>
-        <div class="tl-body">
-          <div class="tl-title">The Team Grows to Five</div>
-          <p class="tl-text">With consistent demand and a growing reputation, we hire three specialist tradespeople — a master tiler, a finish carpenter, and a licensed electrician. This lets us handle larger and more complex projects without compromising quality.</p>
-        </div>
-      </div>
-      <div class="tl-item">
-        <div class="tl-dot"></div>
-        <div class="tl-year">2021</div>
-        <div class="tl-body">
-          <div class="tl-title">50 Projects Completed</div>
-          <p class="tl-text">A milestone year. We complete our 50th project and introduce our formal 12-month workmanship warranty — something we'd always done informally, but now committed to in writing for every client.</p>
-        </div>
-      </div>
-      <div class="tl-item">
-        <div class="tl-dot"></div>
-        <div class="tl-year">2023</div>
-        <div class="tl-body">
-          <div class="tl-title">Expansion to Vancouver Island</div>
-          <p class="tl-text">Growing demand leads us to extend services across Vancouver Island. We add a second crew and begin serving Nanaimo, Parksville, and Comox alongside our core Victoria market.</p>
-        </div>
-      </div>
-      <div class="tl-item highlight">
-        <div class="tl-dot"></div>
-        <div class="tl-year">2025</div>
-        <div class="tl-body">
-          <div class="tl-title">120+ Projects and Still Growing</div>
-          <p class="tl-text">Today, Formo Renovations has completed over 120 projects with a 98% client satisfaction rate. We're the same company we were in 2016 — focused on quality, honest about limitations, and genuinely invested in every space we touch.</p>
-        </div>
-      </div>
+      ))}
     </div>
   </section>
 
@@ -209,54 +149,24 @@ const whyBg = bgStyle(page.whyBannerBackgroundUrl)
     <div class="values-hero">
       <div class="values-hero-img" style={valuesBg}></div>
       <div class="values-hero-content">
-        <span class="eyebrow-dark">Our Values</span>
+        <span class="eyebrow-dark">{page.valuesEyebrow}</span>
         <h2 class="values-headline">
-          What we stand for
-          <em>every single project</em>
+          {page.valuesHeadline}
+          <em>{page.valuesHeadlineEmphasis}</em>
         </h2>
-        <p class="values-desc">
-          These aren't slogans on a wall. They're the standards our team holds each other to — and the standards our clients can hold us to.
-        </p>
+        <p class="values-desc">{page.valuesDescription}</p>
       </div>
     </div>
 
     <div class="values-grid">
-      <div class="val-card">
-        <div class="val-icon"><i class="fa-solid fa-magnifying-glass"></i></div>
-        <div class="val-num">01</div>
-        <div class="val-title">Radical Transparency</div>
-        <p class="val-body">You'll always know exactly where your project stands and exactly what you're paying for. Our quotes are detailed line-by-line. Change orders require your written approval. No surprises at the end.</p>
-      </div>
-      <div class="val-card">
-        <div class="val-icon"><i class="fa-solid fa-ruler-combined"></i></div>
-        <div class="val-num">02</div>
-        <div class="val-title">Uncompromising Craft</div>
-        <p class="val-body">We don't rush finishes, cut corners on materials, or take on more work than we can handle well. Every joint, every tile, every painted edge is inspected before we consider a job done.</p>
-      </div>
-      <div class="val-card">
-        <div class="val-icon"><i class="fa-solid fa-handshake"></i></div>
-        <div class="val-num">03</div>
-        <div class="val-title">Respect for Your Home</div>
-        <p class="val-body">We treat your space as if it were our own. That means covering floors, containing dust, working clean each day, and restoring the site at the end of every shift.</p>
-      </div>
-      <div class="val-card">
-        <div class="val-icon"><i class="fa-regular fa-calendar-check"></i></div>
-        <div class="val-num">04</div>
-        <div class="val-title">Schedules We Honour</div>
-        <p class="val-body">We build realistic timelines and stick to them. If something unexpected affects the schedule, you hear it from us first — not from the silence of a crew that hasn't shown up.</p>
-      </div>
-      <div class="val-card">
-        <div class="val-icon"><i class="fa-solid fa-leaf"></i></div>
-        <div class="val-num">05</div>
-        <div class="val-title">Sustainable Choices</div>
-        <p class="val-body">We give preference to locally-sourced materials, low-VOC finishes, and responsible disposal of renovation waste. Building better spaces shouldn't come at the cost of the wider environment.</p>
-      </div>
-      <div class="val-card">
-        <div class="val-icon"><i class="fa-solid fa-phone"></i></div>
-        <div class="val-num">06</div>
-        <div class="val-title">Available After Handover</div>
-        <p class="val-body">Our relationship doesn't end when we leave the site. Our 12-month workmanship warranty means we stand behind every project — and our clients know they can call us anytime, for anything.</p>
-      </div>
+      {page.valueCards.map((card) => (
+        <div class="val-card">
+          <div class="val-icon"><i class={card.icon}></i></div>
+          <div class="val-num">{card.num}</div>
+          <div class="val-title">{card.title}</div>
+          <p class="val-body">{card.body}</p>
+        </div>
+      ))}
     </div>
   </section>
 
@@ -264,50 +174,26 @@ const whyBg = bgStyle(page.whyBannerBackgroundUrl)
   <section id="our-team">
     <div class="team-head">
       <div>
-        <span class="eyebrow-light">Our Team</span>
+        <span class="eyebrow-light">{page.teamEyebrow}</span>
         <h2 class="team-headline">
-          The people behind
-          <em>every project</em>
+          {page.teamHeadline}
+          <em>{page.teamHeadlineEmphasis}</em>
         </h2>
       </div>
-      <p class="team-desc">
-        Small enough to care, experienced enough to deliver. Every member of the Formo team is a specialist in their trade.
-      </p>
+      <p class="team-desc">{page.teamDescription}</p>
     </div>
 
     <div class="team-grid">
-      <div class="team-card">
-        <img class="team-photo" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80" alt="Michael Formo" loading="lazy" />
-        <div class="team-card-body">
-          <div class="team-card-name">Michael Formo</div>
-          <div class="team-card-role">Founder &amp; Lead Contractor</div>
-          <p class="team-card-bio">15+ years in residential renovation. Michael personally oversees every project from estimate to final walkthrough, ensuring standards never slip.</p>
+      {page.teamMembers.map((member) => (
+        <div class="team-card">
+          <img class="team-photo" src={member.photoUrl} alt={member.name} loading="lazy" />
+          <div class="team-card-body">
+            <div class="team-card-name">{member.name}</div>
+            <div class="team-card-role">{member.role}</div>
+            <p class="team-card-bio">{member.bio}</p>
+          </div>
         </div>
-      </div>
-      <div class="team-card">
-        <img class="team-photo" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=80" alt="Sarah Chen" loading="lazy" />
-        <div class="team-card-body">
-          <div class="team-card-name">Sarah Chen</div>
-          <div class="team-card-role">Interior Design Lead</div>
-          <p class="team-card-bio">Brings a design eye to every project. Sarah helps clients translate vague ideas into precise, beautiful outcomes — before a single tool is picked up.</p>
-        </div>
-      </div>
-      <div class="team-card">
-        <img class="team-photo" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&q=80" alt="David Okafor" loading="lazy" />
-        <div class="team-card-body">
-          <div class="team-card-name">David Okafor</div>
-          <div class="team-card-role">Master Tiler &amp; Finisher</div>
-          <p class="team-card-bio">12 years of precision tile work, stone installation, and finish carpentry. David's eye for alignment is legendary within the team.</p>
-        </div>
-      </div>
-      <div class="team-card">
-        <img class="team-photo" src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=400&q=80" alt="Lisa Park" loading="lazy" />
-        <div class="team-card-body">
-          <div class="team-card-name">Lisa Park</div>
-          <div class="team-card-role">Project Coordinator</div>
-          <p class="team-card-bio">The person who keeps everything running. Lisa manages timelines, supplier relationships, and client communication so every project stays on track.</p>
-        </div>
-      </div>
+      ))}
     </div>
   </section>
 
@@ -316,65 +202,31 @@ const whyBg = bgStyle(page.whyBannerBackgroundUrl)
     <div class="why-banner">
       <div class="why-banner-img" style={whyBg}></div>
       <div class="why-banner-content">
-        <span class="eyebrow-dark">Why Choose Formo</span>
-        <h2 class="why-banner-headline">What makes us <em>different</em></h2>
-        <p class="why-banner-desc">
-          There are dozens of contractors on Vancouver Island. Here's why homeowners keep choosing — and returning to — Formo Renovations.
-        </p>
+        <span class="eyebrow-dark">{page.whyEyebrow}</span>
+        <h2 class="why-banner-headline">{page.whyBannerHeadline} <em>{page.whyBannerHeadlineEmphasis}</em></h2>
+        <p class="why-banner-desc">{page.whyBannerDescription}</p>
       </div>
     </div>
 
     <div class="why-rows">
-      <div class="why-row">
-        <div class="why-row-img">
-          <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=900&q=85" alt="Transparent quoting" loading="lazy" />
-        </div>
-        <div class="why-row-text">
-          <div class="why-row-num">01</div>
-          <div class="mono-label">No Hidden Costs</div>
-          <h3 class="why-row-title">Quotes you can actually trust</h3>
-          <p class="why-row-body">Our estimates are detailed, itemised, and honest. We include material costs, labour, waste disposal, and contingency — so what you see in the quote is what you see on the invoice.</p>
-          <div class="why-row-pills">
-            <span class="why-pill">Line-by-line breakdown</span>
-            <span class="why-pill">Written change orders</span>
-            <span class="why-pill">Fixed-price options</span>
+      {page.whyRows.map((row, i) => (
+        <div class={`why-row${i % 2 !== 0 ? ' alt' : ''}`}>
+          <div class="why-row-img">
+            <img src={row.imageUrl} alt={row.imageAlt} loading="lazy" />
+          </div>
+          <div class="why-row-text">
+            <div class="why-row-num">{row.num}</div>
+            <div class="mono-label">{row.label}</div>
+            <h3 class="why-row-title">{row.title}</h3>
+            <p class="why-row-body">{row.body}</p>
+            <div class="why-row-pills">
+              {row.pills.map((pill) => (
+                <span class="why-pill">{pill}</span>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
-
-      <div class="why-row alt">
-        <div class="why-row-img">
-          <img src="https://images.unsplash.com/photo-1556909172-54557c7e4fb7?w=900&q=85" alt="On-time delivery" loading="lazy" />
-        </div>
-        <div class="why-row-text">
-          <div class="why-row-num">02</div>
-          <div class="mono-label">Schedule Reliability</div>
-          <h3 class="why-row-title">We show up when we say we will</h3>
-          <p class="why-row-body">93% of our projects finish on or before the original timeline. For the other 7%, we send proactive updates before delays happen — not apologetic messages after the fact.</p>
-          <div class="why-row-pills">
-            <span class="why-pill">Weekly progress reports</span>
-            <span class="why-pill">Daily site cleanup</span>
-            <span class="why-pill">Dedicated PM</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="why-row">
-        <div class="why-row-img">
-          <img src="https://images.unsplash.com/photo-1618219908412-a29a1bb7b86e?w=900&q=85" alt="Quality materials" loading="lazy" />
-        </div>
-        <div class="why-row-text">
-          <div class="why-row-num">03</div>
-          <div class="mono-label">Material Quality</div>
-          <h3 class="why-row-title">We source materials we'd use ourselves</h3>
-          <p class="why-row-body">We have long-standing relationships with quality suppliers across BC, which means we get better materials at better prices. We'll never substitute a specified product without your approval.</p>
-          <div class="why-row-pills">
-            <span class="why-pill">Local BC suppliers</span>
-            <span class="why-pill">Low-VOC finishes</span>
-            <span class="why-pill">No substitutions without approval</span>
-          </div>
-        </div>
-      </div>
+      ))}
     </div>
   </section>
 
@@ -382,58 +234,30 @@ const whyBg = bgStyle(page.whyBannerBackgroundUrl)
   <section id="certifications">
     <div class="cert-inner">
       <div class="cert-left">
-        <span class="eyebrow-light">Credentials &amp; Guarantees</span>
-        <h2 class="cert-headline">Work backed by <em>qualifications</em></h2>
-        <p class="cert-desc">
-          We're fully licensed, insured, and certified. Every project meets or exceeds BC Building Code requirements — and is backed by our written 12-month workmanship warranty.
-        </p>
+        <span class="eyebrow-light">{page.certEyebrow}</span>
+        <h2 class="cert-headline">{page.certHeadline} <em>{page.certHeadlineEmphasis}</em></h2>
+        <p class="cert-desc">{page.certDescription}</p>
       </div>
       <div class="cert-badges">
-        <div class="cert-badge">
-          <div class="cert-badge-icon"><i class="fa-solid fa-building-columns"></i></div>
-          <div class="cert-badge-name">BC Licensed Contractor</div>
-        </div>
-        <div class="cert-badge">
-          <div class="cert-badge-icon"><i class="fa-solid fa-shield-halved"></i></div>
-          <div class="cert-badge-name">$5M Liability Insurance</div>
-        </div>
-        <div class="cert-badge">
-          <div class="cert-badge-icon"><i class="fa-solid fa-house-circle-check"></i></div>
-          <div class="cert-badge-name">BC Home Warranty</div>
-        </div>
-        <div class="cert-badge">
-          <div class="cert-badge-icon"><i class="fa-solid fa-bolt"></i></div>
-          <div class="cert-badge-name">Licensed Electrical</div>
-        </div>
-        <div class="cert-badge">
-          <div class="cert-badge-icon"><i class="fa-solid fa-droplet"></i></div>
-          <div class="cert-badge-name">Licensed Plumbing</div>
-        </div>
+        {page.certBadges.map((badge) => (
+          <div class="cert-badge">
+            <div class="cert-badge-icon"><i class={badge.icon}></i></div>
+            <div class="cert-badge-name">{badge.name}</div>
+          </div>
+        ))}
       </div>
     </div>
 
     <div class="guarantee-grid">
-      <div class="guar-card">
-        <div class="guar-icon"><i class="fa-solid fa-circle-check"></i></div>
-        <div class="guar-body">
-          <div class="guar-title">12-Month Workmanship Warranty</div>
-          <p class="guar-text">If anything we've done fails within 12 months due to workmanship, we fix it at no cost. Full stop. No fine print, no exclusions.</p>
+      {page.guaranteeCards.map((card) => (
+        <div class="guar-card">
+          <div class="guar-icon"><i class={card.icon}></i></div>
+          <div class="guar-body">
+            <div class="guar-title">{card.title}</div>
+            <p class="guar-text">{card.text}</p>
+          </div>
         </div>
-      </div>
-      <div class="guar-card">
-        <div class="guar-icon"><i class="fa-solid fa-file-contract"></i></div>
-        <div class="guar-body">
-          <div class="guar-title">Detailed Written Contracts</div>
-          <p class="guar-text">Every project begins with a clear, signed contract. Scope of work, payment schedule, timeline, and warranty terms — all in writing, before we touch a thing.</p>
-        </div>
-      </div>
-      <div class="guar-card">
-        <div class="guar-icon"><i class="fa-solid fa-rotate-left"></i></div>
-        <div class="guar-body">
-          <div class="guar-title">Right to Pause or Stop</div>
-          <p class="guar-text">You can pause or stop the project at any agreed milestone and pay only for work completed to that point. We believe you should never feel trapped by a renovation.</p>
-        </div>
-      </div>
+      ))}
     </div>
   </section>
 

@@ -17,14 +17,19 @@ import {
 	DEFAULT_HOME_PROCESS,
 	DEFAULT_HOME_SERVICES,
 	DEFAULT_PORTFOLIO_PAGE,
+	DEFAULT_SERVICES,
 	DEFAULT_SERVICES_PAGE,
 	DEFAULT_SITE_SETTINGS,
 } from './defaults'
 import type {
 	AboutPageContent,
 	AboutRow,
+	AboutStatItem,
 	BeforeAfterSlide,
+	CertBadge,
 	ContactsPageContent,
+	FaqItem,
+	GuaranteeCard,
 	HomeAboutContent,
 	Stat,
 	HomeBeforeAfterBannerContent,
@@ -36,12 +41,19 @@ import type {
 	HomeProcessContent,
 	HomeServicesContent,
 	HeroContent,
+	PricingHintCard,
 	PortfolioPageContent,
 	PortfolioProject,
 	PortfolioSlide,
+	ServiceDetail,
+	ServiceProcessStep,
 	ServicesPageContent,
 	SiteSettingsContent,
+	TeamMember,
 	TestimonialSlide,
+	TimelineItem,
+	ValueCard,
+	WhyRow,
 } from './types'
 
 const str = (v?: string | null, fallback = '') => (v?.trim() ? v.trim() : fallback)
@@ -127,7 +139,13 @@ const SERVICES_PAGE_Q = defineQuery(`*[_id == "servicesPage"][0]{
   locationLabel, titleBefore, titleEmphasis, description,
   primaryCtaLabel, primaryCtaLink, secondaryCtaLabel, secondaryCtaLink,
   heroImage{ asset, alt },
-  processHeroBackground{ asset, alt }
+  processHeroBackground{ asset, alt },
+  processEyebrow, processHeadline, processHeadlineEmphasis, processDescription,
+  processSteps[]{ num, icon, title, body },
+  pricingEyebrow, pricingHeadline, pricingHeadlineEmphasis, pricingBody,
+  pricingCards[]{ icon, title, body },
+  faqEyebrow, faqTitle, faqTitleEmphasis, faqSub,
+  faqItems[]{ question, answer }
 }`)
 
 const PORTFOLIO_PAGE_Q = defineQuery(`*[_id == "portfolioPage"][0]{
@@ -142,12 +160,33 @@ const ABOUT_PAGE_Q = defineQuery(`*[_id == "aboutPage"][0]{
   heroImage{ asset, alt },
   valuesHeroBackground{ asset, alt },
   whyBannerBackground{ asset, alt },
-  founderInitial, founderName, founderRole, founderQuote, founderStats
+  founderInitial, founderName, founderRole, founderQuote, founderStats,
+  whoEyebrow, whoHeadline, whoHeadlineEmphasis, whoLead, whoBody, whoPills, whoCtaLabel, whoCtaLink,
+  aboutStats[]{ value, suffix, label, description },
+  storyEyebrow, storyHeadline, storyHeadlineEmphasis, storyLead,
+  timeline[]{ year, title, text, highlight },
+  valuesEyebrow, valuesHeadline, valuesHeadlineEmphasis, valuesDescription,
+  valueCards[]{ icon, num, title, body },
+  teamEyebrow, teamHeadline, teamHeadlineEmphasis, teamDescription,
+  teamMembers[]{ name, role, bio, photo{ asset, alt } },
+  whyEyebrow, whyBannerHeadline, whyBannerHeadlineEmphasis, whyBannerDescription,
+  whyRows[]{ num, label, title, body, pills, imageAlt, image{ asset, alt } },
+  certEyebrow, certHeadline, certHeadlineEmphasis, certDescription,
+  certBadges[]{ icon, name },
+  guaranteeCards[]{ icon, title, text }
 }`)
 
 const CONTACTS_PAGE_Q = defineQuery(`*[_id == "contactsPage"][0]{
   eyebrow, titleBefore, titleEmphasis, description, heroImage{ asset, alt },
   formEyebrow, formTitleBefore, formTitleEmphasis, formSubtext
+}`)
+
+const SERVICES_LIST_Q = defineQuery(`*[_type == "service"] | order(sortOrder asc, _createdAt asc){
+  "id": slug.current, num, icon, stripName, quickName, quickSub,
+  eyebrow, title, lead,
+  includes,
+  meta[]{ key, val },
+  image{ asset, alt }, imageAlt
 }`)
 
 // ── Mappers ─────────────────────────────────────────────────────────────────
@@ -505,12 +544,48 @@ export function mapServicesPage(doc: Record<string, unknown> | null): ServicesPa
 	if (!doc) return DEFAULT_SERVICES_PAGE
 	const d = doc as ServicesPageContent & {heroImage?: unknown; processHeroBackground?: unknown}
 	const base = mapPageHero(doc, DEFAULT_SERVICES_PAGE, 'servicesHero')
+
+	const processSteps = ((d as {processSteps?: ServiceProcessStep[]}).processSteps ?? [])
+		.filter((s) => s?.title)
+		.map((s, i) => {
+			const fb = DEFAULT_SERVICES_PAGE.processSteps[i] ?? DEFAULT_SERVICES_PAGE.processSteps[0]
+			return {
+				num: str(s.num, fb.num),
+				icon: str(s.icon, fb.icon),
+				title: str(s.title, fb.title),
+				body: str(s.body, fb.body),
+			}
+		})
+
+	const pricingCards = ((d as {pricingCards?: PricingHintCard[]}).pricingCards ?? [])
+		.filter((c) => c?.title)
+		.map((c, i) => {
+			const fb = DEFAULT_SERVICES_PAGE.pricingCards[i] ?? DEFAULT_SERVICES_PAGE.pricingCards[0]
+			return {icon: str(c.icon, fb.icon), title: str(c.title, fb.title), body: str(c.body, fb.body)}
+		})
+
+	const faqItems = ((d as {faqItems?: FaqItem[]}).faqItems ?? [])
+		.filter((f) => f?.question)
+		.map((f) => ({question: str(f.question), answer: str(f.answer)}))
+
 	return {
 		...base,
-		processHeroBackgroundUrl: resolveBgUrl(
-			urlForImage(d.processHeroBackground as never),
-			'servicesProcess',
-		),
+		processHeroBackgroundUrl: resolveBgUrl(urlForImage(d.processHeroBackground as never), 'servicesProcess'),
+		processEyebrow: str((d as {processEyebrow?: string}).processEyebrow, DEFAULT_SERVICES_PAGE.processEyebrow),
+		processHeadline: str((d as {processHeadline?: string}).processHeadline, DEFAULT_SERVICES_PAGE.processHeadline),
+		processHeadlineEmphasis: str((d as {processHeadlineEmphasis?: string}).processHeadlineEmphasis, DEFAULT_SERVICES_PAGE.processHeadlineEmphasis),
+		processDescription: str((d as {processDescription?: string}).processDescription, DEFAULT_SERVICES_PAGE.processDescription),
+		processSteps: processSteps.length ? processSteps : DEFAULT_SERVICES_PAGE.processSteps,
+		pricingEyebrow: str((d as {pricingEyebrow?: string}).pricingEyebrow, DEFAULT_SERVICES_PAGE.pricingEyebrow),
+		pricingHeadline: str((d as {pricingHeadline?: string}).pricingHeadline, DEFAULT_SERVICES_PAGE.pricingHeadline),
+		pricingHeadlineEmphasis: str((d as {pricingHeadlineEmphasis?: string}).pricingHeadlineEmphasis, DEFAULT_SERVICES_PAGE.pricingHeadlineEmphasis),
+		pricingBody: str((d as {pricingBody?: string}).pricingBody, DEFAULT_SERVICES_PAGE.pricingBody),
+		pricingCards: pricingCards.length ? pricingCards : DEFAULT_SERVICES_PAGE.pricingCards,
+		faqEyebrow: str((d as {faqEyebrow?: string}).faqEyebrow, DEFAULT_SERVICES_PAGE.faqEyebrow),
+		faqTitle: str((d as {faqTitle?: string}).faqTitle, DEFAULT_SERVICES_PAGE.faqTitle),
+		faqTitleEmphasis: str((d as {faqTitleEmphasis?: string}).faqTitleEmphasis, DEFAULT_SERVICES_PAGE.faqTitleEmphasis),
+		faqSub: str((d as {faqSub?: string}).faqSub, DEFAULT_SERVICES_PAGE.faqSub),
+		faqItems: faqItems.length ? faqItems : DEFAULT_SERVICES_PAGE.faqItems,
 	}
 }
 
@@ -518,21 +593,120 @@ export function mapAboutPage(doc: Record<string, unknown> | null): AboutPageCont
 	if (!doc) return DEFAULT_ABOUT_PAGE
 	const base = mapPageHero(doc, DEFAULT_ABOUT_PAGE, 'aboutHero')
 	const d = doc as AboutPageContent & {valuesHeroBackground?: unknown; whyBannerBackground?: unknown}
+
+	const aboutStats = ((d as {aboutStats?: AboutStatItem[]}).aboutStats ?? [])
+		.filter((s) => s?.value && s?.label)
+		.map((s, i) => {
+			const fb = DEFAULT_ABOUT_PAGE.aboutStats[i] ?? DEFAULT_ABOUT_PAGE.aboutStats[0]
+			return {value: str(s.value, fb.value), suffix: str(s.suffix, fb.suffix), label: str(s.label, fb.label), description: str(s.description, fb.description)}
+		})
+
+	const timeline = ((d as {timeline?: TimelineItem[]}).timeline ?? [])
+		.filter((t) => t?.year && t?.title)
+		.map((t, i) => {
+			const fb = DEFAULT_ABOUT_PAGE.timeline[i] ?? DEFAULT_ABOUT_PAGE.timeline[0]
+			return {year: str(t.year, fb.year), title: str(t.title, fb.title), text: str(t.text, fb.text), highlight: Boolean(t.highlight)}
+		})
+
+	const valueCards = ((d as {valueCards?: ValueCard[]}).valueCards ?? [])
+		.filter((v) => v?.title)
+		.map((v, i) => {
+			const fb = DEFAULT_ABOUT_PAGE.valueCards[i] ?? DEFAULT_ABOUT_PAGE.valueCards[0]
+			return {icon: str(v.icon, fb.icon), num: str(v.num, fb.num), title: str(v.title, fb.title), body: str(v.body, fb.body)}
+		})
+
+	const teamMembers = ((d as {teamMembers?: (TeamMember & {photo?: unknown})[]}).teamMembers ?? [])
+		.filter((m) => m?.name)
+		.map((m, i) => {
+			const fb = DEFAULT_ABOUT_PAGE.teamMembers[i] ?? DEFAULT_ABOUT_PAGE.teamMembers[0]
+			return {
+				name: str(m.name, fb.name),
+				role: str(m.role, fb.role),
+				bio: str(m.bio, fb.bio),
+				photoUrl: urlForImage(m.photo as never, 400) ?? fb.photoUrl,
+			}
+		})
+
+	const whyRows = ((d as {whyRows?: (WhyRow & {image?: unknown})[]}).whyRows ?? [])
+		.filter((r) => r?.title)
+		.map((r, i) => {
+			const fb = DEFAULT_ABOUT_PAGE.whyRows[i] ?? DEFAULT_ABOUT_PAGE.whyRows[0]
+			return {
+				num: str(r.num, fb.num),
+				label: str(r.label, fb.label),
+				title: str(r.title, fb.title),
+				body: str(r.body, fb.body),
+				pills: (r.pills ?? fb.pills).filter(Boolean),
+				imageUrl: urlForImage(r.image as never, 900) ?? fb.imageUrl,
+				imageAlt: str(r.imageAlt, fb.imageAlt),
+			}
+		})
+
+	const certBadges = ((d as {certBadges?: CertBadge[]}).certBadges ?? [])
+		.filter((b) => b?.name)
+		.map((b, i) => {
+			const fb = DEFAULT_ABOUT_PAGE.certBadges[i] ?? DEFAULT_ABOUT_PAGE.certBadges[0]
+			return {icon: str(b.icon, fb.icon), name: str(b.name, fb.name)}
+		})
+
+	const guaranteeCards = ((d as {guaranteeCards?: GuaranteeCard[]}).guaranteeCards ?? [])
+		.filter((g) => g?.title)
+		.map((g, i) => {
+			const fb = DEFAULT_ABOUT_PAGE.guaranteeCards[i] ?? DEFAULT_ABOUT_PAGE.guaranteeCards[0]
+			return {icon: str(g.icon, fb.icon), title: str(g.title, fb.title), text: str(g.text, fb.text)}
+		})
+
 	return {
 		...base,
-		valuesHeroBackgroundUrl: resolveBgUrl(
-			urlForImage(d.valuesHeroBackground as never),
-			'aboutValues',
-		),
-		whyBannerBackgroundUrl: resolveBgUrl(
-			urlForImage(d.whyBannerBackground as never),
-			'aboutWhy',
-		),
+		valuesHeroBackgroundUrl: resolveBgUrl(urlForImage(d.valuesHeroBackground as never), 'aboutValues'),
+		whyBannerBackgroundUrl: resolveBgUrl(urlForImage(d.whyBannerBackground as never), 'aboutWhy'),
 		founderInitial: str(d.founderInitial, DEFAULT_ABOUT_PAGE.founderInitial),
 		founderName: str(d.founderName, DEFAULT_ABOUT_PAGE.founderName),
 		founderRole: str(d.founderRole, DEFAULT_ABOUT_PAGE.founderRole),
 		founderQuote: str(d.founderQuote, DEFAULT_ABOUT_PAGE.founderQuote),
 		founderStats: mapStats(d.founderStats as never, DEFAULT_ABOUT_PAGE.founderStats),
+		// Who We Are
+		whoEyebrow: str((d as {whoEyebrow?: string}).whoEyebrow, DEFAULT_ABOUT_PAGE.whoEyebrow),
+		whoHeadline: str((d as {whoHeadline?: string}).whoHeadline, DEFAULT_ABOUT_PAGE.whoHeadline),
+		whoHeadlineEmphasis: str((d as {whoHeadlineEmphasis?: string}).whoHeadlineEmphasis, DEFAULT_ABOUT_PAGE.whoHeadlineEmphasis),
+		whoLead: str((d as {whoLead?: string}).whoLead, DEFAULT_ABOUT_PAGE.whoLead),
+		whoBody: ((d as {whoBody?: string[]}).whoBody ?? []).filter(Boolean).length ? (d as {whoBody?: string[]}).whoBody!.filter(Boolean) : DEFAULT_ABOUT_PAGE.whoBody,
+		whoPills: ((d as {whoPills?: string[]}).whoPills ?? []).filter(Boolean).length ? (d as {whoPills?: string[]}).whoPills!.filter(Boolean) : DEFAULT_ABOUT_PAGE.whoPills,
+		whoCtaLabel: str((d as {whoCtaLabel?: string}).whoCtaLabel, DEFAULT_ABOUT_PAGE.whoCtaLabel),
+		whoCtaLink: str((d as {whoCtaLink?: string}).whoCtaLink, DEFAULT_ABOUT_PAGE.whoCtaLink),
+		// Numbers
+		aboutStats: aboutStats.length ? aboutStats : DEFAULT_ABOUT_PAGE.aboutStats,
+		// Story
+		storyEyebrow: str((d as {storyEyebrow?: string}).storyEyebrow, DEFAULT_ABOUT_PAGE.storyEyebrow),
+		storyHeadline: str((d as {storyHeadline?: string}).storyHeadline, DEFAULT_ABOUT_PAGE.storyHeadline),
+		storyHeadlineEmphasis: str((d as {storyHeadlineEmphasis?: string}).storyHeadlineEmphasis, DEFAULT_ABOUT_PAGE.storyHeadlineEmphasis),
+		storyLead: str((d as {storyLead?: string}).storyLead, DEFAULT_ABOUT_PAGE.storyLead),
+		timeline: timeline.length ? timeline : DEFAULT_ABOUT_PAGE.timeline,
+		// Values
+		valuesEyebrow: str((d as {valuesEyebrow?: string}).valuesEyebrow, DEFAULT_ABOUT_PAGE.valuesEyebrow),
+		valuesHeadline: str((d as {valuesHeadline?: string}).valuesHeadline, DEFAULT_ABOUT_PAGE.valuesHeadline),
+		valuesHeadlineEmphasis: str((d as {valuesHeadlineEmphasis?: string}).valuesHeadlineEmphasis, DEFAULT_ABOUT_PAGE.valuesHeadlineEmphasis),
+		valuesDescription: str((d as {valuesDescription?: string}).valuesDescription, DEFAULT_ABOUT_PAGE.valuesDescription),
+		valueCards: valueCards.length ? valueCards : DEFAULT_ABOUT_PAGE.valueCards,
+		// Team
+		teamEyebrow: str((d as {teamEyebrow?: string}).teamEyebrow, DEFAULT_ABOUT_PAGE.teamEyebrow),
+		teamHeadline: str((d as {teamHeadline?: string}).teamHeadline, DEFAULT_ABOUT_PAGE.teamHeadline),
+		teamHeadlineEmphasis: str((d as {teamHeadlineEmphasis?: string}).teamHeadlineEmphasis, DEFAULT_ABOUT_PAGE.teamHeadlineEmphasis),
+		teamDescription: str((d as {teamDescription?: string}).teamDescription, DEFAULT_ABOUT_PAGE.teamDescription),
+		teamMembers: teamMembers.length ? teamMembers : DEFAULT_ABOUT_PAGE.teamMembers,
+		// Why Us
+		whyEyebrow: str((d as {whyEyebrow?: string}).whyEyebrow, DEFAULT_ABOUT_PAGE.whyEyebrow),
+		whyBannerHeadline: str((d as {whyBannerHeadline?: string}).whyBannerHeadline, DEFAULT_ABOUT_PAGE.whyBannerHeadline),
+		whyBannerHeadlineEmphasis: str((d as {whyBannerHeadlineEmphasis?: string}).whyBannerHeadlineEmphasis, DEFAULT_ABOUT_PAGE.whyBannerHeadlineEmphasis),
+		whyBannerDescription: str((d as {whyBannerDescription?: string}).whyBannerDescription, DEFAULT_ABOUT_PAGE.whyBannerDescription),
+		whyRows: whyRows.length ? whyRows : DEFAULT_ABOUT_PAGE.whyRows,
+		// Certifications
+		certEyebrow: str((d as {certEyebrow?: string}).certEyebrow, DEFAULT_ABOUT_PAGE.certEyebrow),
+		certHeadline: str((d as {certHeadline?: string}).certHeadline, DEFAULT_ABOUT_PAGE.certHeadline),
+		certHeadlineEmphasis: str((d as {certHeadlineEmphasis?: string}).certHeadlineEmphasis, DEFAULT_ABOUT_PAGE.certHeadlineEmphasis),
+		certDescription: str((d as {certDescription?: string}).certDescription, DEFAULT_ABOUT_PAGE.certDescription),
+		certBadges: certBadges.length ? certBadges : DEFAULT_ABOUT_PAGE.certBadges,
+		guaranteeCards: guaranteeCards.length ? guaranteeCards : DEFAULT_ABOUT_PAGE.guaranteeCards,
 	}
 }
 
@@ -550,6 +724,44 @@ export function mapContactsPage(doc: Record<string, unknown> | null): ContactsPa
 		formTitleEmphasis: str(d.formTitleEmphasis, DEFAULT_CONTACTS_PAGE.formTitleEmphasis),
 		formSubtext: str(d.formSubtext, DEFAULT_CONTACTS_PAGE.formSubtext),
 	}
+}
+
+export function mapServicesList(docs: Record<string, unknown>[]): ServiceDetail[] {
+	return docs
+		.map((doc) => {
+			const d = doc as {
+				id?: string
+				num?: string
+				icon?: string
+				stripName?: string
+				quickName?: string
+				quickSub?: string
+				eyebrow?: string
+				title?: string
+				lead?: string
+				includes?: string[]
+				meta?: {key?: string; val?: string}[]
+				image?: unknown
+				imageAlt?: string
+			}
+			if (!d.id || !d.title) return null
+			return {
+				id: str(d.id),
+				num: str(d.num),
+				icon: str(d.icon),
+				stripName: str(d.stripName, d.eyebrow ?? d.title ?? ''),
+				quickName: str(d.quickName, d.title ?? ''),
+				quickSub: str(d.quickSub),
+				eyebrow: str(d.eyebrow, d.title ?? ''),
+				title: str(d.title),
+				lead: str(d.lead),
+				includes: (d.includes ?? []).filter(Boolean),
+				meta: (d.meta ?? []).filter((m) => m.key && m.val).map((m) => ({key: str(m.key), val: str(m.val)})),
+				imageUrl: urlForImage(d.image as never, 900) ?? '',
+				imageAlt: str(d.imageAlt, d.title ?? ''),
+			}
+		})
+		.filter((s): s is ServiceDetail => Boolean(s))
 }
 
 // ── Fetchers ────────────────────────────────────────────────────────────────
@@ -624,6 +836,12 @@ export async function getHomeBeforeAfterBanner() {
 
 export async function getServicesPage() {
 	return mapServicesPage(await safeFetch(SERVICES_PAGE_Q, null))
+}
+
+export async function getServicesList(): Promise<ServiceDetail[]> {
+	const docs = await safeFetch(SERVICES_LIST_Q, [] as Record<string, unknown>[])
+	const mapped = mapServicesList(docs)
+	return mapped.length ? mapped : DEFAULT_SERVICES
 }
 
 export async function getPortfolioPage() {

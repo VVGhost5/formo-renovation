@@ -175,10 +175,57 @@ export type PageHeroContent = {
 	heroImageUrl: string
 }
 
-export type ServicesPageContent = PageHeroContent & {
-	processHeroBackgroundUrl: string
+// ── About Page ───────────────────────────────────────────────────────────────
+
+export type AboutStatItem = {
+	value: string
+	suffix?: string
+	label: string
+	description: string
 }
-export type PortfolioPageContent = PageHeroContent & {stats: Stat[]}
+
+export type TimelineItem = {
+	year: string
+	title: string
+	text: string
+	highlight?: boolean
+}
+
+export type ValueCard = {
+	icon: string
+	num: string
+	title: string
+	body: string
+}
+
+export type TeamMember = {
+	name: string
+	role: string
+	bio: string
+	photoUrl: string
+}
+
+export type WhyRow = {
+	num: string
+	label: string
+	title: string
+	body: string
+	pills: string[]
+	imageUrl: string
+	imageAlt: string
+}
+
+export type CertBadge = {
+	icon: string
+	name: string
+}
+
+export type GuaranteeCard = {
+	icon: string
+	title: string
+	text: string
+}
+
 export type AboutPageContent = PageHeroContent & {
 	valuesHeroBackgroundUrl: string
 	whyBannerBackgroundUrl: string
@@ -187,7 +234,110 @@ export type AboutPageContent = PageHeroContent & {
 	founderRole: string
 	founderQuote: string
 	founderStats: Stat[]
+	// Who We Are
+	whoEyebrow: string
+	whoHeadline: string
+	whoHeadlineEmphasis: string
+	whoLead: string
+	whoBody: string[]
+	whoPills: string[]
+	whoCtaLabel: string
+	whoCtaLink: string
+	// Numbers
+	aboutStats: AboutStatItem[]
+	// Our Story
+	storyEyebrow: string
+	storyHeadline: string
+	storyHeadlineEmphasis: string
+	storyLead: string
+	timeline: TimelineItem[]
+	// Values
+	valuesEyebrow: string
+	valuesHeadline: string
+	valuesHeadlineEmphasis: string
+	valuesDescription: string
+	valueCards: ValueCard[]
+	// Team
+	teamEyebrow: string
+	teamHeadline: string
+	teamHeadlineEmphasis: string
+	teamDescription: string
+	teamMembers: TeamMember[]
+	// Why Us
+	whyEyebrow: string
+	whyBannerHeadline: string
+	whyBannerHeadlineEmphasis: string
+	whyBannerDescription: string
+	whyRows: WhyRow[]
+	// Certifications
+	certEyebrow: string
+	certHeadline: string
+	certHeadlineEmphasis: string
+	certDescription: string
+	certBadges: CertBadge[]
+	guaranteeCards: GuaranteeCard[]
 }
+
+// ── Services Page ────────────────────────────────────────────────────────────
+
+export type ServiceProcessStep = {
+	num: string
+	icon: string
+	title: string
+	body: string
+}
+
+export type PricingHintCard = {
+	icon: string
+	title: string
+	body: string
+}
+
+export type FaqItem = {
+	question: string
+	answer: string
+}
+
+export type ServicesPageContent = PageHeroContent & {
+	processHeroBackgroundUrl: string
+	// Process section
+	processEyebrow: string
+	processHeadline: string
+	processHeadlineEmphasis: string
+	processDescription: string
+	processSteps: ServiceProcessStep[]
+	// Pricing hint
+	pricingEyebrow: string
+	pricingHeadline: string
+	pricingHeadlineEmphasis: string
+	pricingBody: string
+	pricingCards: PricingHintCard[]
+	// FAQ
+	faqEyebrow: string
+	faqTitle: string
+	faqTitleEmphasis: string
+	faqSub: string
+	faqItems: FaqItem[]
+}
+
+export type ServiceDetail = {
+	id: string
+	num: string
+	icon: string
+	stripName: string
+	quickName: string
+	quickSub: string
+	eyebrow: string
+	title: string
+	lead: string
+	includes: string[]
+	meta: {key: string; val: string}[]
+	imageUrl: string
+	imageAlt: string
+}
+
+export type PortfolioPageContent = PageHeroContent & {stats: Stat[]}
+
 export type ContactsPageContent = {
 	eyebrow: string
 	titleBefore: string
