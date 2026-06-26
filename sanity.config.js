@@ -8,7 +8,7 @@ export default defineConfig({
   name: 'default',
   title: 'Formo',
 
-  projectId: 'kilnwem8',
+  projectId: '9g3zb5ng',
   dataset: 'production',
 
   plugins: [structureTool({structure}), visionTool()],
