@@ -41,6 +41,23 @@ export const structure = (S) =>
 
       S.divider(),
 
+      S.divider(),
+
+      S.listItem()
+        .title('Reviews')
+        .child(
+          S.list()
+            .title('Reviews')
+            .items([
+              singleton(S, 'reviewsPage', 'Page — Hero', 'reviewsPage'),
+              S.listItem()
+                .title('Client Reviews')
+                .child(S.documentTypeList('review').title('Client Reviews')),
+            ]),
+        ),
+
+      S.divider(),
+
       S.listItem()
         .title('Pages')
         .child(

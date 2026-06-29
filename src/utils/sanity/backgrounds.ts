@@ -13,6 +13,7 @@ export const DEFAULT_BACKGROUNDS = {
 	aboutValues: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1800&q=85',
 	aboutWhy: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1800&q=85',
 	contactsHero: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=2000&q=90',
+	reviewsHero: '/images/reviews-hero.jpg',
 } as const
 
 export type BackgroundKey = keyof typeof DEFAULT_BACKGROUNDS

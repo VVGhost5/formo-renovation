@@ -1,5 +1,6 @@
 import hero from './hero'
 import testimonial from './testimonial'
+import review from './review'
 import siteSettings from './siteSettings'
 import homeNumbers from './homeNumbers'
 import homeServices from './homeServices'
@@ -16,6 +17,7 @@ import servicesPage from './servicesPage'
 import portfolioPage from './portfolioPage'
 import aboutPage from './aboutPage'
 import contactsPage from './contactsPage'
+import reviewsPage from './reviewsPage'
 
 import statItem from './objects/statItem'
 import aboutRow from './objects/aboutRow'
@@ -35,6 +37,7 @@ export const schemaTypes = [
   // Documents
   hero,
   testimonial,
+  review,
   siteSettings,
   homeNumbers,
   homeServices,
@@ -51,4 +54,5 @@ export const schemaTypes = [
   portfolioPage,
   aboutPage,
   contactsPage,
+  reviewsPage,
 ]

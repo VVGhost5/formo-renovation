@@ -12,7 +12,7 @@ export default defineConfig({
   dataset: 'production',
 
   plugins: [structureTool({structure}), visionTool()],
-
+  token: process.env.PUBLIC_SANITY_WRITE_TOKEN,
   schema: {
     types: schemaTypes,
   },

@@ -14,6 +14,7 @@ import type {
 	HeroContent,
 	PortfolioPageContent,
 	PortfolioSlide,
+	ReviewsPageContent,
 	ServiceDetail,
 	ServicesPageContent,
 	SiteSettingsContent,
@@ -397,6 +398,10 @@ export const DEFAULT_ABOUT_PAGE: AboutPageContent = {
 		{icon: 'fa-solid fa-file-contract', title: 'Detailed Written Contracts', text: 'Every project begins with a clear, signed contract. Scope of work, payment schedule, timeline, and warranty terms — all in writing, before we touch a thing.'},
 		{icon: 'fa-solid fa-rotate-left', title: 'Right to Pause or Stop', text: "You can pause or stop the project at any agreed milestone and pay only for work completed to that point. We believe you should never feel trapped by a renovation."},
 	],
+}
+
+export const DEFAULT_REVIEWS_PAGE: ReviewsPageContent = {
+	heroImageUrl: DEFAULT_BACKGROUNDS.reviewsHero,
 }
 
 export const DEFAULT_CONTACTS_PAGE: ContactsPageContent = {

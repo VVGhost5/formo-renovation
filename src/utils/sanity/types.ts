@@ -320,6 +320,17 @@ export type ServicesPageContent = PageHeroContent & {
 	faqItems: FaqItem[]
 }
 
+export type Review = {
+	_id: string
+	name: string
+	location: string
+	service: string
+	rating: number
+	comment: string
+	approved: boolean
+	_createdAt: string
+}
+
 export type ServiceDetail = {
 	id: string
 	num: string
@@ -337,6 +348,10 @@ export type ServiceDetail = {
 }
 
 export type PortfolioPageContent = PageHeroContent & {stats: Stat[]}
+
+export type ReviewsPageContent = {
+	heroImageUrl: string
+}
 
 export type ContactsPageContent = {
 	eyebrow: string

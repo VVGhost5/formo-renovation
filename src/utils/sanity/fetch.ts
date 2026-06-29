@@ -7,6 +7,7 @@ import {
 	DEFAULT_ABOUT_PAGE,
 	DEFAULT_BEFORE_AFTER,
 	DEFAULT_CONTACTS_PAGE,
+	DEFAULT_REVIEWS_PAGE,
 	DEFAULT_HERO,
 	DEFAULT_HOME_ABOUT,
 	DEFAULT_HOME_BEFORE_AFTER_BANNER,
@@ -45,6 +46,8 @@ import type {
 	PortfolioPageContent,
 	PortfolioProject,
 	PortfolioSlide,
+	Review,
+	ReviewsPageContent,
 	ServiceDetail,
 	ServiceProcessStep,
 	ServicesPageContent,
@@ -179,6 +182,14 @@ const ABOUT_PAGE_Q = defineQuery(`*[_id == "aboutPage"][0]{
 const CONTACTS_PAGE_Q = defineQuery(`*[_id == "contactsPage"][0]{
   eyebrow, titleBefore, titleEmphasis, description, heroImage{ asset, alt },
   formEyebrow, formTitleBefore, formTitleEmphasis, formSubtext
+}`)
+
+const REVIEWS_PAGE_Q = defineQuery(`*[_id == "reviewsPage"][0]{
+  heroImage{ asset, alt }
+}`)
+
+const REVIEWS_Q = defineQuery(`*[_type == "review" && approved == true] | order(_createdAt desc){
+  _id, name, location, service, rating, comment, approved, _createdAt
 }`)
 
 const SERVICES_LIST_Q = defineQuery(`*[_type == "service"] | order(sortOrder asc, _createdAt asc){
@@ -710,6 +721,14 @@ export function mapAboutPage(doc: Record<string, unknown> | null): AboutPageCont
 	}
 }
 
+export function mapReviewsPage(doc: Record<string, unknown> | null): ReviewsPageContent {
+	if (!doc) return DEFAULT_REVIEWS_PAGE
+	const d = doc as ReviewsPageContent & {heroImage?: unknown}
+	return {
+		heroImageUrl: resolveBgUrl(urlForImage(d.heroImage as never), 'reviewsHero'),
+	}
+}
+
 export function mapContactsPage(doc: Record<string, unknown> | null): ContactsPageContent {
 	if (!doc) return DEFAULT_CONTACTS_PAGE
 	const d = doc as ContactsPageContent & {heroImage?: unknown}
@@ -854,6 +873,14 @@ export async function getAboutPage() {
 
 export async function getContactsPage() {
 	return mapContactsPage(await safeFetch(CONTACTS_PAGE_Q, null))
+}
+
+export async function getReviewsPage() {
+	return mapReviewsPage(await safeFetch(REVIEWS_PAGE_Q, null))
+}
+
+export async function getReviews(): Promise<Review[]> {
+	return safeFetch(REVIEWS_Q, [] as Review[])
 }
 
 export async function getHomePageContent(): Promise<HomePageContent> {
