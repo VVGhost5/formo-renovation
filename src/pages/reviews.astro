@@ -1,0 +1,88 @@
+---
+import Layout     from '../layouts/Layout.astro'
+import TheNav     from '../components/vue/TheNav.vue'
+import TheFooter  from '../components/TheFooter.astro'
+import ReviewsSection from '../components/vue/ReviewsSection.vue'
+import {getReviews, getReviewsPage, getSiteSettings, DEFAULT_REVIEWS_PAGE, DEFAULT_SITE_SETTINGS} from '../utils/sanity'
+import {bgStyle} from '../utils/sanity/backgrounds'
+
+let reviews = [] as Awaited<ReturnType<typeof getReviews>>
+let page = DEFAULT_REVIEWS_PAGE
+let site = DEFAULT_SITE_SETTINGS
+
+const heroBg = {
+  backgroundImage: `url(${mainImage}), url(${fallbackImage})`
+};
+
+try {
+  ;[reviews, page, site] = await Promise.all([getReviews(), getReviewsPage(), getSiteSettings()])
+} catch (err) {
+  console.warn('[sanity] Reviews page fallback.', err)
+}
+
+const heroBg = bgStyle(page.heroImageUrl)
+---
+
+<Layout
+  title="Client Reviews — Formo Renovations"
+  description="Read genuine client reviews from homeowners across Victoria and Vancouver Island, BC. Share your own experience with Formo Renovations."
+>
+  <TheNav client:load page="reviews" />
+
+  <!-- ══ HERO ══ -->
+  <section id="hero" class="reviews-page-hero">
+    <div class="hero-bg-img reviews-hero-bg" style={heroBg}></div>
+    <div class="hero-content">
+
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="hero-dot"></span>
+          Victoria &amp; Vancouver Island, BC
+        </div>
+        <h1 class="hero-h1">
+          Client
+          <em>Reviews</em>
+        </h1>
+        <hr class="hero-line" />
+        <p class="hero-desc">
+          Honest feedback from homeowners who trusted Formo Renovations with their most important spaces. Every review is verified and published as-is.
+        </p>
+      </div>
+
+      <div class="reviews-hero-stats">
+        <div class="rhs-label">Our track record</div>
+        <div class="rhs-row">
+          <div class="rhs-cell">
+            <div class="rhs-num">5.0</div>
+            <div class="rhs-stars">
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+            </div>
+            <div class="rhs-caption">Average rating</div>
+          </div>
+          <div class="rhs-divider"></div>
+          <div class="rhs-cell">
+            <div class="rhs-num">{reviews.length || '—'}</div>
+            <div class="rhs-caption">Verified reviews</div>
+          </div>
+          <div class="rhs-divider"></div>
+          <div class="rhs-cell">
+            <div class="rhs-num">100%</div>
+            <div class="rhs-caption">Would recommend</div>
+          </div>
+        </div>
+        <a href="#submit-review" class="rhs-cta">Leave a Review →</a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══ REVIEWS LIST + FORM (Vue island) ══ -->
+  <ReviewsSection client:load initialReviews={reviews} />
+
+  <TheFooter site={site} />
+
+</Layout>
