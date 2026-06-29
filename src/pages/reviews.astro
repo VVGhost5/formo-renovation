@@ -10,10 +10,6 @@ let reviews = [] as Awaited<ReturnType<typeof getReviews>>
 let page = DEFAULT_REVIEWS_PAGE
 let site = DEFAULT_SITE_SETTINGS
 
-const heroBg = {
-  backgroundImage: `url(${mainImage}), url(${fallbackImage})`
-};
-
 try {
   ;[reviews, page, site] = await Promise.all([getReviews(), getReviewsPage(), getSiteSettings()])
 } catch (err) {
