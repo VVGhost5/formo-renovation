@@ -137,7 +137,7 @@ function startDrag(e: MouseEvent | TouchEvent) {
           <em>{{ banner.headlineEmphasis }}</em>
         </h2>
         <p class="ba-desc">{{ banner.description }}</p>
-        <a href="/portfolio" class="btn-outline-light">{{ banner.ctaLabel }}</a>
+        <a href="/portfolio/" class="btn-outline-light">{{ banner.ctaLabel }}</a>
       </div>
     </div>
 

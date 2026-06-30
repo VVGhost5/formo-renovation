@@ -32,11 +32,11 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
 
     <ul class="nav-links">
       <li><a href="/"          :class="{ active: page === 'home' }">Home</a></li>
-      <li><a href="/portfolio" :class="{ active: page === 'portfolio' }">Portfolio</a></li>
-      <li><a href="/services"  :class="{ active: page === 'services' }">Services</a></li>
-      <li><a href="/about-us"  :class="{ active: page === 'about-us' }">About</a></li>
-      <li><a href="/reviews"   :class="{ active: page === 'reviews' }">Reviews</a></li>
-      <li><a href="/contacts"  :class="{ active: page === 'contacts' }">Contact</a></li>
+      <li><a href="/portfolio/" :class="{ active: page === 'portfolio' }">Portfolio</a></li>
+      <li><a href="/services/"  :class="{ active: page === 'services' }">Services</a></li>
+      <li><a href="/about-us/"  :class="{ active: page === 'about-us' }">About</a></li>
+      <li><a href="/reviews/"   :class="{ active: page === 'reviews' }">Reviews</a></li>
+      <li><a href="/contacts/"  :class="{ active: page === 'contacts' }">Contact</a></li>
     </ul>
 
     <button class="nav-cta" @click="openDrawer">Contact us →</button>
@@ -53,11 +53,11 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
 
   <div class="nav-mobile-menu" :class="{ open: menuOpen }">
     <a href="/"          @click="closeMenu" :class="{ active: page === 'home' }">Home</a>
-    <a href="/portfolio" @click="closeMenu" :class="{ active: page === 'portfolio' }">Portfolio</a>
-    <a href="/services"  @click="closeMenu" :class="{ active: page === 'services' }">Services</a>
-    <a href="/about-us"  @click="closeMenu" :class="{ active: page === 'about-us' }">About Us</a>
-    <a href="/reviews"   @click="closeMenu" :class="{ active: page === 'reviews' }">Reviews</a>
-    <a href="/contacts"  @click="closeMenu" :class="{ active: page === 'contacts' }">Contact</a>
+    <a href="/portfolio/" @click="closeMenu" :class="{ active: page === 'portfolio' }">Portfolio</a>
+    <a href="/services/"  @click="closeMenu" :class="{ active: page === 'services' }">Services</a>
+    <a href="/about-us/"  @click="closeMenu" :class="{ active: page === 'about-us' }">About Us</a>
+    <a href="/reviews/"   @click="closeMenu" :class="{ active: page === 'reviews' }">Reviews</a>
+    <a href="/contacts/"  @click="closeMenu" :class="{ active: page === 'contacts' }">Contact</a>
     <button class="mob-cta" @click="openDrawer">Contact us →</button>
   </div>
 

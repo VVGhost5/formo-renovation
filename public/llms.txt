@@ -1,0 +1,20 @@
+# Formo Renovations
+
+> Professional turnkey construction and renovation services: from interior design to complete structural building and cost estimation.
+
+This web application serves as the official platform for Formo Renovations. It is designed to showcase our portfolio of completed projects, provide an interactive cost calculator for renovation estimates, and collect client inquiries. The website is mobile-optimized and uses semantic structure for maximum accessibility.
+
+## Main Sections
+
+- [Home Page](https://formo-renovation.pages.dev/): Overview of services, core benefits, and primary calls to action (CTA).
+- [Renovation Services](https://formo-renovation.pages.dev/services): Complete directory of the company's building, finishing, and remodeling services.
+- [Cost Calculator](https://formo-renovation.pages.dev/calculator): Interactive tool for online estimation of room or entire property renovation costs.
+- [Portfolio](https://formo-renovation.pages.dev/portfolio): Gallery and case studies of successfully completed projects, detailing materials and work phases.
+- [Pricing & Packages](https://formo-renovation.pages.dev/pricing): Detailed price list for individual tasks and ready-made service packages (cosmetic, major, designer).
+- [Contact & Inquiries](https://formo-renovation.pages.dev/contact): Feedback form integrated with CRM, location map, and contact details.
+
+## Optional
+
+- [About Us](https://formo-renovation.pages.dev/about): Brand history of Formo Renovations, our team, and mission statement.
+- [Testimonials](https://formo-renovation.pages.dev/testimonials): Real client reviews and ratings of our work.
+- [Blog & Insights](https://formo-renovation.pages.dev/blog): Articles on design trends, material selection, and renovation tips.

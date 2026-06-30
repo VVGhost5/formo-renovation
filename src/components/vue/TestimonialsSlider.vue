@@ -168,7 +168,7 @@ function goTo(i: number) {
     </div>
 
     <div class="testi-cta">
-      <a href="/reviews" class="btn-dark">Read All Reviews →</a>
+      <a href="/reviews/" class="btn-dark">Read All Reviews →</a>
     </div>
   </section>
 </template>

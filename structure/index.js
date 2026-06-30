@@ -76,6 +76,7 @@ export const structure = (S) =>
                 ),
               singleton(S, 'aboutPage', 'About — Page', 'aboutPage'),
               singleton(S, 'contactsPage', 'Contacts — Hero & Form', 'contactsPage'),
+              singleton(S, 'metaData', 'Metadata', 'metaData'),
             ]),
         ),
     ])

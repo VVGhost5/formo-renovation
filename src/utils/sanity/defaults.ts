@@ -136,7 +136,7 @@ export const DEFAULT_HOME_PORTFOLIO: HomePortfolioContent = {
 	description:
 		"Every space tells a story. Browse our completed projects — from full-home renovations to carefully detailed finishes — and see what's possible for your home.",
 	ctaLabel: 'View Full Portfolio →',
-	ctaLink: '/portfolio',
+	ctaLink: '/portfolio/',
 	heroImageUrl: DEFAULT_BACKGROUNDS.homePortfolio,
 	projects: [
 		{tag: 'Full Renovation', title: 'Oak Bay Residence', meta: 'Full renovation · Victoria, BC', imageUrl: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=800&q=82'},
@@ -300,7 +300,7 @@ export const DEFAULT_ABOUT_PAGE: AboutPageContent = {
 	primaryCtaLabel: 'Our Story ↓',
 	primaryCtaLink: '#our-story',
 	secondaryCtaLabel: 'See Our Work',
-	secondaryCtaLink: '/portfolio',
+	secondaryCtaLink: '/portfolio/',
 	heroImageUrl: DEFAULT_BACKGROUNDS.aboutHero,
 	valuesHeroBackgroundUrl: DEFAULT_BACKGROUNDS.aboutValues,
 	whyBannerBackgroundUrl: DEFAULT_BACKGROUNDS.aboutWhy,

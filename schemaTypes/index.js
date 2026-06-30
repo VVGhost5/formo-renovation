@@ -18,6 +18,7 @@ import portfolioPage from './portfolioPage'
 import aboutPage from './aboutPage'
 import contactsPage from './contactsPage'
 import reviewsPage from './reviewsPage'
+import metaData from './metadata'
 
 import statItem from './objects/statItem'
 import aboutRow from './objects/aboutRow'
@@ -35,6 +36,7 @@ export const schemaTypes = [
   keyValue,
   serviceCard,
   // Documents
+  metaData,
   hero,
   testimonial,
   review,

@@ -10,7 +10,7 @@ export default defineType({
     defineField({name: 'headlineEmphasis', title: 'Headline emphasis', type: 'string'}),
     defineField({name: 'description', title: 'Description', type: 'text', rows: 3}),
     defineField({name: 'ctaLabel', title: 'CTA label', type: 'string'}),
-    defineField({name: 'ctaLink', title: 'CTA link', type: 'string', initialValue: '/portfolio'}),
+    defineField({name: 'ctaLink', title: 'CTA link', type: 'string', initialValue: '/portfolio/'}),
     defineField({name: 'heroImage', title: 'Hero background', type: 'image', options: {hotspot: true}}),
     defineField({
       name: 'useFeaturedProjects',
