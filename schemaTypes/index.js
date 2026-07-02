@@ -26,6 +26,7 @@ import processStep from './objects/processStep'
 import pricingFactor from './objects/pricingFactor'
 import keyValue from './objects/keyValue'
 import serviceCard from './objects/serviceCard'
+import pageSeo from './objects/pageSeo'
 
 export const schemaTypes = [
   // Objects
@@ -35,6 +36,7 @@ export const schemaTypes = [
   pricingFactor,
   keyValue,
   serviceCard,
+  pageSeo,
   // Documents
   metaData,
   hero,

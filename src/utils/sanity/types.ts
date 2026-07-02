@@ -42,6 +42,20 @@ export type SiteSettingsContent = {
 	houzzUrl: string
 }
 
+export type SiteMetadataPageKey =
+	| 'home'
+	| 'aboutUs'
+	| 'services'
+	| 'portfolio'
+	| 'reviews'
+	| 'contacts'
+
+export type PageSeo = {
+	title: string
+	description: string
+	ogImageUrl: string | null
+}
+
 export type HomeNumbersContent = {
 	eyebrow: string
 	headline: string

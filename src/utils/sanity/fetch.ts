@@ -21,6 +21,7 @@ import {
 	DEFAULT_SERVICES,
 	DEFAULT_SERVICES_PAGE,
 	DEFAULT_SITE_SETTINGS,
+	DEFAULT_PAGE_SEO,
 } from './defaults'
 import type {
 	AboutPageContent,
@@ -198,6 +199,18 @@ const SERVICES_LIST_Q = defineQuery(`*[_type == "service"] | order(sortOrder asc
   includes,
   meta[]{ key, val },
   image{ asset, alt }, imageAlt
+}`)
+
+const PAGE_SEO_FIELDS = `title, description, ogImage{ asset, alt }`
+
+const METADATA_Q = defineQuery(`*[_id == "metaData"][0]{
+  defaultOgImage{ asset, alt },
+  home{ ${PAGE_SEO_FIELDS} },
+  aboutUs{ ${PAGE_SEO_FIELDS} },
+  services{ ${PAGE_SEO_FIELDS} },
+  portfolio{ ${PAGE_SEO_FIELDS} },
+  reviews{ ${PAGE_SEO_FIELDS} },
+  contacts{ ${PAGE_SEO_FIELDS} }
 }`)
 
 // ── Mappers ─────────────────────────────────────────────────────────────────
@@ -783,6 +796,42 @@ export function mapServicesList(docs: Record<string, unknown>[]): ServiceDetail[
 		.filter((s): s is ServiceDetail => Boolean(s))
 }
 
+type RawPageSeo = {title?: string; description?: string; ogImage?: unknown}
+
+type RawMetadataDoc = {
+	defaultOgImage?: unknown
+} & Partial<Record<SiteMetadataPageKey, RawPageSeo | null>>
+
+export function mapPageSeo(
+	doc: RawPageSeo | null | undefined,
+	fallback: PageSeo,
+	defaultOgImageUrl: string | null,
+): PageSeo {
+	if (!doc) return fallback
+	const pageOgImageUrl = urlForImage(doc.ogImage as never, 1200)
+	return {
+		title: str(doc.title, fallback.title),
+		description: str(doc.description, fallback.description),
+		ogImageUrl: pageOgImageUrl ?? defaultOgImageUrl ?? fallback.ogImageUrl,
+	}
+}
+
+export function mapSiteMetadata(doc: Record<string, unknown> | null): Record<SiteMetadataPageKey, PageSeo> {
+	const defaultOgImageUrl = doc
+		? urlForImage((doc as RawMetadataDoc).defaultOgImage as never, 1200)
+		: null
+	const d = doc as RawMetadataDoc | null
+
+	return {
+		home: mapPageSeo(d?.home, DEFAULT_PAGE_SEO.home, defaultOgImageUrl),
+		aboutUs: mapPageSeo(d?.aboutUs, DEFAULT_PAGE_SEO.aboutUs, defaultOgImageUrl),
+		services: mapPageSeo(d?.services, DEFAULT_PAGE_SEO.services, defaultOgImageUrl),
+		portfolio: mapPageSeo(d?.portfolio, DEFAULT_PAGE_SEO.portfolio, defaultOgImageUrl),
+		reviews: mapPageSeo(d?.reviews, DEFAULT_PAGE_SEO.reviews, defaultOgImageUrl),
+		contacts: mapPageSeo(d?.contacts, DEFAULT_PAGE_SEO.contacts, defaultOgImageUrl),
+	}
+}
+
 // ── Fetchers ────────────────────────────────────────────────────────────────
 
 async function safeFetch<T>(query: string, fallback: T): Promise<T> {
@@ -881,6 +930,15 @@ export async function getReviewsPage() {
 
 export async function getReviews(): Promise<Review[]> {
 	return safeFetch(REVIEWS_Q, [] as Review[])
+}
+
+export async function getSiteMetadata(): Promise<Record<SiteMetadataPageKey, PageSeo>> {
+	return mapSiteMetadata(await safeFetch(METADATA_Q, null))
+}
+
+export async function getPageMetadata(page: SiteMetadataPageKey): Promise<PageSeo> {
+	const metadata = await getSiteMetadata()
+	return metadata[page]
 }
 
 export async function getHomePageContent(): Promise<HomePageContent> {
