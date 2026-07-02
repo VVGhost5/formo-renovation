@@ -162,7 +162,9 @@ function startDrag(e: MouseEvent | TouchEvent) {
         @touchstart.prevent="startDrag"
       >
         <!-- After image (base layer) -->
-        <img
+        <img 
+          width="1280"
+          height="640"
           class="ba-after-img"
           :src="active().after"
           alt="After renovation"
@@ -174,7 +176,13 @@ function startDrag(e: MouseEvent | TouchEvent) {
           class="ba-before-layer"
           :style="{ clipPath: `inset(0 ${100 - position}% 0 0)` }"
         >
-          <img :src="active().before" alt="Before renovation" draggable="false"/>
+          <img
+              width="1280"
+              height="640"
+              :src="active().before" 
+              alt="Before renovation" 
+              draggable="false"
+          />
         </div>
 
         <!-- Labels -->

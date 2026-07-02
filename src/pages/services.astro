@@ -98,7 +98,7 @@ const processBg = bgStyle(page.processHeroBackgroundUrl)
     {services.map((svc, i) => (
       <div class={`svc-block${i % 2 !== 0 ? ' flip' : ''}`} id={svc.id}>
         <div class="svc-img-col">
-          <img src={svc.imageUrl} alt={svc.imageAlt} loading="lazy" />
+          <img width="720" height="774" src={svc.imageUrl} alt={svc.imageAlt} loading="lazy" />
           <div class="svc-img-badge">
             <span class="svc-img-badge-icon"><i class={svc.icon}></i></span>
             <span class="svc-img-badge-text">{svc.eyebrow}</span>

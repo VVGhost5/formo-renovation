@@ -27,7 +27,7 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
 <template>
   <nav :class="{ scrolled }">
     <a class="nav-logo" href="/">
-      <img :src="logoWhite.src" alt="Formo Renovations" class="nav-logo-img" />
+      <img width="48" height="48" :src="logoWhite.src" alt="Formo Renovations" class="nav-logo-img" />
     </a>
 
     <ul class="nav-links">

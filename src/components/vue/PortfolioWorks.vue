@@ -344,7 +344,13 @@ const filterLabels: Record<Category, string> = {
               class="gallery-item"
               @click="openLightbox(p, i)"
             >
-              <img :src="img.src" :alt="img.alt" loading="lazy" />
+              <img 
+                  :src="img.src" 
+                  :alt="img.alt" 
+                  loading="lazy" 
+                  width="630"
+                  height="530"
+              />
               <div class="gallery-item-overlay">
                 <div class="gallery-zoom-icon">⤢</div>
               </div>
@@ -360,12 +366,21 @@ const filterLabels: Record<Category, string> = {
             @touchstart.prevent="startBaDrag($event, idx)"
             @touchmove.prevent="onBaTouchMove($event, idx)"
           >
-            <img :src="p.baAfter" alt="After" />
+            <img 
+                width="1280"
+                height="420"
+                :src="p.baAfter" 
+                alt="After" />
             <div
               class="project-ba-before-layer"
               :style="{ clipPath: `inset(0 ${100 - baPositions[idx]}% 0 0)` }"
             >
-              <img :src="p.baBefore" alt="Before" />
+              <img
+                  width="1280"
+                  height="420"
+                  :src="p.baBefore" 
+                  alt="Before" 
+              />
             </div>
             <span class="ba-label-inner before">BEFORE</span>
             <span class="ba-label-inner after">AFTER</span>
@@ -389,7 +404,12 @@ const filterLabels: Record<Category, string> = {
       <button class="lb-nav prev" @click="lbNav(-1)">‹</button>
       <button class="lb-nav next" @click="lbNav(1)">›</button>
       <div class="lb-img-wrap">
-        <img :src="lbImages[lbIdx]?.src" :alt="lbImages[lbIdx]?.alt" />
+        <img 
+            width="1110"
+            height="720"
+            :src="lbImages[lbIdx]?.src" 
+            :alt="lbImages[lbIdx]?.alt" 
+        />
       </div>
       <div class="lb-caption">
         <div class="lb-caption-name">{{ lbProject }}</div>

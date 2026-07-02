@@ -186,7 +186,7 @@ const whyBg = bgStyle(page.whyBannerBackgroundUrl)
     <div class="team-grid">
       {page.teamMembers.map((member) => (
         <div class="team-card">
-          <img class="team-photo" src={member.photoUrl} alt={member.name} loading="lazy" />
+          <img width="309" height="412" class="team-photo" src={member.photoUrl} alt={member.name} loading="lazy" />
           <div class="team-card-body">
             <div class="team-card-name">{member.name}</div>
             <div class="team-card-role">{member.role}</div>
@@ -212,7 +212,7 @@ const whyBg = bgStyle(page.whyBannerBackgroundUrl)
       {page.whyRows.map((row, i) => (
         <div class={`why-row${i % 2 !== 0 ? ' alt' : ''}`}>
           <div class="why-row-img">
-            <img src={row.imageUrl} alt={row.imageAlt} loading="lazy" />
+            <img width="720" height="426" src={row.imageUrl} alt={row.imageAlt} loading="lazy" />
           </div>
           <div class="why-row-text">
             <div class="why-row-num">{row.num}</div>
