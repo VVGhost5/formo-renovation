@@ -109,12 +109,12 @@ export const DEFAULT_HOME_SERVICES: HomeServicesContent = {
 	title: 'Comprehensive Renovation',
 	titleAccent: '& Interior Finishing Solutions',
 	cards: [
-		{name: 'Interior Finishing', imageUrl: '/services/living.png', link: '/services#svc-finishing'},
-		{name: 'Bathroom Renovations', imageUrl: '/services/bathroom.png', link: '/services#svc-bathroom'},
-		{name: 'Kitchen Renovations', imageUrl: '/services/kitchen.png', link: '/services#svc-kitchen'},
-		{name: 'Flooring', imageUrl: '/services/flooring.png', link: '/services#svc-flooring'},
-		{name: 'Painting', imageUrl: '/services/finishing.png', link: '/services#svc-finishing'},
-		{name: 'Project Management', imageUrl: '/services/full-home.png', link: '/services#svc-full'},
+		{name: 'Interior Finishing', imageUrl: '/services/living.webp', link: '/services#svc-finishing'},
+		{name: 'Bathroom Renovations', imageUrl: '/services/bathroom.webp', link: '/services#svc-bathroom'},
+		{name: 'Kitchen Renovations', imageUrl: '/services/kitchen.webp', link: '/services#svc-kitchen'},
+		{name: 'Flooring', imageUrl: '/services/flooring.webp', link: '/services#svc-flooring'},
+		{name: 'Painting', imageUrl: '/services/finishing.webp', link: '/services#svc-finishing'},
+		{name: 'Project Management', imageUrl: '/services/full-home.webp', link: '/services#svc-full'},
 	],
 }
 
@@ -125,7 +125,7 @@ export const DEFAULT_HOME_ABOUT: HomeAboutContent = {
 	heroDescription:
 		'We are a Victoria-based renovation company bringing European precision and transparency to every project — from a single room to a full home transformation.',
 	heroCtaLabel: 'Read More About Us →',
-	heroCtaLink: '/about-us',
+	heroCtaLink: '/about-us/',
 	heroImageUrl: DEFAULT_BACKGROUNDS.homeAbout,
 	rows: [
 		{
@@ -472,7 +472,7 @@ export const DEFAULT_SERVICES: ServiceDetail[] = [
 		lead: "Whether you're working with a compact ensuite or a master bathroom with room to breathe, we design and deliver bathroom renovations that combine precise tile work, quality fixtures, and smart layout decisions.",
 		includes: ['Full demolition & removal', 'Waterproofing & tanking', 'Large-format & mosaic tiling', 'Frameless glass shower enclosures', 'Freestanding & built-in tubs', 'Floating & vanity unit installation', 'Heated floor systems', 'LED & recessed lighting', 'Custom mirror & storage solutions', 'Plumbing rough-in & finishing'],
 		meta: [{key: 'Typical Duration', val: '2 – 4 Weeks'}, {key: 'Starting From', val: '$8,500 CAD'}, {key: 'Warranty', val: '12 Months'}],
-		imageUrl: '/services/bathroom.png',
+		imageUrl: '/services/bathroom.webp',
 		imageAlt: 'Bathroom Renovation',
 	},
 	{
@@ -487,7 +487,7 @@ export const DEFAULT_SERVICES: ServiceDetail[] = [
 		lead: 'We handle everything from a full kitchen gut-and-rebuild to a targeted cabinet refresh or countertop upgrade. Our team coordinates cabinetry, counters, tile, appliances, lighting, and plumbing.',
 		includes: ['Custom & semi-custom cabinetry', 'Quartz, stone & solid-surface counters', 'Waterfall island designs', 'Backsplash tile installation', 'Appliance connection & integration', 'Under-cabinet & pot lighting', 'Open-plan layout reconfiguration', 'Pantry & storage optimisation', 'Sink, tap & plumbing rough-in', 'Soft-close hardware throughout'],
 		meta: [{key: 'Typical Duration', val: '4 – 8 Weeks'}, {key: 'Starting From', val: '$14,000 CAD'}, {key: 'Warranty', val: '12 Months'}],
-		imageUrl: '/services/kitchen.png',
+		imageUrl: '/services/kitchen.webp',
 		imageAlt: 'Kitchen Renovation',
 	},
 	{
@@ -502,7 +502,7 @@ export const DEFAULT_SERVICES: ServiceDetail[] = [
 		lead: 'We transform dark, compartmentalised, or simply tired spaces into open, light-filled rooms with thoughtful detailing — custom built-ins, feature walls, updated lighting, and finishes that last.',
 		includes: ['Wall removal & structural work', 'Custom built-in shelving & wardrobes', 'Feature wall & accent finishes', 'Fireplace surround remodelling', 'Coffered & tray ceiling detail', 'Recessed & feature lighting', 'Window trim & casement upgrades', 'Closet organisation systems', 'Drywall, skim coat & paint', 'Baseboard & moulding installation'],
 		meta: [{key: 'Typical Duration', val: '2 – 5 Weeks'}, {key: 'Starting From', val: '$6,000 CAD'}, {key: 'Warranty', val: '12 Months'}],
-		imageUrl: '/services/living.png',
+		imageUrl: '/services/living.webp',
 		imageAlt: 'Living Room Renovation',
 	},
 	{
@@ -517,7 +517,7 @@ export const DEFAULT_SERVICES: ServiceDetail[] = [
 		lead: 'We make it manageable by acting as your single point of contact across every trade — from demolition and structural work right through to the final coat of paint. You won\'t need to manage subcontractors. We do that.',
 		includes: ['Full project management', 'Demolition & site preparation', 'Structural & framing work', 'Electrical rough-in & fit-out', 'Plumbing rough-in & fit-out', 'Insulation & drywall', 'All flooring throughout', 'Full kitchen & bathroom renovation', 'Interior painting & trim', 'Permit coordination & inspection'],
 		meta: [{key: 'Typical Duration', val: '8 – 16 Weeks'}, {key: 'Starting From', val: '$45,000 CAD'}, {key: 'Warranty', val: '12 Months'}],
-		imageUrl: '/services/full-home.png',
+		imageUrl: '/services/full-home.webp',
 		imageAlt: 'Full Home Renovation',
 	},
 	{
@@ -532,7 +532,7 @@ export const DEFAULT_SERVICES: ServiceDetail[] = [
 		lead: 'We supply and install a full range of materials — from engineered hardwood and wide-plank oak to luxury vinyl plank and large-format porcelain. Every installation includes proper subfloor preparation.',
 		includes: ['Engineered & solid hardwood', 'Wide-plank white oak & walnut', 'Luxury vinyl plank (LVP)', 'Large-format porcelain tile', 'Natural stone installation', 'Subfloor repair & levelling', 'Radiant heat system integration', 'Stair nosing & transition strips', 'Site finishing & staining', 'Old floor removal & disposal'],
 		meta: [{key: 'Typical Duration', val: '3 – 10 Days'}, {key: 'Starting From', val: '$3,500 CAD'}, {key: 'Warranty', val: '12 Months'}],
-		imageUrl: '/services/flooring.png',
+		imageUrl: '/services/flooring.webp',
 		imageAlt: 'Flooring',
 	},
 	{
@@ -547,7 +547,7 @@ export const DEFAULT_SERVICES: ServiceDetail[] = [
 		lead: 'Our finishing team handles painting, trim carpentry, moulding, and all the fine detail work that separates a professional result from a DIY job. We use only low-VOC, premium-grade paints and prepare surfaces properly.',
 		includes: ['Full-home interior painting', 'Surface preparation & skim coat', 'Crown moulding & coffering', 'Baseboard & casing installation', 'Wainscoting & panel moulding', 'Feature wall treatments', 'Door & window trim upgrades', 'Closet & built-in finishing', 'Low-VOC premium paint products', 'Final touch-up & inspection'],
 		meta: [{key: 'Typical Duration', val: '3 Days – 3 Weeks'}, {key: 'Starting From', val: '$2,800 CAD'}, {key: 'Warranty', val: '12 Months'}],
-		imageUrl: '/services/finishing.png',
+		imageUrl: '/services/finishing.webp',
 		imageAlt: 'Interior Finishing',
 	},
 ]

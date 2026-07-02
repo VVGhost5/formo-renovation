@@ -47,7 +47,7 @@ const FALLBACK_PROJECTS: Project[] = [
       { src: 'https://images.unsplash.com/photo-1556909172-54557c7e4fb7?w=800&q=85',  alt: 'Kitchen island detail' },
       { src: 'https://images.unsplash.com/photo-1565538810643-b5bdb714032a?w=800&q=85', alt: 'Kitchen cabinets' },
       { src: 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=800&q=85', alt: 'Kitchen countertop' },
-      { src: 'https://images.unsplash.com/photo-1556909190-4bd0f9c00da3?w=800&q=85',  alt: 'Kitchen lighting' },
+      { src: '/kitchen-lighting.webp',  alt: 'Kitchen lighting' },
     ],
     baAfter:  'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1400&q=85',
     baBefore: 'https://images.unsplash.com/photo-1484101403633-562f891dc89a?w=1400&q=85',

@@ -1,7 +1,7 @@
 /** Fallback background URLs (match former SCSS defaults) */
 export const DEFAULT_BACKGROUNDS = {
-	homeHero: '/herosection.png',
-	homeAbout: '/about-us-homepage.png',
+	homeHero: '/herosection.webp',
+	homeAbout: '/about-us-homepage.webp',
 	homePortfolio: 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=1800&q=85',
 	homeProcess: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1800&q=85',
 	homePricing: 'https://images.unsplash.com/photo-1554469384-e58fac16e23a?w=1800&q=85',
