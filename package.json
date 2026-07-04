@@ -19,6 +19,8 @@
     "@astrojs/react": "^5.0.5",
     "@astrojs/sitemap": "^3.7.3",
     "@astrojs/vue": "^6.0.1",
+    "@fontsource/roboto": "^5.2.10",
+    "@fontsource/roboto-mono": "^5.2.9",
     "@fortawesome/fontawesome-free": "^7.2.0",
     "@sanity/astro": "^3.4.0",
     "@sanity/client": "^7.22.0",

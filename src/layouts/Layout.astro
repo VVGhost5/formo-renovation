@@ -1,6 +1,17 @@
 ---
 import '../assets/sass/main.scss'
-import '@fortawesome/fontawesome-free/css/all.min.css'
+// FA subset: https://docs.fontawesome.com/web/setup/host-yourself/cssjs
+import '@fortawesome/fontawesome-free/css/fontawesome.min.css'
+import '@fortawesome/fontawesome-free/css/solid.min.css'
+import '@fortawesome/fontawesome-free/css/regular.min.css'
+import '@fortawesome/fontawesome-free/css/brands.min.css'
+import '@fontsource/roboto/latin-300.css'
+import '@fontsource/roboto/latin-400.css'
+import '@fontsource/roboto/latin-500.css'
+import '@fontsource/roboto/latin-700.css'
+import '@fontsource/roboto-mono/latin-300.css'
+import '@fontsource/roboto-mono/latin-400.css'
+import '@fontsource/roboto-mono/latin-500.css'
 
 interface Props {
   title?: string
@@ -23,14 +34,6 @@ const {
     <meta name="description" content={description} />
     <meta name="google-site-verification" content="M3iITSQj25uxNNbwiAyWq9oB7pUy9qkNuN4wRE6oDVM" />
     <title>{title}</title>
-
-    <!-- Google Fonts: Roboto + Roboto Mono -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Mono:wght@300;400;500&display=swap"
-      rel="stylesheet"
-    />
     <link rel="sitemap" href="/sitemap-index.xml" />
   </head>
   <body>
