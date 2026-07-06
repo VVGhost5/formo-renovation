@@ -14,8 +14,9 @@ export default defineConfig({
       projectId: "9g3zb5ng",
       dataset: "production",
       useCdn: false,
-      studioBasePath: "/studio",
     }),
-    sitemap({})  
+    sitemap({
+      filter: (page) => !page.includes('/studio'),
+    })  
   ],
 });
