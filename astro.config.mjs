@@ -6,7 +6,7 @@ import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
   output: "static", // SSG by default
-  site: 'https://formo-renovation.pages.dev/',
+  site: 'https://formorenovations.com/',
   integrations: [
     vue(),
     react(),
