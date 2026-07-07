@@ -9,6 +9,7 @@ export const structure = (S) =>
     .title('Content')
     .items([
       singleton(S, 'siteSettings', 'Site Settings', 'siteSettings'),
+      singleton(S, 'metaData', 'Metadata & SEO', 'metaData'),
 
       S.divider(),
 
@@ -76,7 +77,6 @@ export const structure = (S) =>
                 ),
               singleton(S, 'aboutPage', 'About — Page', 'aboutPage'),
               singleton(S, 'contactsPage', 'Contacts — Hero & Form', 'contactsPage'),
-              singleton(S, 'metaData', 'Metadata', 'metaData'),
             ]),
         ),
     ])
