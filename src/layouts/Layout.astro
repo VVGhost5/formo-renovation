@@ -37,7 +37,7 @@ const {
     <meta name="google-site-verification" content="M3iITSQj25uxNNbwiAyWq9oB7pUy9qkNuN4wRE6oDVM" />
     <title>{title}</title>
     <link rel="sitemap" href="/sitemap-index.xml" />
-    {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+    {jsonLd && <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />}
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-HPTRQ67KC8"></script>
     <script>

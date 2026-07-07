@@ -201,7 +201,7 @@ const SERVICES_LIST_Q = defineQuery(`*[_type == "service"] | order(sortOrder asc
   image{ asset, alt }, imageAlt
 }`)
 
-const PAGE_SEO_FIELDS = `title, description, ogImage{ asset, alt }`
+const PAGE_SEO_FIELDS = `title, description, ogImage{ asset, alt }, jsonLd`
 
 const METADATA_Q = defineQuery(`*[_id == "metaData"][0]{
   defaultOgImage{ asset, alt },
