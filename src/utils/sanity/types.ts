@@ -54,6 +54,7 @@ export type PageSeo = {
 	title: string
 	description: string
 	ogImageUrl: string | null
+	jsonLd: string
 }
 
 export type HomeNumbersContent = {

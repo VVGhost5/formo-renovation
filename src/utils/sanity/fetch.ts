@@ -796,7 +796,7 @@ export function mapServicesList(docs: Record<string, unknown>[]): ServiceDetail[
 		.filter((s): s is ServiceDetail => Boolean(s))
 }
 
-type RawPageSeo = {title?: string; description?: string; ogImage?: unknown}
+type RawPageSeo = {title?: string; description?: string; ogImage?: unknown; jsonLd?: string}
 
 type RawMetadataDoc = {
 	defaultOgImage?: unknown
@@ -813,6 +813,7 @@ export function mapPageSeo(
 		title: str(doc.title, fallback.title),
 		description: str(doc.description, fallback.description),
 		ogImageUrl: pageOgImageUrl ?? defaultOgImageUrl ?? fallback.ogImageUrl,
+		jsonLd: str(doc.jsonLd, fallback.jsonLd),
 	}
 }
 

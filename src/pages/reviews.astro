@@ -3,25 +3,32 @@ import Layout     from '../layouts/Layout.astro'
 import TheNav     from '../components/vue/TheNav.vue'
 import TheFooter  from '../components/TheFooter.astro'
 import ReviewsSection from '../components/vue/ReviewsSection.vue'
-import {getReviews, getReviewsPage, getSiteSettings, DEFAULT_REVIEWS_PAGE, DEFAULT_SITE_SETTINGS} from '../utils/sanity'
+import {getReviews, getReviewsPage, getSiteSettings, getPageMetadata, DEFAULT_REVIEWS_PAGE, DEFAULT_SITE_SETTINGS, DEFAULT_PAGE_SEO} from '../utils/sanity'
 import {bgStyle} from '../utils/sanity/backgrounds'
 
 let reviews = [] as Awaited<ReturnType<typeof getReviews>>
 let page = DEFAULT_REVIEWS_PAGE
 let site = DEFAULT_SITE_SETTINGS
+let pageMeta = DEFAULT_PAGE_SEO.reviews
 
 try {
-  ;[reviews, page, site] = await Promise.all([getReviews(), getReviewsPage(), getSiteSettings()])
+  ;[reviews, page, site, pageMeta] = await Promise.all([getReviews(), getReviewsPage(), getSiteSettings(), getPageMetadata('reviews')])
 } catch (err) {
   console.warn('[sanity] Reviews page fallback.', err)
 }
 
 const heroBg = bgStyle(page.heroImageUrl)
+
+let pageJsonLd: object | undefined
+if (pageMeta.jsonLd) {
+  try { pageJsonLd = JSON.parse(pageMeta.jsonLd) } catch {}
+}
 ---
 
 <Layout
   title="Client Reviews — Formo Renovations"
   description="Read genuine client reviews from homeowners across Victoria and Vancouver Island, BC. Share your own experience with Formo Renovations."
+  jsonLd={pageJsonLd}
 >
   <TheNav client:load page="reviews" />
 

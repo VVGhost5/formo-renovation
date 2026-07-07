@@ -8,10 +8,12 @@ import {
 	getServicesList,
 	getSiteSettings,
 	getHomeContact,
+	getPageMetadata,
 	DEFAULT_SERVICES_PAGE,
 	DEFAULT_SERVICES,
 	DEFAULT_SITE_SETTINGS,
 	DEFAULT_HOME_CONTACT,
+	DEFAULT_PAGE_SEO,
 } from '../utils/sanity'
 import {bgStyle} from '../utils/sanity/backgrounds'
 
@@ -19,13 +21,15 @@ let page = DEFAULT_SERVICES_PAGE
 let services = DEFAULT_SERVICES
 let site = DEFAULT_SITE_SETTINGS
 let contact = DEFAULT_HOME_CONTACT
+let pageMeta = DEFAULT_PAGE_SEO.services
 
 try {
-	;[page, services, site, contact] = await Promise.all([
+	;[page, services, site, contact, pageMeta] = await Promise.all([
 		getServicesPage(),
 		getServicesList(),
 		getSiteSettings(),
 		getHomeContact(),
+		getPageMetadata('services'),
 	])
 } catch (err) {
 	console.warn('[sanity] Services page fallback.', err)
@@ -33,11 +37,17 @@ try {
 
 const heroBg = bgStyle(page.heroImageUrl)
 const processBg = bgStyle(page.processHeroBackgroundUrl)
+
+let pageJsonLd: object | undefined
+if (pageMeta.jsonLd) {
+	try { pageJsonLd = JSON.parse(pageMeta.jsonLd) } catch {}
+}
 ---
 
 <Layout
   title="Our Services — Formo Renovations"
   description="Full-range renovation and interior finishing services for Victoria and Vancouver Island — bathrooms, kitchens, flooring, full home renovations, and more."
+  jsonLd={pageJsonLd}
 >
   <TheNav client:load page="services" />
 

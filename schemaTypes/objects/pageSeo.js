@@ -27,6 +27,24 @@ export default defineType({
       description: 'Optional. Used when this page is shared on social media (1200×630 recommended).',
       options: {hotspot: true},
     }),
+    defineField({
+      name: 'jsonLd',
+      title: 'Structured Data (JSON-LD)',
+      type: 'text',
+      rows: 20,
+      description:
+        'Paste the full JSON-LD content here (without <script> tags). Must be valid JSON. Overrides the auto-generated schema.',
+      validation: (Rule) =>
+        Rule.custom((value) => {
+          if (!value) return true
+          try {
+            JSON.parse(value)
+            return true
+          } catch {
+            return 'Must be valid JSON'
+          }
+        }),
+    }),
   ],
   preview: {
     select: {title: 'title', subtitle: 'description'},

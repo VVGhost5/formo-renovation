@@ -7,18 +7,21 @@ import {
 	getAboutPage,
 	getSiteSettings,
 	getHomeContact,
+	getPageMetadata,
 	DEFAULT_ABOUT_PAGE,
 	DEFAULT_SITE_SETTINGS,
 	DEFAULT_HOME_CONTACT,
+	DEFAULT_PAGE_SEO,
 } from '../utils/sanity'
 import {bgStyle} from '../utils/sanity/backgrounds'
 
 let page = DEFAULT_ABOUT_PAGE
 let site = DEFAULT_SITE_SETTINGS
 let contact = DEFAULT_HOME_CONTACT
+let pageMeta = DEFAULT_PAGE_SEO.aboutUs
 
 try {
-	;[page, site, contact] = await Promise.all([getAboutPage(), getSiteSettings(), getHomeContact()])
+	;[page, site, contact, pageMeta] = await Promise.all([getAboutPage(), getSiteSettings(), getHomeContact(), getPageMetadata('aboutUs')])
 } catch (err) {
 	console.warn('[sanity] About page fallback.', err)
 }
@@ -26,11 +29,17 @@ try {
 const heroBg = bgStyle(page.heroImageUrl)
 const valuesBg = bgStyle(page.valuesHeroBackgroundUrl)
 const whyBg = bgStyle(page.whyBannerBackgroundUrl)
+
+let pageJsonLd: object | undefined
+if (pageMeta.jsonLd) {
+	try { pageJsonLd = JSON.parse(pageMeta.jsonLd) } catch {}
+}
 ---
 
 <Layout
   title="About Us — Formo Renovations"
   description="Learn the story behind Formo Renovations — our team, values, and commitment to quality craftsmanship across Victoria and Vancouver Island, BC since 2016."
+  jsonLd={pageJsonLd}
 >
   <TheNav client:load page="about-us" />
 

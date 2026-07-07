@@ -16,11 +16,13 @@ import '@fontsource/roboto-mono/latin-500.css'
 interface Props {
   title?: string
   description?: string
+  jsonLd?: object
 }
 
 const {
   title       = 'Formo Renovations — Design & Renovation Solutions',
   description = 'Premium renovation and interior finishing solutions for homes across Victoria and Vancouver Island, BC.',
+  jsonLd,
 } = Astro.props
 ---
 
@@ -35,6 +37,7 @@ const {
     <meta name="google-site-verification" content="M3iITSQj25uxNNbwiAyWq9oB7pUy9qkNuN4wRE6oDVM" />
     <title>{title}</title>
     <link rel="sitemap" href="/sitemap-index.xml" />
+    {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-HPTRQ67KC8"></script>
     <script>

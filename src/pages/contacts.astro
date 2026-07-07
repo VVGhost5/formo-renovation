@@ -5,18 +5,26 @@ import TheFooter from '../components/TheFooter.astro'
 import {
 	getContactsPage,
 	getSiteSettings,
+	getPageMetadata,
 	DEFAULT_CONTACTS_PAGE,
 	DEFAULT_SITE_SETTINGS,
+	DEFAULT_PAGE_SEO,
 } from '../utils/sanity'
 import {bgStyle} from '../utils/sanity/backgrounds'
 
 let page = DEFAULT_CONTACTS_PAGE
 let site = DEFAULT_SITE_SETTINGS
+let pageMeta = DEFAULT_PAGE_SEO.contacts
 
 try {
-	;[page, site] = await Promise.all([getContactsPage(), getSiteSettings()])
+	;[page, site, pageMeta] = await Promise.all([getContactsPage(), getSiteSettings(), getPageMetadata('contacts')])
 } catch (err) {
 	console.warn('[sanity] Contacts page fallback.', err)
+}
+
+let pageJsonLd: object | undefined
+if (pageMeta.jsonLd) {
+	try { pageJsonLd = JSON.parse(pageMeta.jsonLd) } catch {}
 }
 
 const heroBg = bgStyle(page.heroImageUrl)
@@ -27,6 +35,7 @@ const waHref = `https://wa.me/${site.whatsapp.replace(/\D/g, '')}`
 <Layout
   title="Contact Us — Formo Renovations"
   description="Get in touch with Formo Renovations. Free on-site consultations across Victoria and Vancouver Island, BC. Call, email, or fill in the form."
+  jsonLd={pageJsonLd}
 >
   <TheNav client:load page="contacts" />
 

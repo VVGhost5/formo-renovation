@@ -9,9 +9,11 @@ import {
 	getPortfolioProjects,
 	getSiteSettings,
 	getHomeContact,
+	getPageMetadata,
 	DEFAULT_PORTFOLIO_PAGE,
 	DEFAULT_SITE_SETTINGS,
 	DEFAULT_HOME_CONTACT,
+	DEFAULT_PAGE_SEO,
 } from '../utils/sanity'
 import {bgStyle} from '../utils/sanity/backgrounds'
 
@@ -19,24 +21,32 @@ let page = DEFAULT_PORTFOLIO_PAGE
 let projects: Awaited<ReturnType<typeof getPortfolioProjects>> = []
 let site = DEFAULT_SITE_SETTINGS
 let contact = DEFAULT_HOME_CONTACT
+let pageMeta = DEFAULT_PAGE_SEO.portfolio
 
 try {
-	;[page, projects, site, contact] = await Promise.all([
+	;[page, projects, site, contact, pageMeta] = await Promise.all([
 		getPortfolioPage(),
 		getPortfolioProjects(),
 		getSiteSettings(),
 		getHomeContact(),
+		getPageMetadata('portfolio'),
 	])
 } catch (err) {
 	console.warn('[sanity] Portfolio page fallback.', err)
 }
 
 const heroBg = bgStyle(page.heroImageUrl)
+
+let pageJsonLd: object | undefined
+if (pageMeta.jsonLd) {
+	try { pageJsonLd = JSON.parse(pageMeta.jsonLd) } catch {}
+}
 ---
 
 <Layout
   title="Portfolio — Formo Renovations"
   description="Browse our completed renovation projects across Victoria and Vancouver Island, BC — kitchens, bathrooms, living rooms, and full apartment transformations."
+  jsonLd={pageJsonLd}
 >
   <TheNav client:load page="portfolio" />
 

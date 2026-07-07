@@ -60,36 +60,42 @@ export const DEFAULT_PAGE_SEO: Record<SiteMetadataPageKey, PageSeo> = {
 		description:
 			'Premium renovation and interior finishing solutions for homes across Victoria and Vancouver Island, BC.',
 		ogImageUrl: null,
+		jsonLd: '',
 	},
 	aboutUs: {
 		title: 'About Us — Formo Renovations',
 		description:
 			'Learn the story behind Formo Renovations — our team, values, and commitment to quality craftsmanship across Victoria and Vancouver Island, BC since 2016.',
 		ogImageUrl: null,
+		jsonLd: '',
 	},
 	services: {
 		title: 'Our Services — Formo Renovations',
 		description:
 			'Full-range renovation and interior finishing services for Victoria and Vancouver Island — bathrooms, kitchens, flooring, full home renovations, and more.',
 		ogImageUrl: null,
+		jsonLd: '',
 	},
 	portfolio: {
 		title: 'Portfolio — Formo Renovations',
 		description:
 			'Browse our completed renovation projects across Victoria and Vancouver Island, BC — kitchens, bathrooms, living rooms, and full apartment transformations.',
 		ogImageUrl: null,
+		jsonLd: '',
 	},
 	reviews: {
 		title: 'Client Reviews — Formo Renovations',
 		description:
 			'Read genuine client reviews from homeowners across Victoria and Vancouver Island, BC. Share your own experience with Formo Renovations.',
 		ogImageUrl: null,
+		jsonLd: '',
 	},
 	contacts: {
 		title: 'Contact Us — Formo Renovations',
 		description:
 			'Get in touch with Formo Renovations. Free on-site consultations across Victoria and Vancouver Island, BC. Call, email, or fill in the form.',
 		ogImageUrl: null,
+		jsonLd: '',
 	},
 }
 

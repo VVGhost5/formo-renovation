@@ -14,6 +14,8 @@ import SectionContact     from '../components/SectionContact.astro'
 import TheFooter          from '../components/TheFooter.astro'
 import {
 	getHomePageContent,
+	getServicesPage,
+	getPageMetadata,
 	DEFAULT_HERO,
 	DEFAULT_HOME_NUMBERS,
 	DEFAULT_HOME_SERVICES,
@@ -25,6 +27,8 @@ import {
 	DEFAULT_BEFORE_AFTER,
 	DEFAULT_HOME_BEFORE_AFTER_BANNER,
 	DEFAULT_SITE_SETTINGS,
+	DEFAULT_SERVICES_PAGE,
+	DEFAULT_PAGE_SEO,
 } from '../utils/sanity'
 
 let home = {
@@ -47,9 +51,143 @@ try {
 } catch (err) {
 	console.warn('[sanity] Could not load homepage content, using defaults.', err)
 }
+
+let faqItems = DEFAULT_SERVICES_PAGE.faqItems
+try {
+	const servicesData = await getServicesPage()
+	faqItems = servicesData.faqItems
+} catch {
+	// use defaults
+}
+
+const SITE_URL = 'https://formorenovations.com'
+
+const sameAsUrls = [
+	home.site.instagramUrl,
+	home.site.facebookUrl,
+	home.site.houzzUrl,
+].filter((url) => url && url !== '#')
+
+const autoJsonLd = {
+	'@context': 'https://schema.org',
+	'@graph': [
+		{
+			'@type': 'WebSite',
+			'@id': `${SITE_URL}/#website`,
+			name: 'Formo Renovations',
+			url: `${SITE_URL}/`,
+			description:
+				'Premium renovation and interior finishing solutions for homes across Victoria and Vancouver Island, BC.',
+			inLanguage: 'en-CA',
+			potentialAction: {
+				'@type': 'SearchAction',
+				target: {
+					'@type': 'EntryPoint',
+					urlTemplate: `${SITE_URL}/?q={search_term_string}`,
+				},
+				'query-input': 'required name=search_term_string',
+			},
+		},
+		{
+			'@type': ['LocalBusiness', 'HomeAndConstructionBusiness'],
+			'@id': `${SITE_URL}/#business`,
+			name: 'Formo Renovations',
+			url: `${SITE_URL}/`,
+			logo: {
+				'@type': 'ImageObject',
+				'@id': `${SITE_URL}/#logo`,
+				url: `${SITE_URL}/logo.png`,
+				contentUrl: `${SITE_URL}/logo.png`,
+				caption: 'Formo Renovations',
+			},
+			image: `${SITE_URL}/logo.png`,
+			description: home.site.footerDescription,
+			telephone: home.site.phone,
+			email: home.site.email,
+			address: {
+				'@type': 'PostalAddress',
+				streetAddress: 'PLACEHOLDER_STREET_ADDRESS',
+				addressLocality: 'Victoria',
+				addressRegion: 'BC',
+				postalCode: 'PLACEHOLDER_POSTAL_CODE',
+				addressCountry: 'CA',
+			},
+			geo: {
+				'@type': 'GeoCoordinates',
+				latitude: 48.4284,
+				longitude: -123.3656,
+			},
+			areaServed: [
+				{
+					'@type': 'City',
+					name: 'Victoria',
+					sameAs: 'https://en.wikipedia.org/wiki/Victoria,_British_Columbia',
+				},
+				{
+					'@type': 'AdministrativeArea',
+					name: 'Vancouver Island',
+				},
+			],
+			openingHoursSpecification: [
+				{
+					'@type': 'OpeningHoursSpecification',
+					dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+					opens: '08:00',
+					closes: '18:00',
+				},
+			],
+			priceRange: '$$',
+			foundingDate: '2016',
+			founder: {
+				'@type': 'Person',
+				name: 'Michael Formo',
+			},
+			contactPoint: {
+				'@type': 'ContactPoint',
+				telephone: home.site.phone,
+				email: home.site.email,
+				contactType: 'customer service',
+				areaServed: 'CA',
+				availableLanguage: 'en',
+				hoursAvailable: {
+					'@type': 'OpeningHoursSpecification',
+					dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+					opens: '08:00',
+					closes: '18:00',
+				},
+			},
+			...(sameAsUrls.length > 0 && {sameAs: sameAsUrls}),
+		},
+		{
+			'@type': 'FAQPage',
+			mainEntity: faqItems.map((item) => ({
+				'@type': 'Question',
+				name: item.question,
+				acceptedAnswer: {
+					'@type': 'Answer',
+					text: item.answer,
+				},
+			})),
+		},
+	],
+}
+
+let pageMeta = DEFAULT_PAGE_SEO.home
+try {
+	pageMeta = await getPageMetadata('home')
+} catch {}
+
+let homepageJsonLd: object = autoJsonLd
+if (pageMeta.jsonLd) {
+	try {
+		homepageJsonLd = JSON.parse(pageMeta.jsonLd)
+	} catch {
+		console.warn('[structured-data] Invalid JSON in metaData.home.jsonLd, using auto-generated schema.')
+	}
+}
 ---
 
-<Layout title="Formo Renovations — Design & Renovation Solutions">
+<Layout title="Formo Renovations — Design & Renovation Solutions" jsonLd={homepageJsonLd}>
   <TheNav client:load page="home" />
 
   <SectionHero hero={home.hero} />
