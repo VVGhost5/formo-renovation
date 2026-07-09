@@ -197,8 +197,8 @@ if (pageMeta.jsonLd) {
   <SectionPortfolio content={home.portfolio} />
   <SectionProcess content={home.process} />
   <SectionPricing content={home.pricing} />
-  <BeforeAfterSlider client:load items={home.beforeAfter} banner={home.beforeAfterBanner} />
-  <TestimonialsSlider client:load items={home.testimonials} />
+  <BeforeAfterSlider client:visible items={home.beforeAfter} banner={home.beforeAfterBanner} />
+  <TestimonialsSlider client:visible items={home.testimonials} />
   <SectionContact content={home.contact} site={home.site} />
   <TheFooter site={home.site} />
 </Layout>

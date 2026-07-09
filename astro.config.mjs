@@ -5,8 +5,11 @@ import { defineConfig } from "astro/config";
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
-  output: "static", // SSG by default
+  output: "static",
   site: 'https://formorenovations.com/',
+  build: {
+    inlineStylesheets: 'auto',
+  },
   integrations: [
     vue(),
     react(),
