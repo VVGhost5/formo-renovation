@@ -144,7 +144,7 @@ export const DEFAULT_HOME_ABOUT: HomeAboutContent = {
 				"With over 10 years operating across Victoria and Vancouver Island, we've completed more than 200 projects ranging from bathroom refreshes to complete whole-home transformations.",
 			],
 			pills: ['Est. 2014', '200+ projects', 'Victoria, BC'],
-			imageUrl: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=900&q=85',
+			imageUrl: '/bgs/our-story.webp',
 			imageAlt: 'Our story',
 			reverse: false,
 		},
@@ -157,7 +157,7 @@ export const DEFAULT_HOME_ABOUT: HomeAboutContent = {
 				'Every project gets a dedicated coordinator, a fixed-price contract, and stage-by-stage quality inspections — so you always know exactly where things stand.',
 			],
 			pills: ['Fixed price', 'Stage QC', 'European finish'],
-			imageUrl: 'https://images.unsplash.com/photo-1484101403633-562f891dc89a?w=900&q=85',
+            imageUrl: '/bgs/our-approach.webp',
 			imageAlt: 'Our approach',
 			reverse: true,
 		},
@@ -170,7 +170,7 @@ export const DEFAULT_HOME_ABOUT: HomeAboutContent = {
 				'No subcontractor surprises. Everyone on your project has been personally vetted by our management team and has worked with us on multiple projects.',
 			],
 			pills: ['Licensed trades', 'Vetted network', 'Insured & bonded'],
-			imageUrl: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=900&q=85',
+            imageUrl: '/bgs/our-team.webp',
 			imageAlt: 'Our team',
 			reverse: false,
 		},
@@ -187,11 +187,11 @@ export const DEFAULT_HOME_PORTFOLIO: HomePortfolioContent = {
 	ctaLink: '/portfolio/',
 	heroImageUrl: DEFAULT_BACKGROUNDS.homePortfolio,
 	projects: [
-		{tag: 'Full Renovation', title: 'Oak Bay Residence', meta: 'Full renovation · Victoria, BC', imageUrl: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=800&q=82'},
-		{tag: 'Kitchen', title: 'Modern Kitchen Remodel', meta: 'Kitchen redesign · Saanich, BC', imageUrl: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=700&q=80'},
-		{tag: 'Bathroom', title: 'Spa Bathroom', meta: 'Bathroom · Langford, BC', imageUrl: 'https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=700&q=80'},
-		{tag: 'Living Room', title: 'Contemporary Living Room', meta: 'Interior design · Colwood, BC', imageUrl: 'https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=700&q=80'},
-		{tag: 'Full Renovation', title: 'Esquimalt Full Reno', meta: 'Complete renovation · Esquimalt, BC', imageUrl: 'https://images.unsplash.com/photo-1615874959474-d609969a20ed?w=700&q=80'},
+		{tag: 'Full Renovation', title: 'Oak Bay Residence', meta: 'Full renovation · Victoria, BC', imageUrl: '/bgs/full-renovation.webp'},
+		{tag: 'Kitchen', title: 'Modern Kitchen Remodel', meta: 'Kitchen redesign · Saanich, BC', imageUrl: '/bgs/kitchen.webp'},
+		{tag: 'Bathroom', title: 'Spa Bathroom', meta: 'Bathroom · Langford, BC', imageUrl: '/bgs/bathroom.webp'},
+		{tag: 'Living Room', title: 'Contemporary Living Room', meta: 'Interior design · Colwood, BC', imageUrl: '/bgs/living-room.webp'},
+		{tag: 'Full Renovation', title: 'Esquimalt Full Reno', meta: 'Complete renovation · Esquimalt, BC', imageUrl: '/bgs/full-renovation-2.webp'},
 	] as PortfolioSlide[],
 }
 
@@ -250,7 +250,7 @@ export const DEFAULT_HOME_CONTACT: HomeContactContent = {
 	ctaLabel: 'Book a Free Consultation →',
 	formTitle: 'Send Us a Message',
 	formSubtext: "We'll get back to you within one business day.",
-	photoUrl: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1000&q=85',
+	photoUrl: '/bgs/contact-us.webp',
 	photoAlt: 'Contact Formo Renovations',
 }
 
@@ -265,10 +265,10 @@ export const DEFAULT_HOME_BEFORE_AFTER_BANNER: HomeBeforeAfterBannerContent = {
 }
 
 export const DEFAULT_BEFORE_AFTER: BeforeAfterSlide[] = [
-	{name: 'Kitchen Renovation', location: 'Fairfield, Victoria', duration: '6 weeks', year: '2024', before: 'https://images.unsplash.com/photo-1484101403633-562f891dc89a?w=1400&q=85', after: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1400&q=85'},
-	{name: 'Bathroom Remodel', location: 'Oak Bay, Victoria', duration: '4 weeks', year: '2024', before: 'https://images.unsplash.com/photo-1564540586988-aa4e53c3d799?w=1400&q=85', after: 'https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=1400&q=85'},
-	{name: 'Living Room', location: 'Saanich, BC', duration: '3 weeks', year: '2024', before: 'https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=1400&q=85', after: 'https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=1400&q=85'},
-	{name: 'Full Apartment', location: 'Langford, BC', duration: '12 weeks', year: '2025', before: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1400&q=85', after: 'https://images.unsplash.com/photo-1615874959474-d609969a20ed?w=1400&q=85'},
+	{name: 'Kitchen Renovation', location: 'Fairfield, Victoria', duration: '6 weeks', year: '2024', before: '/bgs/our-approach.webp', after: '/bgs/kitchen.webp'},
+	{name: 'Bathroom Remodel', location: 'Oak Bay, Victoria', duration: '4 weeks', year: '2024', before: '/bgs/our-approach.webp', after: '/bgs/kitchen.webp'},
+	{name: 'Living Room', location: 'Saanich, BC', duration: '3 weeks', year: '2024', before: '/bgs/our-approach.webp', after: '/bgs/kitchen.webp'},
+	{name: 'Full Apartment', location: 'Langford, BC', duration: '12 weeks', year: '2025', before: '/bgs/our-approach.webp', after: '/bgs/kitchen.webp'},
 ]
 
 export const DEFAULT_PORTFOLIO_PAGE: PortfolioPageContent = {
