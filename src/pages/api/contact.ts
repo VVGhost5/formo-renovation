@@ -2,7 +2,6 @@ export const prerender = false
 
 import type { APIRoute } from 'astro'
 import { createClient } from '@sanity/client'
-import nodemailer from 'nodemailer'
 
 const FORM_TYPE_LABELS: Record<string, string> = {
   'request-call': '01 · Request a Free Estimate',
@@ -138,14 +137,11 @@ export const POST: APIRoute = async ({ request }) => {
     })
   }
 
-  const smtpHost = import.meta.env.SMTP_HOST
-  const smtpPort = Number(import.meta.env.SMTP_PORT ?? 587)
-  const smtpUser = import.meta.env.SMTP_USER
-  const smtpPass = import.meta.env.SMTP_PASS
-  const smtpFrom = import.meta.env.SMTP_FROM || smtpUser
+  const apiKey = import.meta.env.BREVO_API_KEY
+  const senderEmail = import.meta.env.BREVO_SENDER_EMAIL
 
-  if (!smtpHost || !smtpUser || !smtpPass) {
-    console.error('[contact] SMTP env vars missing')
+  if (!apiKey || !senderEmail) {
+    console.error('[contact] BREVO_API_KEY or BREVO_SENDER_EMAIL env vars missing')
     return new Response(JSON.stringify({ ok: false, error: 'Mail service not configured' }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' },
@@ -166,19 +162,29 @@ export const POST: APIRoute = async ({ request }) => {
   const html = buildEmailHtml(rawFields, requestId, formType)
 
   try {
-    const transporter = nodemailer.createTransport({
-      host: smtpHost,
-      port: smtpPort,
-      secure: smtpPort === 465,
-      auth: { user: smtpUser, pass: smtpPass },
+    const res = await fetch('https://api.brevo.com/v3/smtp/email', {
+      method: 'POST',
+      headers: {
+        'api-key': apiKey,
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      body: JSON.stringify({
+        sender: { name: 'Formo Renovations', email: senderEmail },
+        to: [{ email: notificationEmail }],
+        subject: `[${requestId}] New Inquiry — ${label}`,
+        htmlContent: html,
+      }),
     })
 
-    await transporter.sendMail({
-      from: `"Formo Renovations" <${smtpFrom}>`,
-      to: notificationEmail,
-      subject: `[${requestId}] New Inquiry — ${label}`,
-      html,
-    })
+    if (!res.ok) {
+      const errText = await res.text()
+      console.error('[contact] Brevo API error:', res.status, errText)
+      return new Response(
+        JSON.stringify({ ok: false, error: 'Failed to send email', detail: errText }),
+        { status: 500, headers: { 'Content-Type': 'application/json' } },
+      )
+    }
 
     return new Response(JSON.stringify({ ok: true, requestId }), {
       status: 200,
@@ -186,17 +192,10 @@ export const POST: APIRoute = async ({ request }) => {
     })
   } catch (err) {
     const detail = err instanceof Error ? err.message : String(err)
-    console.error('[contact] SMTP error:', detail)
+    console.error('[contact] Fetch error:', detail)
     return new Response(
-      JSON.stringify({
-        ok: false,
-        error: 'Failed to send email',
-        ...(import.meta.env.DEV ? { detail } : {}),
-      }),
-      {
-        status: 500,
-        headers: { 'Content-Type': 'application/json' },
-      },
+      JSON.stringify({ ok: false, error: 'Failed to send email', detail }),
+      { status: 500, headers: { 'Content-Type': 'application/json' } },
     )
   }
 }

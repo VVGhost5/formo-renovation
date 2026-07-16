@@ -1,12 +1,12 @@
 import sanity from "@sanity/astro";
 import react from "@astrojs/react";
 import vue from "@astrojs/vue";
-import node from "@astrojs/node";
+import cloudflare from "@astrojs/cloudflare";
 import { defineConfig } from "astro/config";
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
-  adapter: node({ mode: "standalone" }),
+  adapter: cloudflare({ imageService: 'passthrough' }),
   site: 'https://formorenovations.com/',
   build: {
     inlineStylesheets: 'auto',
