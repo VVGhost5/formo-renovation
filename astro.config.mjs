@@ -6,7 +6,10 @@ import { defineConfig } from "astro/config";
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
-  adapter: cloudflare({ imageService: 'passthrough' }),
+  adapter: cloudflare({
+    imageService: 'passthrough',
+    platformProxy: { enabled: true },
+  }),
   site: 'https://formorenovations.com/',
   build: {
     inlineStylesheets: 'auto',

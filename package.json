@@ -16,6 +16,7 @@
     "studio:deploy": "sanity deploy"
   },
   "dependencies": {
+    "@astrojs/cloudflare": "^13.7.0",
     "@astrojs/react": "^5.0.5",
     "@astrojs/sitemap": "^3.7.3",
     "@astrojs/vue": "^6.0.1",
@@ -40,7 +41,8 @@
     "@sanity/eslint-config-studio": "^6.0.0",
     "@types/react": "^19.2.3",
     "@types/react-dom": "^19.2.3",
-    "sass": "^1.99.0"
+    "sass": "^1.99.0",
+    "wrangler": "^4.111.0"
   },
   "repository": {
     "type": "git",
