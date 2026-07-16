@@ -309,7 +309,8 @@ const waHref = `https://wa.me/${site.whatsapp.replace(/\D/g, '')}`
   updateBudget();
 
   // Form submit
-  document.getElementById('form-submit')?.addEventListener('click', () => {
+  const submitBtn = document.getElementById('form-submit') as HTMLButtonElement | null;
+  submitBtn?.addEventListener('click', async () => {
     const required = ['f-first','f-last','f-email','f-message'];
     let valid = true;
     required.forEach(id => {
@@ -322,10 +323,54 @@ const waHref = `https://wa.me/${site.whatsapp.replace(/\D/g, '')}`
       }
     });
     if (!valid) return;
-    const form = document.getElementById('main-form');
-    const success = document.getElementById('form-success');
-    if (form) form.classList.add('sent');
-    if (success) success.classList.add('show');
-    window.scrollTo({ top: (document.getElementById('contact-main')?.offsetTop ?? 0) - 80, behavior: 'smooth' });
+
+    const firstName = (document.getElementById('f-first') as HTMLInputElement)?.value.trim();
+    const lastName = (document.getElementById('f-last') as HTMLInputElement)?.value.trim();
+    const email = (document.getElementById('f-email') as HTMLInputElement)?.value.trim();
+    const phone = (document.getElementById('f-phone') as HTMLInputElement)?.value.trim();
+    const location = (document.getElementById('f-location') as HTMLInputElement)?.value.trim();
+    const message = (document.getElementById('f-message') as HTMLTextAreaElement)?.value.trim();
+    const startDate = (document.getElementById('f-date') as HTMLInputElement)?.value.trim();
+    const source = (document.getElementById('f-source') as HTMLSelectElement)?.value;
+    const budget = (document.getElementById('budget-display') as HTMLElement)?.textContent ?? '';
+
+    const checkedServices = Array.from(
+      document.querySelectorAll<HTMLInputElement>('.sc-item.checked input[type="checkbox"]')
+    ).map(cb => cb.value).join(', ');
+
+    if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Sending…'; }
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          formType: 'request-consultation',
+          Name: `${firstName} ${lastName}`.trim(),
+          Email: email,
+          Phone: phone,
+          Location: location,
+          Services: checkedServices,
+          Budget: budget,
+          'Start Date': startDate,
+          Message: message,
+          'How Did You Hear': source,
+        }),
+      });
+      const data = await res.json();
+      if (data.ok) {
+        const form = document.getElementById('main-form');
+        const success = document.getElementById('form-success');
+        if (form) form.classList.add('sent');
+        if (success) success.classList.add('show');
+        window.scrollTo({ top: (document.getElementById('contact-main')?.offsetTop ?? 0) - 80, behavior: 'smooth' });
+      } else {
+        if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Send Message →'; }
+        alert('Something went wrong. Please try again.');
+      }
+    } catch {
+      if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Send Message →'; }
+      alert('Something went wrong. Please try again.');
+    }
   });
 </script>

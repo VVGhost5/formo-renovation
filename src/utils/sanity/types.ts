@@ -33,6 +33,7 @@ export type SiteSettingsContent = {
 	phoneHours: string
 	email: string
 	emailNote: string
+	notificationEmail: string
 	whatsapp: string
 	whatsappNote: string
 	serviceArea: string

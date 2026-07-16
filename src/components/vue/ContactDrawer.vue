@@ -15,16 +15,36 @@ const contact = ref('')
 const message = ref('')
 const submitted = ref(false)
 const submitting = ref(false)
+const submitError = ref('')
 
 function close() { emit('close') }
 
-function handleSubmit() {
+async function handleSubmit() {
   if (!name.value.trim() || !contact.value.trim() || !message.value.trim()) return
   submitting.value = true
-  setTimeout(() => {
+  submitError.value = ''
+  try {
+    const res = await fetch('/api/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        formType: 'request-message-response',
+        Name: name.value.trim(),
+        'Phone or Email': contact.value.trim(),
+        Message: message.value.trim(),
+      }),
+    })
+    const data = await res.json()
+    if (data.ok) {
+      submitted.value = true
+    } else {
+      submitError.value = 'Something went wrong. Please try again.'
+    }
+  } catch {
+    submitError.value = 'Something went wrong. Please try again.'
+  } finally {
     submitting.value = false
-    submitted.value = true
-  }, 800)
+  }
 }
 
 function onKey(e: KeyboardEvent) {
@@ -133,6 +153,7 @@ onUnmounted(() => document.removeEventListener('keydown', onKey))
                 <label for="cd-message">Tell us about your project *</label>
                 <textarea id="cd-message" v-model="message" placeholder="Describe your project briefly…" rows="3" required></textarea>
               </div>
+              <p v-if="submitError" class="cd-error">{{ submitError }}</p>
               <button
                 type="submit"
                 class="cd-submit"

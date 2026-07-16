@@ -15,6 +15,11 @@ export default defineType({
     defineField({name: 'phoneHours', title: 'Phone hours note', type: 'string'}),
     defineField({name: 'email', title: 'Email', type: 'string'}),
     defineField({name: 'emailNote', title: 'Email note', type: 'string'}),
+    defineField({
+      name: 'notificationEmail',
+      title: 'Notification Email (receives all form submissions)',
+      type: 'string',
+    }),
     defineField({name: 'whatsapp', title: 'WhatsApp number', type: 'string'}),
     defineField({name: 'whatsappNote', title: 'WhatsApp note', type: 'string'}),
     defineField({name: 'serviceArea', title: 'Service area', type: 'string'}),

@@ -1,0 +1,202 @@
+export const prerender = false
+
+import type { APIRoute } from 'astro'
+import { createClient } from '@sanity/client'
+import nodemailer from 'nodemailer'
+
+const FORM_TYPE_LABELS: Record<string, string> = {
+  'request-call': '01 · Request a Free Estimate',
+  'request-consultation': '02 · Send Us a Message',
+  'request-message-response': '03 · Quick Contact (Sidebar)',
+}
+
+function generateRequestId(): string {
+  const now = new Date()
+  const date = now.toISOString().slice(0, 10).replace(/-/g, '')
+  const rand = Math.floor(Math.random() * 0xffff)
+    .toString(16)
+    .toUpperCase()
+    .padStart(4, '0')
+  return `FR-${date}-${rand}`
+}
+
+function buildEmailHtml(fields: Record<string, string>, requestId: string, formType: string): string {
+  const label = FORM_TYPE_LABELS[formType] ?? formType
+  const timestamp = new Date().toLocaleString('en-CA', {
+    timeZone: 'America/Vancouver',
+    dateStyle: 'long',
+    timeStyle: 'short',
+  })
+
+  const fieldRows = Object.entries(fields)
+    .filter(([, v]) => v && v.trim())
+    .map(
+      ([k, v]) => `
+      <tr>
+        <td style="padding:10px 16px;font-size:13px;color:#888;font-weight:600;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap;border-bottom:1px solid #f0f0f0;width:160px;vertical-align:top;">${k}</td>
+        <td style="padding:10px 16px;font-size:14px;color:#1a1a1a;border-bottom:1px solid #f0f0f0;vertical-align:top;word-break:break-word;">${v.replace(/\n/g, '<br>')}</td>
+      </tr>`,
+    )
+    .join('')
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>New Inquiry — Formo Renovations</title>
+</head>
+<body style="margin:0;padding:0;background:#f5f5f3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#f5f5f3;padding:32px 16px;">
+    <tr>
+      <td align="center">
+        <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
+
+          <!-- Header -->
+          <tr>
+            <td style="background:#1a1a1a;border-radius:12px 12px 0 0;padding:28px 32px;">
+              <table width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td>
+                    <div style="font-size:11px;color:#888;letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px;">Formo Renovations</div>
+                    <div style="font-size:22px;font-weight:700;color:#fff;">New Inquiry Received</div>
+                  </td>
+                  <td align="right" style="vertical-align:top;">
+                    <div style="display:inline-block;background:#2a2a2a;border:1px solid #333;border-radius:6px;padding:6px 12px;font-size:12px;color:#ccc;font-family:monospace;">${requestId}</div>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Form type badge -->
+          <tr>
+            <td style="background:#c8a96e;padding:10px 32px;">
+              <span style="font-size:12px;font-weight:700;color:#1a1a1a;letter-spacing:.08em;text-transform:uppercase;">${label}</span>
+            </td>
+          </tr>
+
+          <!-- Body -->
+          <tr>
+            <td style="background:#fff;border-radius:0 0 12px 12px;padding:0;">
+              <table width="100%" cellpadding="0" cellspacing="0">
+                ${fieldRows}
+              </table>
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td style="padding:20px 0 0;text-align:center;">
+              <p style="margin:0;font-size:12px;color:#aaa;">Submitted on ${timestamp} (Pacific Time)</p>
+              <p style="margin:6px 0 0;font-size:12px;color:#aaa;">Formo Renovations · Victoria &amp; Vancouver Island, BC</p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>`
+}
+
+async function getNotificationEmail(): Promise<string> {
+  try {
+    const client = createClient({
+      projectId: '9g3zb5ng',
+      dataset: 'production',
+      apiVersion: '2024-01-01',
+      useCdn: false,
+    })
+    const doc = await client.fetch<{ notificationEmail?: string }>(
+      `*[_id == "siteSettings"][0]{ notificationEmail }`,
+    )
+    return doc?.notificationEmail?.trim() || ''
+  } catch {
+    return ''
+  }
+}
+
+export const POST: APIRoute = async ({ request }) => {
+  let body: Record<string, string>
+  try {
+    body = await request.json()
+  } catch {
+    return new Response(JSON.stringify({ ok: false, error: 'Invalid JSON' }), {
+      status: 400,
+      headers: { 'Content-Type': 'application/json' },
+    })
+  }
+
+  const { formType, ...rawFields } = body
+
+  if (!formType || !FORM_TYPE_LABELS[formType]) {
+    return new Response(JSON.stringify({ ok: false, error: 'Unknown form type' }), {
+      status: 400,
+      headers: { 'Content-Type': 'application/json' },
+    })
+  }
+
+  const smtpHost = import.meta.env.SMTP_HOST
+  const smtpPort = Number(import.meta.env.SMTP_PORT ?? 587)
+  const smtpUser = import.meta.env.SMTP_USER
+  const smtpPass = import.meta.env.SMTP_PASS
+  const smtpFrom = import.meta.env.SMTP_FROM || smtpUser
+
+  if (!smtpHost || !smtpUser || !smtpPass) {
+    console.error('[contact] SMTP env vars missing')
+    return new Response(JSON.stringify({ ok: false, error: 'Mail service not configured' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    })
+  }
+
+  const notificationEmail = await getNotificationEmail()
+  if (!notificationEmail) {
+    console.error('[contact] notificationEmail not set in Sanity siteSettings')
+    return new Response(JSON.stringify({ ok: false, error: 'Recipient not configured' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    })
+  }
+
+  const requestId = generateRequestId()
+  const label = FORM_TYPE_LABELS[formType]
+  const html = buildEmailHtml(rawFields, requestId, formType)
+
+  try {
+    const transporter = nodemailer.createTransport({
+      host: smtpHost,
+      port: smtpPort,
+      secure: smtpPort === 465,
+      auth: { user: smtpUser, pass: smtpPass },
+    })
+
+    await transporter.sendMail({
+      from: `"Formo Renovations" <${smtpFrom}>`,
+      to: notificationEmail,
+      subject: `[${requestId}] New Inquiry — ${label}`,
+      html,
+    })
+
+    return new Response(JSON.stringify({ ok: true, requestId }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    })
+  } catch (err) {
+    const detail = err instanceof Error ? err.message : String(err)
+    console.error('[contact] SMTP error:', detail)
+    return new Response(
+      JSON.stringify({
+        ok: false,
+        error: 'Failed to send email',
+        ...(import.meta.env.DEV ? { detail } : {}),
+      }),
+      {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' },
+      },
+    )
+  }
+}

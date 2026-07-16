@@ -45,6 +45,7 @@ export const DEFAULT_SITE_SETTINGS: SiteSettingsContent = {
 	phoneHours: 'Mon – Fri, 8:00 AM – 6:00 PM',
 	email: 'hello@formorenovations.ca',
 	emailNote: 'Response within 1 business day',
+	notificationEmail: '',
 	whatsapp: '+1 (250) 000-0000',
 	whatsappNote: 'Quick questions & project photos',
 	serviceArea: 'Victoria & Vancouver Island',

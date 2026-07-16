@@ -47,13 +47,52 @@ const bgStyleAttr = bgStyle(hero.backgroundImageUrl)
     <div class="hero-form-overlay">
       <div class="hfo-title">{hero.formTitle}</div>
       <div class="hfo-sub">{hero.formSubtext}</div>
-      <div class="hfo-fields">
-        <input type="text" placeholder="Your Name" />
-        <input type="tel" placeholder="Phone Number" />
-        <input type="email" placeholder="Email Address" />
-        <button class="hfo-submit">Send Message →</button>
+      <form id="hero-form" class="hfo-fields" novalidate>
+        <input type="hidden" name="formType" value="request-call" />
+        <input id="hf-name" name="Name" type="text" placeholder="Your Name" required />
+        <input id="hf-phone" name="Phone" type="tel" placeholder="Phone Number" />
+        <input id="hf-email" name="Email" type="email" placeholder="Email Address" required />
+        <button type="submit" class="hfo-submit" id="hf-submit">Send Message →</button>
+      </form>
+      <div class="hfo-success" id="hf-success" style="display:none;text-align:center;padding:12px 0;color:#c8a96e;font-weight:600;">
+        ✓ Sent! We'll be in touch soon.
       </div>
       <div class="hfo-note">{hero.formNote}</div>
     </div>
   </div>
 </section>
+
+<script>
+  const heroForm = document.getElementById('hero-form') as HTMLFormElement | null
+  const hfSubmit = document.getElementById('hf-submit') as HTMLButtonElement | null
+  const hfSuccess = document.getElementById('hf-success') as HTMLElement | null
+
+  heroForm?.addEventListener('submit', async (e) => {
+    e.preventDefault()
+    const name = (document.getElementById('hf-name') as HTMLInputElement)?.value.trim()
+    const phone = (document.getElementById('hf-phone') as HTMLInputElement)?.value.trim()
+    const email = (document.getElementById('hf-email') as HTMLInputElement)?.value.trim()
+    if (!name || !email) return
+
+    if (hfSubmit) { hfSubmit.disabled = true; hfSubmit.textContent = 'Sending…' }
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ formType: 'request-call', Name: name, Phone: phone, 'Email Address': email }),
+      })
+      const data = await res.json()
+      if (data.ok) {
+        heroForm.style.display = 'none'
+        if (hfSuccess) hfSuccess.style.display = 'block'
+      } else {
+        if (hfSubmit) { hfSubmit.disabled = false; hfSubmit.textContent = 'Send Message →' }
+        alert('Something went wrong. Please try again.')
+      }
+    } catch {
+      if (hfSubmit) { hfSubmit.disabled = false; hfSubmit.textContent = 'Send Message →' }
+      alert('Something went wrong. Please try again.')
+    }
+  })
+</script>
