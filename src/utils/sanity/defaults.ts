@@ -191,7 +191,7 @@ export const DEFAULT_HOME_PORTFOLIO: HomePortfolioContent = {
 		{tag: 'Kitchen', title: 'Modern Kitchen Remodel', meta: 'Kitchen redesign · Saanich, BC', imageUrl: '/bgs/kitchen.webp'},
 		{tag: 'Bathroom', title: 'Spa Bathroom', meta: 'Bathroom · Langford, BC', imageUrl: '/bgs/bathroom.webp'},
 		{tag: 'Living Room', title: 'Contemporary Living Room', meta: 'Interior design · Colwood, BC', imageUrl: '/bgs/living-room.webp'},
-		{tag: 'Full Renovation', title: 'Esquimalt Full Reno', meta: 'Complete renovation · Esquimalt, BC', imageUrl: '/bgs/full-renovation-2.webp'},
+		{tag: 'Full Renovation', title: 'Esquimalt Full Reno', meta: 'Complete renovation · Esquimalt, BC', imageUrl: '/bgs/full-renovations-2.webp'},
 	] as PortfolioSlide[],
 }
 
