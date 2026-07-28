@@ -1,8 +1,10 @@
 const PHONE_MASK_MAX_LENGTH = 17 // +1 (XXX) XXX-XXXX
 
-/** Strip non-digits and keep up to 10 national digits (drops a leading US country code). */
+const phoneDigits = new WeakMap<HTMLInputElement, string>()
+
+/** National digits only — ignores the +1 mask prefix already shown in the field. */
 export function extractPhoneDigits(value: string): string {
-  let digits = value.replace(/\D/g, '')
+  let digits = value.replace(/^\+1\s*/, '').replace(/\D/g, '')
   if (digits.length > 10 && digits.startsWith('1')) digits = digits.slice(1)
   return digits.slice(0, 10)
 }
@@ -32,31 +34,59 @@ export function formatContactInput(value: string): string {
   return formatPhoneInput(value)
 }
 
+function setPhoneDigits(input: HTMLInputElement, digits: string): void {
+  const national = digits.slice(0, 10)
+  phoneDigits.set(input, national)
+  const formatted = formatPhoneDigits(national)
+  input.value = formatted
+  input.setSelectionRange(formatted.length, formatted.length)
+}
+
+const ALLOWED_KEYS = new Set([
+  'Tab',
+  'ArrowLeft',
+  'ArrowRight',
+  'ArrowUp',
+  'ArrowDown',
+  'Home',
+  'End',
+])
+
 export function bindPhoneMask(input: HTMLInputElement): void {
   input.setAttribute('inputmode', 'numeric')
   input.setAttribute('maxlength', String(PHONE_MASK_MAX_LENGTH))
   input.setAttribute('autocomplete', input.getAttribute('autocomplete') ?? 'tel')
 
-  const onInput = () => {
-    const formatted = formatPhoneInput(input.value)
-    if (input.value === formatted) return
-    input.value = formatted
-    input.setSelectionRange(formatted.length, formatted.length)
-  }
-
-  input.addEventListener('input', onInput)
+  setPhoneDigits(input, extractPhoneDigits(input.value))
 
   input.addEventListener('keydown', (e) => {
-    if (e.key.length !== 1 || e.ctrlKey || e.metaKey || e.altKey) return
-    if (!/\d/.test(e.key)) e.preventDefault()
+    if (e.ctrlKey || e.metaKey || e.altKey) return
+    if (ALLOWED_KEYS.has(e.key)) return
+
+    if (e.key === 'Backspace' || e.key === 'Delete') {
+      e.preventDefault()
+      const current = phoneDigits.get(input) ?? ''
+      setPhoneDigits(input, current.slice(0, -1))
+      input.dispatchEvent(new Event('input', { bubbles: true }))
+      return
+    }
+
+    if (e.key.length === 1 && /\d/.test(e.key)) {
+      e.preventDefault()
+      const current = phoneDigits.get(input) ?? ''
+      if (current.length >= 10) return
+      setPhoneDigits(input, current + e.key)
+      input.dispatchEvent(new Event('input', { bubbles: true }))
+      return
+    }
+
+    if (e.key.length === 1) e.preventDefault()
   })
 
   input.addEventListener('paste', (e) => {
     e.preventDefault()
     const pasted = e.clipboardData?.getData('text') ?? ''
-    const digits = extractPhoneDigits(input.value + pasted)
-    input.value = formatPhoneDigits(digits)
-    input.setSelectionRange(input.value.length, input.value.length)
+    setPhoneDigits(input, extractPhoneDigits(pasted))
     input.dispatchEvent(new Event('input', { bubbles: true }))
   })
 }
