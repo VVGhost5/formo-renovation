@@ -49,9 +49,15 @@ const bgStyleAttr = bgStyle(hero.backgroundImageUrl)
       <div class="hfo-sub">{hero.formSubtext}</div>
       <form id="hero-form" class="hfo-fields" novalidate>
         <input type="hidden" name="formType" value="request-call" />
-        <input id="hf-name" name="Name" type="text" placeholder="Your Name" required />
-        <input id="hf-phone" name="Phone" type="tel" placeholder="Phone Number" />
-        <input id="hf-email" name="Email" type="email" placeholder="Email Address" required />
+        <div class="hfo-fg" data-field="name">
+          <input id="hf-name" name="Name" type="text" placeholder="Your Name *" autocomplete="name" />
+        </div>
+        <div class="hfo-fg" data-field="phone">
+          <input id="hf-phone" name="Phone" type="tel" placeholder="+1 (250) 000-0000 *" autocomplete="tel" />
+        </div>
+        <div class="hfo-fg" data-field="email">
+          <input id="hf-email" name="Email" type="email" placeholder="Email Address *" autocomplete="email" />
+        </div>
         <button type="submit" class="hfo-submit" id="hf-submit">Send Message →</button>
       </form>
       <div class="hfo-success" id="hf-success" style="display:none;text-align:center;padding:12px 0;color:#c8a96e;font-weight:600;">
@@ -63,16 +69,31 @@ const bgStyleAttr = bgStyle(hero.backgroundImageUrl)
 </section>
 
 <script>
+  import {
+    applyFieldErrors,
+    validateEstimateFields,
+  } from '../utils/formValidation'
+
   const heroForm = document.getElementById('hero-form') as HTMLFormElement | null
   const hfSubmit = document.getElementById('hf-submit') as HTMLButtonElement | null
   const hfSuccess = document.getElementById('hf-success') as HTMLElement | null
 
   heroForm?.addEventListener('submit', async (e) => {
     e.preventDefault()
-    const name = (document.getElementById('hf-name') as HTMLInputElement)?.value.trim()
-    const phone = (document.getElementById('hf-phone') as HTMLInputElement)?.value.trim()
-    const email = (document.getElementById('hf-email') as HTMLInputElement)?.value.trim()
-    if (!name || !email) return
+    const name = (document.getElementById('hf-name') as HTMLInputElement)?.value ?? ''
+    const phone = (document.getElementById('hf-phone') as HTMLInputElement)?.value ?? ''
+    const email = (document.getElementById('hf-email') as HTMLInputElement)?.value ?? ''
+
+    const errors = validateEstimateFields({ name, phone, email })
+    const valid = applyFieldErrors(
+      {
+        name: heroForm?.querySelector('[data-field="name"]') as HTMLElement,
+        phone: heroForm?.querySelector('[data-field="phone"]') as HTMLElement,
+        email: heroForm?.querySelector('[data-field="email"]') as HTMLElement,
+      },
+      errors,
+    )
+    if (!valid) return
 
     if (hfSubmit) { hfSubmit.disabled = true; hfSubmit.textContent = 'Sending…' }
 
@@ -80,7 +101,12 @@ const bgStyleAttr = bgStyle(hero.backgroundImageUrl)
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ formType: 'request-call', Name: name, Phone: phone, 'Email Address': email }),
+        body: JSON.stringify({
+          formType: 'request-call',
+          Name: name.trim(),
+          Phone: phone.trim(),
+          'Email Address': email.trim(),
+        }),
       })
       const data = await res.json()
       if (data.ok) {

@@ -105,6 +105,13 @@
 
   textarea { resize: vertical; min-height: 110px; }
   select option { background: var(--hero-bg); color: var(--text-dark); }
+
+  &.fg--error input,
+  &.fg--error textarea,
+  &.fg--error select {
+    border-color: #c0392b !important;
+    box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.08) !important;
+  }
 }
 
 .cform-submit {

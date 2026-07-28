@@ -38,22 +38,22 @@ const waHref = `https://wa.me/${site.whatsapp.replace(/\D/g, '')}`
       <form class="cform" id="section-contact-form" novalidate>
         <input type="hidden" name="formType" value="request-consultation" />
         <div class="cform-row">
-          <div class="fg">
+          <div class="fg" data-field="firstName">
             <label for="sc-first-name">First Name *</label>
-            <input id="sc-first-name" type="text" placeholder="John" required />
+            <input id="sc-first-name" type="text" placeholder="John" autocomplete="given-name" />
           </div>
           <div class="fg">
             <label for="sc-last-name">Last Name</label>
-            <input id="sc-last-name" type="text" placeholder="Smith" />
+            <input id="sc-last-name" type="text" placeholder="Smith" autocomplete="family-name" />
           </div>
         </div>
-        <div class="fg">
+        <div class="fg" data-field="email">
           <label for="sc-email">Email *</label>
-          <input id="sc-email" type="email" placeholder="john@email.com" required />
+          <input id="sc-email" type="email" placeholder="john@email.com" autocomplete="email" />
         </div>
-        <div class="fg">
-          <label for="sc-phone">Phone</label>
-          <input id="sc-phone" type="tel" placeholder={site.phone} />
+        <div class="fg" data-field="phone">
+          <label for="sc-phone">Phone *</label>
+          <input id="sc-phone" type="tel" placeholder={site.phone} autocomplete="tel" />
         </div>
         <div class="fg">
           <label for="sc-service">Service Interested In</label>
@@ -68,9 +68,9 @@ const waHref = `https://wa.me/${site.whatsapp.replace(/\D/g, '')}`
             <option>Free Estimate Only</option>
           </select>
         </div>
-        <div class="fg">
+        <div class="fg" data-field="message">
           <label for="sc-message">Tell Us About Your Project *</label>
-          <textarea id="sc-message" placeholder="Describe your project, location, timeline and any relevant details…" required></textarea>
+          <textarea id="sc-message" placeholder="Describe your project, location, timeline and any relevant details…"></textarea>
         </div>
         <button type="submit" class="cform-submit" id="sc-submit">Send Message →</button>
       </form>
@@ -106,20 +106,32 @@ const waHref = `https://wa.me/${site.whatsapp.replace(/\D/g, '')}`
 </section>
 
 <script>
+  import { applyFieldErrors, validateContactFields } from '../utils/formValidation'
+
   const scForm = document.getElementById('section-contact-form') as HTMLFormElement | null
   const scSubmit = document.getElementById('sc-submit') as HTMLButtonElement | null
   const scSuccess = document.getElementById('sc-success') as HTMLElement | null
 
   scForm?.addEventListener('submit', async (e) => {
     e.preventDefault()
-    const firstName = (document.getElementById('sc-first-name') as HTMLInputElement)?.value.trim()
-    const lastName = (document.getElementById('sc-last-name') as HTMLInputElement)?.value.trim()
-    const email = (document.getElementById('sc-email') as HTMLInputElement)?.value.trim()
-    const phone = (document.getElementById('sc-phone') as HTMLInputElement)?.value.trim()
+    const firstName = (document.getElementById('sc-first-name') as HTMLInputElement)?.value ?? ''
+    const lastName = (document.getElementById('sc-last-name') as HTMLInputElement)?.value ?? ''
+    const email = (document.getElementById('sc-email') as HTMLInputElement)?.value ?? ''
+    const phone = (document.getElementById('sc-phone') as HTMLInputElement)?.value ?? ''
     const service = (document.getElementById('sc-service') as HTMLSelectElement)?.value
-    const message = (document.getElementById('sc-message') as HTMLTextAreaElement)?.value.trim()
+    const message = (document.getElementById('sc-message') as HTMLTextAreaElement)?.value ?? ''
 
-    if (!firstName || !email || !message) return
+    const errors = validateContactFields({ firstName, email, phone, message })
+    const valid = applyFieldErrors(
+      {
+        firstName: scForm?.querySelector('[data-field="firstName"]') as HTMLElement,
+        email: scForm?.querySelector('[data-field="email"]') as HTMLElement,
+        phone: scForm?.querySelector('[data-field="phone"]') as HTMLElement,
+        message: scForm?.querySelector('[data-field="message"]') as HTMLElement,
+      },
+      errors,
+    )
+    if (!valid) return
 
     if (scSubmit) { scSubmit.disabled = true; scSubmit.textContent = 'Sending…' }
 
@@ -129,11 +141,11 @@ const waHref = `https://wa.me/${site.whatsapp.replace(/\D/g, '')}`
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           formType: 'request-consultation',
-          Name: `${firstName} ${lastName}`.trim(),
-          Email: email,
-          Phone: phone,
+          Name: `${firstName.trim()} ${lastName.trim()}`.trim(),
+          Email: email.trim(),
+          Phone: phone.trim(),
           Service: service,
-          Message: message,
+          Message: message.trim(),
         }),
       })
       const data = await res.json()

@@ -40,4 +40,18 @@
     resize: vertical;
     min-height: 110px;
   }
+
+  &--error input,
+  &--error textarea,
+  &--error select {
+    border-color: #c0392b !important;
+    box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.08) !important;
+  }
+}
+
+.fg-error {
+  font-size: 0.8125rem;
+  color: #c0392b;
+  margin-top: 2px;
+  display: block;
 }

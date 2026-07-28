@@ -175,6 +175,17 @@
 
 .hfo-fields {
   display: flex; flex-direction: column; gap: 10px;
+}
+
+.hfo-fg {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  &.fg--error input {
+    border-color: #c0392b !important;
+    box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.08) !important;
+  }
 
   input {
     font-family: var(--font); font-size: 0.9375rem;

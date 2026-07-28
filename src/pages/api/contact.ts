@@ -2,6 +2,12 @@ export const prerender = false
 
 import type { APIRoute } from 'astro'
 import { createClient } from '@sanity/client'
+import {
+  isRequired,
+  isValidEmail,
+  isValidPhoneOrEmail,
+  validatePhoneField,
+} from '../../utils/formValidation'
 
 const FORM_TYPE_LABELS: Record<string, string> = {
   'request-call': '01 · Request a Free Estimate',
@@ -100,6 +106,40 @@ function buildEmailHtml(fields: Record<string, string>, requestId: string, formT
 </html>`
 }
 
+function validateSubmission(formType: string, fields: Record<string, string>): string | null {
+  const name = fields.Name ?? ''
+  const email = fields.Email ?? fields['Email Address'] ?? ''
+  const phone = fields.Phone ?? ''
+  const message = fields.Message ?? ''
+  const contact = fields['Phone or Email'] ?? ''
+
+  if (formType === 'request-call') {
+    if (!isRequired(name)) return 'Name is required'
+    const phoneError = validatePhoneField(phone)
+    if (phoneError) return phoneError
+    if (!isRequired(email) || !isValidEmail(email)) return 'Valid email is required'
+    return null
+  }
+
+  if (formType === 'request-consultation') {
+    if (!isRequired(name)) return 'Name is required'
+    if (!isRequired(email) || !isValidEmail(email)) return 'Valid email is required'
+    const phoneError = validatePhoneField(phone)
+    if (phoneError) return phoneError
+    if (!isRequired(message)) return 'Project description is required'
+    return null
+  }
+
+  if (formType === 'request-message-response') {
+    if (!isRequired(name)) return 'Name is required'
+    if (!isRequired(contact) || !isValidPhoneOrEmail(contact)) return 'Valid phone or email is required'
+    if (!isRequired(message)) return 'Project description is required'
+    return null
+  }
+
+  return 'Unknown form type'
+}
+
 async function getNotificationEmail(): Promise<string> {
   try {
     const client = createClient({
@@ -132,6 +172,14 @@ export const POST: APIRoute = async ({ request }) => {
 
   if (!formType || !FORM_TYPE_LABELS[formType]) {
     return new Response(JSON.stringify({ ok: false, error: 'Unknown form type' }), {
+      status: 400,
+      headers: { 'Content-Type': 'application/json' },
+    })
+  }
+
+  const validationError = validateSubmission(formType, rawFields)
+  if (validationError) {
+    return new Response(JSON.stringify({ ok: false, error: validationError }), {
       status: 400,
       headers: { 'Content-Type': 'application/json' },
     })

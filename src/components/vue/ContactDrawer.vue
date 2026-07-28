@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
+import { validateQuickContactFields } from '../../utils/formValidation'
 
 const props = defineProps<{
   open: boolean
@@ -16,11 +17,19 @@ const message = ref('')
 const submitted = ref(false)
 const submitting = ref(false)
 const submitError = ref('')
+const fieldErrors = ref<Record<string, string>>({})
 
 function close() { emit('close') }
 
 async function handleSubmit() {
-  if (!name.value.trim() || !contact.value.trim() || !message.value.trim()) return
+  const errors = validateQuickContactFields({
+    name: name.value,
+    contact: contact.value,
+    message: message.value,
+  })
+  fieldErrors.value = errors
+  if (Object.keys(errors).length > 0) return
+
   submitting.value = true
   submitError.value = ''
   try {
@@ -44,6 +53,14 @@ async function handleSubmit() {
     submitError.value = 'Something went wrong. Please try again.'
   } finally {
     submitting.value = false
+  }
+}
+
+function clearFieldError(field: string) {
+  if (fieldErrors.value[field]) {
+    const next = { ...fieldErrors.value }
+    delete next[field]
+    fieldErrors.value = next
   }
 }
 
@@ -141,17 +158,40 @@ onUnmounted(() => document.removeEventListener('keydown', onKey))
             </div>
 
             <form v-else class="cd-form" @submit.prevent="handleSubmit" novalidate>
-              <div class="cd-fg">
+              <div class="cd-fg" :class="{ 'fg--error': fieldErrors.name }">
                 <label for="cd-name">Your Name *</label>
-                <input id="cd-name" v-model="name" type="text" placeholder="John Smith" required />
+                <input
+                  id="cd-name"
+                  v-model="name"
+                  type="text"
+                  placeholder="John Smith"
+                  autocomplete="name"
+                  @input="clearFieldError('name')"
+                />
+                <span v-if="fieldErrors.name" class="fg-error" role="alert">{{ fieldErrors.name }}</span>
               </div>
-              <div class="cd-fg">
+              <div class="cd-fg" :class="{ 'fg--error': fieldErrors.contact }">
                 <label for="cd-contact">Phone or Email *</label>
-                <input id="cd-contact" v-model="contact" type="text" placeholder="+1 (250) 000-0000 or email" required />
+                <input
+                  id="cd-contact"
+                  v-model="contact"
+                  type="text"
+                  placeholder="+1 (250) 000-0000 or email"
+                  autocomplete="tel"
+                  @input="clearFieldError('contact')"
+                />
+                <span v-if="fieldErrors.contact" class="fg-error" role="alert">{{ fieldErrors.contact }}</span>
               </div>
-              <div class="cd-fg">
+              <div class="cd-fg" :class="{ 'fg--error': fieldErrors.message }">
                 <label for="cd-message">Tell us about your project *</label>
-                <textarea id="cd-message" v-model="message" placeholder="Describe your project briefly…" rows="3" required></textarea>
+                <textarea
+                  id="cd-message"
+                  v-model="message"
+                  placeholder="Describe your project briefly…"
+                  rows="3"
+                  @input="clearFieldError('message')"
+                ></textarea>
+                <span v-if="fieldErrors.message" class="fg-error" role="alert">{{ fieldErrors.message }}</span>
               </div>
               <p v-if="submitError" class="cd-error">{{ submitError }}</p>
               <button
