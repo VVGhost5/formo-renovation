@@ -285,7 +285,8 @@ const waHref = `https://wa.me/${site.whatsapp.replace(/\D/g, '')}`
   import { applyFieldErrors, validateContactFields } from '../utils/formValidation'
   import { initPhoneMasks } from '../utils/phoneMask'
 
-  initPhoneMasks()
+  const mainForm = document.getElementById('main-form') as HTMLElement | null
+  if (mainForm) initPhoneMasks(mainForm)
 
   // Service checkboxes
   document.querySelectorAll('.sc-item').forEach(item => {
@@ -315,7 +316,6 @@ const waHref = `https://wa.me/${site.whatsapp.replace(/\D/g, '')}`
 
   // Form submit
   const submitBtn = document.getElementById('form-submit') as HTMLButtonElement | null;
-  const mainForm = document.getElementById('main-form') as HTMLElement | null;
   submitBtn?.addEventListener('click', async () => {
     const firstName = (document.getElementById('f-first') as HTMLInputElement)?.value ?? '';
     const lastName = (document.getElementById('f-last') as HTMLInputElement)?.value ?? '';

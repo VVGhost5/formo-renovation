@@ -109,11 +109,11 @@ const waHref = `https://wa.me/${site.whatsapp.replace(/\D/g, '')}`
   import { applyFieldErrors, validateContactFields } from '../utils/formValidation'
   import { initPhoneMasks } from '../utils/phoneMask'
 
-  initPhoneMasks()
-
   const scForm = document.getElementById('section-contact-form') as HTMLFormElement | null
   const scSubmit = document.getElementById('sc-submit') as HTMLButtonElement | null
   const scSuccess = document.getElementById('sc-success') as HTMLElement | null
+
+  if (scForm) initPhoneMasks(scForm)
 
   scForm?.addEventListener('submit', async (e) => {
     e.preventDefault()

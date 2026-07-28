@@ -75,11 +75,11 @@ const bgStyleAttr = bgStyle(hero.backgroundImageUrl)
   } from '../utils/formValidation'
   import { initPhoneMasks } from '../utils/phoneMask'
 
-  initPhoneMasks()
-
   const heroForm = document.getElementById('hero-form') as HTMLFormElement | null
   const hfSubmit = document.getElementById('hf-submit') as HTMLButtonElement | null
   const hfSuccess = document.getElementById('hf-success') as HTMLElement | null
+
+  if (heroForm) initPhoneMasks(heroForm)
 
   heroForm?.addEventListener('submit', async (e) => {
     e.preventDefault()

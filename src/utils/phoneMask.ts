@@ -1,6 +1,7 @@
 const PHONE_MASK_MAX_LENGTH = 17 // +1 (XXX) XXX-XXXX
 
 const phoneDigits = new WeakMap<HTMLInputElement, string>()
+const boundInputs = new WeakSet<HTMLInputElement>()
 
 /** National digits only — ignores the +1 mask prefix already shown in the field. */
 export function extractPhoneDigits(value: string): string {
@@ -53,34 +54,52 @@ const ALLOWED_KEYS = new Set([
 ])
 
 export function bindPhoneMask(input: HTMLInputElement): void {
+  if (boundInputs.has(input)) return
+  boundInputs.add(input)
+
   input.setAttribute('inputmode', 'numeric')
   input.setAttribute('maxlength', String(PHONE_MASK_MAX_LENGTH))
   input.setAttribute('autocomplete', input.getAttribute('autocomplete') ?? 'tel')
 
   setPhoneDigits(input, extractPhoneDigits(input.value))
 
+  // Only block non-digit printable keys that don't generate a beforeinput event;
+  // digits, Backspace, and Delete are handled exclusively in beforeinput below.
   input.addEventListener('keydown', (e) => {
     if (e.ctrlKey || e.metaKey || e.altKey) return
     if (ALLOWED_KEYS.has(e.key)) return
+    if (e.key === 'Backspace' || e.key === 'Delete') return
+    if (e.key.length === 1 && /\d/.test(e.key)) return
+    if (e.key.length === 1) e.preventDefault()
+  })
 
-    if (e.key === 'Backspace' || e.key === 'Delete') {
-      e.preventDefault()
-      const current = phoneDigits.get(input) ?? ''
-      setPhoneDigits(input, current.slice(0, -1))
-      input.dispatchEvent(new Event('input', { bubbles: true }))
-      return
-    }
+  // beforeinput fires before the DOM change and its preventDefault() is the
+  // only reliable cross-browser / cross-device way to block text insertion.
+  // Handling both insertion and deletion here prevents the double-digit bug
+  // that occurred when the browser inserted the character despite keydown
+  // preventDefault() (common on Android virtual keyboards).
+  input.addEventListener('beforeinput', (e) => {
+    const ie = e as InputEvent
+    ie.preventDefault()
 
-    if (e.key.length === 1 && /\d/.test(e.key)) {
-      e.preventDefault()
+    if (ie.inputType === 'insertText') {
+      const char = ie.data ?? ''
+      if (!/^\d$/.test(char)) return
       const current = phoneDigits.get(input) ?? ''
       if (current.length >= 10) return
-      setPhoneDigits(input, current + e.key)
+      setPhoneDigits(input, current + char)
       input.dispatchEvent(new Event('input', { bubbles: true }))
-      return
+    } else if (
+      ie.inputType === 'deleteContentBackward' ||
+      ie.inputType === 'deleteContentForward'
+    ) {
+      const current = phoneDigits.get(input) ?? ''
+      if (current.length > 0) {
+        setPhoneDigits(input, current.slice(0, -1))
+        input.dispatchEvent(new Event('input', { bubbles: true }))
+      }
     }
-
-    if (e.key.length === 1) e.preventDefault()
+    // insertFromPaste is handled by the paste listener below
   })
 
   input.addEventListener('paste', (e) => {
