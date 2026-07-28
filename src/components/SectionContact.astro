@@ -53,7 +53,7 @@ const waHref = `https://wa.me/${site.whatsapp.replace(/\D/g, '')}`
         </div>
         <div class="fg" data-field="phone">
           <label for="sc-phone">Phone *</label>
-          <input id="sc-phone" type="tel" placeholder={site.phone} autocomplete="tel" />
+          <input id="sc-phone" type="tel" data-phone-mask placeholder={site.phone} autocomplete="tel" />
         </div>
         <div class="fg">
           <label for="sc-service">Service Interested In</label>
@@ -107,6 +107,9 @@ const waHref = `https://wa.me/${site.whatsapp.replace(/\D/g, '')}`
 
 <script>
   import { applyFieldErrors, validateContactFields } from '../utils/formValidation'
+  import { initPhoneMasks } from '../utils/phoneMask'
+
+  initPhoneMasks()
 
   const scForm = document.getElementById('section-contact-form') as HTMLFormElement | null
   const scSubmit = document.getElementById('sc-submit') as HTMLButtonElement | null

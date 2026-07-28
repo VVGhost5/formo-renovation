@@ -1,6 +1,7 @@
 # build output
 dist/
 .sanity/
+.wrangler/
 
 # generated types
 .astro/

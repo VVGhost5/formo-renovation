@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import { validateQuickContactFields } from '../../utils/formValidation'
+import { formatContactInput } from '../../utils/phoneMask'
 
 const props = defineProps<{
   open: boolean
@@ -62,6 +63,12 @@ function clearFieldError(field: string) {
     delete next[field]
     fieldErrors.value = next
   }
+}
+
+function onContactInput() {
+  const formatted = formatContactInput(contact.value)
+  if (formatted !== contact.value) contact.value = formatted
+  clearFieldError('contact')
 }
 
 function onKey(e: KeyboardEvent) {
@@ -178,7 +185,7 @@ onUnmounted(() => document.removeEventListener('keydown', onKey))
                   type="text"
                   placeholder="+1 (250) 000-0000 or email"
                   autocomplete="tel"
-                  @input="clearFieldError('contact')"
+                  @input="onContactInput"
                 />
                 <span v-if="fieldErrors.contact" class="fg-error" role="alert">{{ fieldErrors.contact }}</span>
               </div>
