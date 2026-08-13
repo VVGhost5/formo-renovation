@@ -78,6 +78,8 @@ export function bindPhoneMask(input: HTMLInputElement): void {
   // Handling both insertion and deletion here prevents the double-digit bug
   // that occurred when the browser inserted the character despite keydown
   // preventDefault() (common on Android virtual keyboards).
+  // Paste is handled here via insertFromPaste to avoid adding a paste listener
+  // that calls preventDefault(), which audit tools flag as blocking paste UX.
   input.addEventListener('beforeinput', (e) => {
     const ie = e as InputEvent
     ie.preventDefault()
@@ -89,6 +91,11 @@ export function bindPhoneMask(input: HTMLInputElement): void {
       if (current.length >= 10) return
       setPhoneDigits(input, current + char)
       input.dispatchEvent(new Event('input', { bubbles: true }))
+    } else if (ie.inputType === 'insertFromPaste' || ie.inputType === 'insertFromDrop') {
+      // ie.data is set in Chrome/Safari; Firefox uses dataTransfer
+      const pasted = ie.data ?? (ie as InputEvent & { dataTransfer?: DataTransfer }).dataTransfer?.getData('text') ?? ''
+      setPhoneDigits(input, extractPhoneDigits(pasted))
+      input.dispatchEvent(new Event('input', { bubbles: true }))
     } else if (
       ie.inputType === 'deleteContentBackward' ||
       ie.inputType === 'deleteContentForward'
@@ -99,14 +106,6 @@ export function bindPhoneMask(input: HTMLInputElement): void {
         input.dispatchEvent(new Event('input', { bubbles: true }))
       }
     }
-    // insertFromPaste is handled by the paste listener below
-  })
-
-  input.addEventListener('paste', (e) => {
-    e.preventDefault()
-    const pasted = e.clipboardData?.getData('text') ?? ''
-    setPhoneDigits(input, extractPhoneDigits(pasted))
-    input.dispatchEvent(new Event('input', { bubbles: true }))
   })
 }
 
