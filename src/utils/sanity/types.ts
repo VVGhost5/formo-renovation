@@ -41,6 +41,7 @@ export type SiteSettingsContent = {
 	instagramUrl: string
 	facebookUrl: string
 	houzzUrl: string
+	homestarsUrl: string
 }
 
 export type SiteMetadataPageKey =

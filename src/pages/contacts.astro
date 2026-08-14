@@ -175,32 +175,32 @@ const waHref = `https://wa.me/${site.whatsapp.replace(/\D/g, '')}`
 
       <!-- INFO SIDEBAR -->
       <div class="info-side">
-        <a href="tel:+12500000000" class="info-channel">
+        <a href={phoneHref} class="info-channel">
           <div class="ic-icon"><i class="fa-solid fa-phone"></i></div>
           <div class="ic-body">
             <div class="ic-label">Phone</div>
-            <div class="ic-value">+1 (250) 000-0000</div>
-            <div class="ic-note">Mon – Fri, 8:00 AM – 6:00 PM. We aim to answer every call personally.</div>
+            <div class="ic-value">{site.phone}</div>
+            <div class="ic-note">{site.phoneHours}</div>
           </div>
           <span class="ic-arrow">→</span>
         </a>
 
-        <a href="mailto:hello@formorenovations.ca" class="info-channel">
+        <a href={`mailto:${site.email}`} class="info-channel">
           <div class="ic-icon"><i class="fa-solid fa-envelope"></i></div>
           <div class="ic-body">
             <div class="ic-label">Email</div>
-            <div class="ic-value">hello@formorenovations.ca</div>
-            <div class="ic-note">We reply to all emails within one business day.</div>
+            <div class="ic-value">{site.email}</div>
+            <div class="ic-note">{site.emailNote}</div>
           </div>
           <span class="ic-arrow">→</span>
         </a>
 
-        <a href="https://wa.me/12500000000" class="info-channel">
+        <a href={waHref} class="info-channel">
           <div class="ic-icon"><i class="fa-brands fa-whatsapp"></i></div>
           <div class="ic-body">
             <div class="ic-label">WhatsApp</div>
-            <div class="ic-value">+1 (250) 000-0000</div>
-            <div class="ic-note">Send photos of your space, quick questions, or project updates.</div>
+            <div class="ic-value">{site.whatsapp}</div>
+            <div class="ic-note">{site.whatsappNote}</div>
           </div>
           <span class="ic-arrow">→</span>
         </a>
@@ -225,10 +225,18 @@ const waHref = `https://wa.me/${site.whatsapp.replace(/\D/g, '')}`
         <div class="info-social">
           <div class="is-label">Follow Our Work</div>
           <div class="is-buttons">
-            <a href="#" class="is-btn"><span class="is-btn-icon"><i class="fa-brands fa-instagram"></i></span>Instagram</a>
-            <a href="#" class="is-btn"><span class="is-btn-icon"><i class="fa-brands fa-facebook-f"></i></span>Facebook</a>
-            <a href="#" class="is-btn"><span class="is-btn-icon"><i class="fa-brands fa-houzz"></i></span>Houzz</a>
-            <a href="#" class="is-btn"><span class="is-btn-icon"><i class="fa-solid fa-star"></i></span>HomeStars</a>
+            {site.instagramUrl && site.instagramUrl !== '#' && (
+              <a href={site.instagramUrl} class="is-btn" target="_blank" rel="noopener noreferrer"><span class="is-btn-icon"><i class="fa-brands fa-instagram"></i></span>Instagram</a>
+            )}
+            {site.facebookUrl && site.facebookUrl !== '#' && (
+              <a href={site.facebookUrl} class="is-btn" target="_blank" rel="noopener noreferrer"><span class="is-btn-icon"><i class="fa-brands fa-facebook-f"></i></span>Facebook</a>
+            )}
+            {site.houzzUrl && site.houzzUrl !== '#' && (
+              <a href={site.houzzUrl} class="is-btn" target="_blank" rel="noopener noreferrer"><span class="is-btn-icon"><i class="fa-brands fa-houzz"></i></span>Houzz</a>
+            )}
+            {site.homestarsUrl && site.homestarsUrl !== '#' && (
+              <a href={site.homestarsUrl} class="is-btn" target="_blank" rel="noopener noreferrer"><span class="is-btn-icon"><i class="fa-solid fa-star"></i></span>HomeStars</a>
+            )}
           </div>
         </div>
       </div>

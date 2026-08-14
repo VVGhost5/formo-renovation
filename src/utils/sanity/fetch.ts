@@ -73,7 +73,7 @@ const HERO_Q = defineQuery(`coalesce(*[_id == "hero"][0], *[_type == "hero"][0])
 const SITE_Q = defineQuery(`*[_id == "siteSettings"][0]{
   footerDescription, phone, phoneHours, email, emailNote, notificationEmail,
   whatsapp, whatsappNote, serviceArea, serviceAreaNote,
-  instagramUrl, facebookUrl, houzzUrl
+  instagramUrl, facebookUrl, houzzUrl, homestarsUrl
 }`)
 
 const NUMBERS_Q = defineQuery(`*[_id == "homeNumbers"][0]{ eyebrow, headline, stats }`)
@@ -251,6 +251,7 @@ export function mapSiteSettings(doc: Record<string, unknown> | null): SiteSettin
 		instagramUrl: str(d.instagramUrl, DEFAULT_SITE_SETTINGS.instagramUrl),
 		facebookUrl: str(d.facebookUrl, DEFAULT_SITE_SETTINGS.facebookUrl),
 		houzzUrl: str(d.houzzUrl, DEFAULT_SITE_SETTINGS.houzzUrl),
+		homestarsUrl: str(d.homestarsUrl, DEFAULT_SITE_SETTINGS.homestarsUrl),
 	}
 }
 

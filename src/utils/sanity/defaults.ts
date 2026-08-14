@@ -53,6 +53,7 @@ export const DEFAULT_SITE_SETTINGS: SiteSettingsContent = {
 	instagramUrl: '#',
 	facebookUrl: '#',
 	houzzUrl: '#',
+	homestarsUrl: '#',
 }
 
 export const DEFAULT_PAGE_SEO: Record<SiteMetadataPageKey, PageSeo> = {

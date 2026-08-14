@@ -27,6 +27,7 @@ export default defineType({
     defineField({name: 'instagramUrl', title: 'Instagram URL', type: 'url'}),
     defineField({name: 'facebookUrl', title: 'Facebook URL', type: 'url'}),
     defineField({name: 'houzzUrl', title: 'Houzz URL', type: 'url'}),
+    defineField({name: 'homestarsUrl', title: 'HomeStars URL', type: 'url'}),
   ],
   preview: {
     prepare() {
