@@ -42,8 +42,6 @@ export const structure = (S) =>
 
       S.divider(),
 
-      S.divider(),
-
       S.listItem()
         .title('Reviews')
         .child(
@@ -60,23 +58,54 @@ export const structure = (S) =>
       S.divider(),
 
       S.listItem()
-        .title('Pages')
+        .title('Services')
         .child(
           S.list()
-            .title('Pages')
+            .title('Services')
             .items([
-              singleton(S, 'servicesPage', 'Services — Page', 'servicesPage'),
+              singleton(S, 'servicesPage', 'Page Content', 'servicesPage'),
               S.listItem()
-                .title('Services — Details')
+                .title('Service Details')
                 .child(S.documentTypeList('service').title('Service sections')),
-              singleton(S, 'portfolioPage', 'Portfolio — Hero', 'portfolioPage'),
+            ]),
+        ),
+
+      S.divider(),
+
+      S.listItem()
+        .title('Portfolio')
+        .child(
+          S.list()
+            .title('Portfolio')
+            .items([
+              singleton(S, 'portfolioPage', 'Page Content', 'portfolioPage'),
               S.listItem()
-                .title('Portfolio — Projects')
-                .child(
-                  S.documentTypeList('portfolioProject').title('Portfolio Projects'),
-                ),
-              singleton(S, 'aboutPage', 'About — Page', 'aboutPage'),
-              singleton(S, 'contactsPage', 'Contacts — Hero & Form', 'contactsPage'),
+                .title('Projects')
+                .child(S.documentTypeList('portfolioProject').title('Portfolio Projects')),
+            ]),
+        ),
+
+      S.divider(),
+
+      S.listItem()
+        .title('About')
+        .child(
+          S.list()
+            .title('About')
+            .items([
+              singleton(S, 'aboutPage', 'Page Content', 'aboutPage'),
+            ]),
+        ),
+
+      S.divider(),
+
+      S.listItem()
+        .title('Contacts')
+        .child(
+          S.list()
+            .title('Contacts')
+            .items([
+              singleton(S, 'contactsPage', 'Page Content', 'contactsPage'),
             ]),
         ),
     ])
