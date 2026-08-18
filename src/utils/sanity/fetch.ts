@@ -151,22 +151,40 @@ const PORTFOLIO_PROJECTS_Q = defineQuery(`*[_type == "portfolioProject"] | order
   featuredOnHome, homeTag, homeMeta
 }`)
 
-const SERVICES_PAGE_Q = defineQuery(`*[_id == "servicesPage"][0]{
-  "heroIsShowed": coalesce(heroIsShowed, true),
+const SVC_HERO_Q = defineQuery(`*[_id == "servicesHero"][0]{
+  "heroIsShowed": coalesce(isShowed, true),
   "listIsShowed": coalesce(listIsShowed, true),
-  "processIsShowed": coalesce(processIsShowed, true),
-  "pricingIsShowed": coalesce(pricingIsShowed, true),
-  "faqIsShowed": coalesce(faqIsShowed, true),
   locationLabel, titleBefore, titleEmphasis, description,
   primaryCtaLabel, primaryCtaLink, secondaryCtaLabel, secondaryCtaLink,
-  heroImage{ asset, alt },
-  processHeroBackground{ asset, alt },
-  processEyebrow, processHeadline, processHeadlineEmphasis, processDescription,
-  processSteps[]{ icon, title, body },
-  pricingEyebrow, pricingHeadline, pricingHeadlineEmphasis, pricingBody,
-  pricingCards[]{ icon, title, body },
-  faqEyebrow, faqTitle, faqTitleEmphasis, faqSub,
-  faqItems[]{ question, answer }
+  heroImage{ asset, alt }
+}`)
+
+const SVC_PROCESS_Q = defineQuery(`*[_id == "servicesProcess"][0]{
+  "processIsShowed": coalesce(isShowed, true),
+  "processEyebrow": eyebrow,
+  "processHeadline": headline,
+  "processHeadlineEmphasis": headlineEmphasis,
+  "processDescription": description,
+  "processHeroBackground": heroBackground{ asset, alt },
+  "processSteps": steps[]{ icon, title, body }
+}`)
+
+const SVC_PRICING_Q = defineQuery(`*[_id == "servicesPricing"][0]{
+  "pricingIsShowed": coalesce(isShowed, true),
+  "pricingEyebrow": eyebrow,
+  "pricingHeadline": headline,
+  "pricingHeadlineEmphasis": headlineEmphasis,
+  "pricingBody": body,
+  "pricingCards": cards[]{ icon, title, body }
+}`)
+
+const SVC_FAQ_Q = defineQuery(`*[_id == "servicesFaq"][0]{
+  "faqIsShowed": coalesce(isShowed, true),
+  "faqEyebrow": eyebrow,
+  "faqTitle": title,
+  "faqTitleEmphasis": titleEmphasis,
+  "faqSub": sub,
+  "faqItems": items[]{ question, answer }
 }`)
 
 const PORTFOLIO_PAGE_Q = defineQuery(`*[_id == "portfolioPage"][0]{
@@ -175,32 +193,79 @@ const PORTFOLIO_PAGE_Q = defineQuery(`*[_id == "portfolioPage"][0]{
   heroImage{ asset, alt }, stats
 }`)
 
-const ABOUT_PAGE_Q = defineQuery(`*[_id == "aboutPage"][0]{
-  "heroIsShowed": coalesce(heroIsShowed, true),
-  "founderCardIsShowed": coalesce(founderCardIsShowed, false),
-  "whoIsShowed": coalesce(whoIsShowed, true),
-  "storyIsShowed": coalesce(storyIsShowed, false),
-  "valuesIsShowed": coalesce(valuesIsShowed, true),
-  "teamIsShowed": coalesce(teamIsShowed, false),
-  "whyIsShowed": coalesce(whyIsShowed, true),
-  "certIsShowed": coalesce(certIsShowed, true),
+const ABT_HERO_Q = defineQuery(`*[_id == "aboutHero"][0]{
+  "heroIsShowed": coalesce(isShowed, true),
   locationLabel, titleBefore, titleEmphasis, description,
   primaryCtaLabel, primaryCtaLink, secondaryCtaLabel, secondaryCtaLink,
-  heroImage{ asset, alt },
-  valuesHeroBackground{ asset, alt },
-  whyBannerBackground{ asset, alt },
-  founderInitial, founderName, founderRole, founderQuote, founderStats,
-  whoEyebrow, whoHeadline, whoHeadlineEmphasis, whoLead, whoBody, whoPills, whoCtaLabel, whoCtaLink,
-  storyEyebrow, storyHeadline, storyHeadlineEmphasis, storyLead,
-  timeline[]{ year, title, text, highlight },
-  valuesEyebrow, valuesHeadline, valuesHeadlineEmphasis, valuesDescription,
-  valueCards[]{ icon, num, title, body },
-  teamEyebrow, teamHeadline, teamHeadlineEmphasis, teamDescription,
-  teamMembers[]{ name, role, bio, photo{ asset, alt } },
-  whyEyebrow, whyBannerHeadline, whyBannerHeadlineEmphasis, whyBannerDescription,
-  whyRows[]{ num, label, title, body, pills, imageAlt, image{ asset, alt } },
-  certEyebrow, certHeadline, certHeadlineEmphasis, certDescription,
-  certBadges[]{ icon, name },
+  heroImage{ asset, alt }
+}`)
+
+const ABT_FOUNDER_Q = defineQuery(`*[_id == "aboutFounder"][0]{
+  "founderCardIsShowed": coalesce(isShowed, false),
+  "founderInitial": initial,
+  "founderName": name,
+  "founderRole": role,
+  "founderQuote": quote,
+  "founderStats": stats
+}`)
+
+const ABT_WHO_Q = defineQuery(`*[_id == "aboutWho"][0]{
+  "whoIsShowed": coalesce(isShowed, true),
+  "whoEyebrow": eyebrow,
+  "whoHeadline": headline,
+  "whoHeadlineEmphasis": headlineEmphasis,
+  "whoLead": lead,
+  "whoBody": body,
+  "whoPills": pills,
+  "whoCtaLabel": ctaLabel,
+  "whoCtaLink": ctaLink
+}`)
+
+const ABT_STORY_Q = defineQuery(`*[_id == "aboutStory"][0]{
+  "storyIsShowed": coalesce(isShowed, false),
+  "storyEyebrow": eyebrow,
+  "storyHeadline": headline,
+  "storyHeadlineEmphasis": headlineEmphasis,
+  "storyLead": lead,
+  timeline[]{ year, title, text, highlight }
+}`)
+
+const ABT_VALUES_Q = defineQuery(`*[_id == "aboutValues"][0]{
+  "valuesIsShowed": coalesce(isShowed, true),
+  "valuesEyebrow": eyebrow,
+  "valuesHeadline": headline,
+  "valuesHeadlineEmphasis": headlineEmphasis,
+  "valuesDescription": description,
+  "valuesHeroBackground": heroBackground{ asset, alt },
+  "valueCards": cards[]{ icon, num, title, body }
+}`)
+
+const ABT_TEAM_Q = defineQuery(`*[_id == "aboutTeam"][0]{
+  "teamIsShowed": coalesce(isShowed, false),
+  "teamEyebrow": eyebrow,
+  "teamHeadline": headline,
+  "teamHeadlineEmphasis": headlineEmphasis,
+  "teamDescription": description,
+  "teamMembers": members[]{ name, role, bio, photo{ asset, alt } }
+}`)
+
+const ABT_WHY_Q = defineQuery(`*[_id == "aboutWhy"][0]{
+  "whyIsShowed": coalesce(isShowed, true),
+  "whyEyebrow": eyebrow,
+  "whyBannerHeadline": bannerHeadline,
+  "whyBannerHeadlineEmphasis": bannerHeadlineEmphasis,
+  "whyBannerDescription": bannerDescription,
+  "whyBannerBackground": bannerBackground{ asset, alt },
+  "whyRows": rows[]{ num, label, title, body, pills, imageAlt, image{ asset, alt } }
+}`)
+
+const ABT_CERT_Q = defineQuery(`*[_id == "aboutCert"][0]{
+  "certIsShowed": coalesce(isShowed, true),
+  "certEyebrow": eyebrow,
+  "certHeadline": headline,
+  "certHeadlineEmphasis": headlineEmphasis,
+  "certDescription": description,
+  "certBadges": badges[]{ icon, name },
   guaranteeCards[]{ icon, title, text }
 }`)
 
@@ -943,7 +1008,13 @@ export async function getHomeBeforeAfterBanner() {
 }
 
 export async function getServicesPage() {
-	return mapServicesPage(await safeFetch(SERVICES_PAGE_Q, null))
+	const [hero, process, pricing, faq] = await Promise.all([
+		safeFetch(SVC_HERO_Q, null),
+		safeFetch(SVC_PROCESS_Q, null),
+		safeFetch(SVC_PRICING_Q, null),
+		safeFetch(SVC_FAQ_Q, null),
+	])
+	return mapServicesPage(Object.assign({}, hero, process, pricing, faq))
 }
 
 export async function getServicesList(): Promise<ServiceDetail[]> {
@@ -957,7 +1028,17 @@ export async function getPortfolioPage() {
 }
 
 export async function getAboutPage() {
-	return mapAboutPage(await safeFetch(ABOUT_PAGE_Q, null))
+	const [hero, founder, who, story, values, team, why, cert] = await Promise.all([
+		safeFetch(ABT_HERO_Q, null),
+		safeFetch(ABT_FOUNDER_Q, null),
+		safeFetch(ABT_WHO_Q, null),
+		safeFetch(ABT_STORY_Q, null),
+		safeFetch(ABT_VALUES_Q, null),
+		safeFetch(ABT_TEAM_Q, null),
+		safeFetch(ABT_WHY_Q, null),
+		safeFetch(ABT_CERT_Q, null),
+	])
+	return mapAboutPage(Object.assign({}, hero, founder, who, story, values, team, why, cert))
 }
 
 export async function getContactsPage() {

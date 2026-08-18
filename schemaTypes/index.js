@@ -14,8 +14,20 @@ import portfolioProject from './portfolioProject'
 import beforeAfterProject from './beforeAfterProject'
 import service from './service'
 import servicesPage from './servicesPage'
+import servicesHero from './servicesHero'
+import servicesProcess from './servicesProcess'
+import servicesPricing from './servicesPricing'
+import servicesFaq from './servicesFaq'
 import portfolioPage from './portfolioPage'
 import aboutPage from './aboutPage'
+import aboutHero from './aboutHero'
+import aboutFounder from './aboutFounder'
+import aboutWho from './aboutWho'
+import aboutStory from './aboutStory'
+import aboutValues from './aboutValues'
+import aboutTeam from './aboutTeam'
+import aboutWhy from './aboutWhy'
+import aboutCert from './aboutCert'
 import contactsPage from './contactsPage'
 import reviewsPage from './reviewsPage'
 import metaData from './metadata'
@@ -37,6 +49,9 @@ export const schemaTypes = [
   keyValue,
   serviceCard,
   pageSeo,
+  // Documents — legacy (kept so existing Sanity data is not orphaned)
+  servicesPage,
+  aboutPage,
   // Documents
   metaData,
   hero,
@@ -54,9 +69,19 @@ export const schemaTypes = [
   portfolioProject,
   beforeAfterProject,
   service,
-  servicesPage,
+  servicesHero,
+  servicesProcess,
+  servicesPricing,
+  servicesFaq,
   portfolioPage,
-  aboutPage,
+  aboutHero,
+  aboutFounder,
+  aboutWho,
+  aboutStory,
+  aboutValues,
+  aboutTeam,
+  aboutWhy,
+  aboutCert,
   contactsPage,
   reviewsPage,
 ]

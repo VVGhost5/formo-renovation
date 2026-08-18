@@ -63,10 +63,13 @@ export const structure = (S) =>
           S.list()
             .title('Services')
             .items([
-              singleton(S, 'servicesPage', 'Page Content', 'servicesPage'),
+              singleton(S, 'servicesHero', 'Hero', 'servicesHero'),
               S.listItem()
-                .title('Service Details')
-                .child(S.documentTypeList('service').title('Service sections')),
+                .title('Services List')
+                .child(S.documentTypeList('service').title('Service Items')),
+              singleton(S, 'servicesProcess', 'Process', 'servicesProcess'),
+              singleton(S, 'servicesPricing', 'Pricing Hint', 'servicesPricing'),
+              singleton(S, 'servicesFaq', 'FAQ', 'servicesFaq'),
             ]),
         ),
 
@@ -78,7 +81,7 @@ export const structure = (S) =>
           S.list()
             .title('Portfolio')
             .items([
-              singleton(S, 'portfolioPage', 'Page Content', 'portfolioPage'),
+              singleton(S, 'portfolioPage', 'Page — Hero', 'portfolioPage'),
               S.listItem()
                 .title('Projects')
                 .child(S.documentTypeList('portfolioProject').title('Portfolio Projects')),
@@ -93,7 +96,14 @@ export const structure = (S) =>
           S.list()
             .title('About')
             .items([
-              singleton(S, 'aboutPage', 'Page Content', 'aboutPage'),
+              singleton(S, 'aboutHero', 'Hero', 'aboutHero'),
+              singleton(S, 'aboutFounder', 'Hero Side Card', 'aboutFounder'),
+              singleton(S, 'aboutWho', 'Who We Are', 'aboutWho'),
+              singleton(S, 'aboutStory', 'Our Story', 'aboutStory'),
+              singleton(S, 'aboutValues', 'Our Values', 'aboutValues'),
+              singleton(S, 'aboutTeam', 'Our Team', 'aboutTeam'),
+              singleton(S, 'aboutWhy', 'Why Choose Us', 'aboutWhy'),
+              singleton(S, 'aboutCert', 'Certifications', 'aboutCert'),
             ]),
         ),
 
