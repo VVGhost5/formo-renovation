@@ -1,85 +1,110 @@
 import {defineField, defineType} from 'sanity'
+import {isShowedField} from './fields/isShowed'
 
 export default defineType({
   name: 'aboutPage',
   title: 'About Page',
   type: 'document',
+  fieldsets: [
+    {name: 'hero', title: 'Hero', options: {collapsible: true, collapsed: false}},
+    {name: 'founder', title: 'Hero side card', description: 'Hidden on the live site until Is showed is on. Use this for a company snapshot, not founder bio.', options: {collapsible: true, collapsed: true}},
+    {name: 'who', title: 'Who We Are', options: {collapsible: true, collapsed: true}},
+    {name: 'story', title: 'Our Story', description: 'Hidden on the live site until Is showed is on.', options: {collapsible: true, collapsed: true}},
+    {name: 'values', title: 'Our Values', options: {collapsible: true, collapsed: true}},
+    {name: 'team', title: 'Our Team', description: 'Hidden on the live site until Is showed is on.', options: {collapsible: true, collapsed: true}},
+    {name: 'why', title: 'Why Choose Us', options: {collapsible: true, collapsed: true}},
+    {name: 'cert', title: 'Certifications', options: {collapsible: true, collapsed: true}},
+  ],
   fields: [
     // ── HERO ────────────────────────────────────────────────────────────────
-    defineField({name: 'locationLabel', title: 'Location label', type: 'string'}),
-    defineField({name: 'titleBefore', title: 'Title — before emphasis', type: 'string'}),
-    defineField({name: 'titleEmphasis', title: 'Title — emphasis', type: 'string'}),
-    defineField({name: 'description', title: 'Description', type: 'text', rows: 3}),
-    defineField({name: 'primaryCtaLabel', title: 'Primary CTA', type: 'string'}),
-    defineField({name: 'primaryCtaLink', title: 'Primary CTA link', type: 'string'}),
-    defineField({name: 'secondaryCtaLabel', title: 'Secondary CTA', type: 'string'}),
-    defineField({name: 'secondaryCtaLink', title: 'Secondary CTA link', type: 'string'}),
-    defineField({name: 'heroImage', title: 'Hero background', type: 'image', options: {hotspot: true}}),
+    isShowedField({name: 'heroIsShowed', fieldset: 'hero'}),
+    defineField({name: 'locationLabel', title: 'Location label', type: 'string', fieldset: 'hero'}),
+    defineField({name: 'titleBefore', title: 'Title — before emphasis', type: 'string', fieldset: 'hero'}),
+    defineField({name: 'titleEmphasis', title: 'Title — emphasis', type: 'string', fieldset: 'hero'}),
+    defineField({name: 'description', title: 'Description', type: 'text', rows: 3, fieldset: 'hero'}),
+    defineField({name: 'primaryCtaLabel', title: 'Primary CTA', type: 'string', fieldset: 'hero'}),
+    defineField({name: 'primaryCtaLink', title: 'Primary CTA link', type: 'string', fieldset: 'hero'}),
+    defineField({name: 'secondaryCtaLabel', title: 'Secondary CTA', type: 'string', fieldset: 'hero'}),
+    defineField({name: 'secondaryCtaLink', title: 'Secondary CTA link', type: 'string', fieldset: 'hero'}),
+    defineField({name: 'heroImage', title: 'Hero background', type: 'image', options: {hotspot: true}, fieldset: 'hero'}),
 
-    // ── FOUNDER CARD ────────────────────────────────────────────────────────
-    defineField({name: 'founderInitial', title: 'Founder avatar initial', type: 'string'}),
-    defineField({name: 'founderName', title: 'Founder name', type: 'string'}),
-    defineField({name: 'founderRole', title: 'Founder role', type: 'string'}),
-    defineField({name: 'founderQuote', title: 'Founder quote', type: 'text', rows: 3}),
+    // ── HERO SIDE CARD (formerly founder) ───────────────────────────────────
+    isShowedField({
+      name: 'founderCardIsShowed',
+      initialValue: false,
+      fieldset: 'founder',
+      description: 'Show the glass card on the right side of the About hero. Hidden until you turn this on.',
+    }),
+    defineField({
+      name: 'founderInitial',
+      title: 'Card initial',
+      type: 'string',
+      description: 'Single letter shown in the avatar circle (e.g. company initial).',
+      fieldset: 'founder',
+    }),
+    defineField({
+      name: 'founderName',
+      title: 'Card title',
+      type: 'string',
+      description: 'e.g. company name, a trust line, or a short heading.',
+      fieldset: 'founder',
+    }),
+    defineField({
+      name: 'founderRole',
+      title: 'Card subtitle',
+      type: 'string',
+      description: 'e.g. service area, licensed/insured, or a short label.',
+      fieldset: 'founder',
+    }),
+    defineField({
+      name: 'founderQuote',
+      title: 'Card quote / promise',
+      type: 'text',
+      rows: 3,
+      description: 'A company promise, client quote, or short positioning line — not founder bio.',
+      fieldset: 'founder',
+    }),
     defineField({
       name: 'founderStats',
-      title: 'Founder stats',
+      title: 'Card stats',
       type: 'array',
       of: [{type: 'statItem'}],
+      fieldset: 'founder',
     }),
 
     // ── WHO WE ARE ──────────────────────────────────────────────────────────
-    defineField({name: 'whoEyebrow', title: '[Who We Are] Eyebrow', type: 'string'}),
-    defineField({name: 'whoHeadline', title: '[Who We Are] Headline', type: 'string'}),
-    defineField({name: 'whoHeadlineEmphasis', title: '[Who We Are] Headline emphasis', type: 'string'}),
-    defineField({name: 'whoLead', title: '[Who We Are] Lead paragraph', type: 'text', rows: 3}),
+    isShowedField({name: 'whoIsShowed', fieldset: 'who'}),
+    defineField({name: 'whoEyebrow', title: 'Eyebrow', type: 'string', fieldset: 'who'}),
+    defineField({name: 'whoHeadline', title: 'Headline', type: 'string', fieldset: 'who'}),
+    defineField({name: 'whoHeadlineEmphasis', title: 'Headline emphasis', type: 'string', fieldset: 'who'}),
+    defineField({name: 'whoLead', title: 'Lead paragraph', type: 'text', rows: 3, fieldset: 'who'}),
     defineField({
       name: 'whoBody',
-      title: '[Who We Are] Body paragraphs',
+      title: 'Body paragraphs',
       type: 'array',
       of: [{type: 'string'}],
       description: 'Each item is one paragraph of body text.',
+      fieldset: 'who',
     }),
     defineField({
       name: 'whoPills',
-      title: '[Who We Are] Pills / tags',
+      title: 'Pills / tags',
       type: 'array',
       of: [{type: 'string'}],
+      fieldset: 'who',
     }),
-    defineField({name: 'whoCtaLabel', title: '[Who We Are] CTA label', type: 'string'}),
-    defineField({name: 'whoCtaLink', title: '[Who We Are] CTA link', type: 'string'}),
-
-    // ── NUMBERS ─────────────────────────────────────────────────────────────
-    defineField({
-      name: 'aboutStats',
-      title: '[Numbers] Stat cells',
-      type: 'array',
-      of: [{
-        type: 'object',
-        name: 'aboutStatItem',
-        fields: [
-          defineField({name: 'value', type: 'string', title: 'Value', validation: R => R.required()}),
-          defineField({name: 'suffix', type: 'string', title: 'Suffix (e.g. +, %, mo)'}),
-          defineField({name: 'label', type: 'string', title: 'Label', validation: R => R.required()}),
-          defineField({name: 'description', type: 'text', title: 'Description', rows: 2}),
-        ],
-        preview: {
-          select: {value: 'value', suffix: 'suffix', label: 'label'},
-          prepare({value, suffix, label}) {
-            return {title: `${value}${suffix || ''} — ${label}`}
-          },
-        },
-      }],
-    }),
+    defineField({name: 'whoCtaLabel', title: 'CTA label', type: 'string', fieldset: 'who'}),
+    defineField({name: 'whoCtaLink', title: 'CTA link', type: 'string', fieldset: 'who'}),
 
     // ── OUR STORY ───────────────────────────────────────────────────────────
-    defineField({name: 'storyEyebrow', title: '[Our Story] Eyebrow', type: 'string'}),
-    defineField({name: 'storyHeadline', title: '[Our Story] Headline', type: 'string'}),
-    defineField({name: 'storyHeadlineEmphasis', title: '[Our Story] Headline emphasis', type: 'string'}),
-    defineField({name: 'storyLead', title: '[Our Story] Lead paragraph', type: 'text', rows: 3}),
+    isShowedField({name: 'storyIsShowed', initialValue: false, fieldset: 'story'}),
+    defineField({name: 'storyEyebrow', title: 'Eyebrow', type: 'string', fieldset: 'story'}),
+    defineField({name: 'storyHeadline', title: 'Headline', type: 'string', fieldset: 'story'}),
+    defineField({name: 'storyHeadlineEmphasis', title: 'Headline emphasis', type: 'string', fieldset: 'story'}),
+    defineField({name: 'storyLead', title: 'Lead paragraph', type: 'text', rows: 3, fieldset: 'story'}),
     defineField({
       name: 'timeline',
-      title: '[Our Story] Timeline items',
+      title: 'Timeline items',
       type: 'array',
       of: [{
         type: 'object',
@@ -97,22 +122,25 @@ export default defineType({
           },
         },
       }],
+      fieldset: 'story',
     }),
 
     // ── OUR VALUES ──────────────────────────────────────────────────────────
-    defineField({name: 'valuesEyebrow', title: '[Values] Eyebrow', type: 'string'}),
-    defineField({name: 'valuesHeadline', title: '[Values] Headline', type: 'string'}),
-    defineField({name: 'valuesHeadlineEmphasis', title: '[Values] Headline emphasis', type: 'string'}),
-    defineField({name: 'valuesDescription', title: '[Values] Description', type: 'text', rows: 2}),
+    isShowedField({name: 'valuesIsShowed', fieldset: 'values'}),
+    defineField({name: 'valuesEyebrow', title: 'Eyebrow', type: 'string', fieldset: 'values'}),
+    defineField({name: 'valuesHeadline', title: 'Headline', type: 'string', fieldset: 'values'}),
+    defineField({name: 'valuesHeadlineEmphasis', title: 'Headline emphasis', type: 'string', fieldset: 'values'}),
+    defineField({name: 'valuesDescription', title: 'Description', type: 'text', rows: 2, fieldset: 'values'}),
     defineField({
       name: 'valuesHeroBackground',
-      title: '[Values] Background image',
+      title: 'Background image',
       type: 'image',
       options: {hotspot: true},
+      fieldset: 'values',
     }),
     defineField({
       name: 'valueCards',
-      title: '[Values] Value cards',
+      title: 'Value cards',
       type: 'array',
       of: [{
         type: 'object',
@@ -130,16 +158,18 @@ export default defineType({
           },
         },
       }],
+      fieldset: 'values',
     }),
 
     // ── OUR TEAM ────────────────────────────────────────────────────────────
-    defineField({name: 'teamEyebrow', title: '[Team] Eyebrow', type: 'string'}),
-    defineField({name: 'teamHeadline', title: '[Team] Headline', type: 'string'}),
-    defineField({name: 'teamHeadlineEmphasis', title: '[Team] Headline emphasis', type: 'string'}),
-    defineField({name: 'teamDescription', title: '[Team] Description', type: 'text', rows: 2}),
+    isShowedField({name: 'teamIsShowed', initialValue: false, fieldset: 'team'}),
+    defineField({name: 'teamEyebrow', title: 'Eyebrow', type: 'string', fieldset: 'team'}),
+    defineField({name: 'teamHeadline', title: 'Headline', type: 'string', fieldset: 'team'}),
+    defineField({name: 'teamHeadlineEmphasis', title: 'Headline emphasis', type: 'string', fieldset: 'team'}),
+    defineField({name: 'teamDescription', title: 'Description', type: 'text', rows: 2, fieldset: 'team'}),
     defineField({
       name: 'teamMembers',
-      title: '[Team] Members',
+      title: 'Members',
       type: 'array',
       of: [{
         type: 'object',
@@ -157,22 +187,25 @@ export default defineType({
           },
         },
       }],
+      fieldset: 'team',
     }),
 
     // ── WHY CHOOSE US ───────────────────────────────────────────────────────
-    defineField({name: 'whyEyebrow', title: '[Why Us] Eyebrow', type: 'string'}),
-    defineField({name: 'whyBannerHeadline', title: '[Why Us] Banner headline', type: 'string'}),
-    defineField({name: 'whyBannerHeadlineEmphasis', title: '[Why Us] Headline emphasis', type: 'string'}),
-    defineField({name: 'whyBannerDescription', title: '[Why Us] Banner description', type: 'text', rows: 3}),
+    isShowedField({name: 'whyIsShowed', fieldset: 'why'}),
+    defineField({name: 'whyEyebrow', title: 'Eyebrow', type: 'string', fieldset: 'why'}),
+    defineField({name: 'whyBannerHeadline', title: 'Banner headline', type: 'string', fieldset: 'why'}),
+    defineField({name: 'whyBannerHeadlineEmphasis', title: 'Headline emphasis', type: 'string', fieldset: 'why'}),
+    defineField({name: 'whyBannerDescription', title: 'Banner description', type: 'text', rows: 3, fieldset: 'why'}),
     defineField({
       name: 'whyBannerBackground',
-      title: '[Why Us] Banner background image',
+      title: 'Banner background image',
       type: 'image',
       options: {hotspot: true},
+      fieldset: 'why',
     }),
     defineField({
       name: 'whyRows',
-      title: '[Why Us] Rows',
+      title: 'Rows',
       type: 'array',
       of: [{
         type: 'object',
@@ -193,16 +226,18 @@ export default defineType({
           },
         },
       }],
+      fieldset: 'why',
     }),
 
     // ── CERTIFICATIONS ──────────────────────────────────────────────────────
-    defineField({name: 'certEyebrow', title: '[Certifications] Eyebrow', type: 'string'}),
-    defineField({name: 'certHeadline', title: '[Certifications] Headline', type: 'string'}),
-    defineField({name: 'certHeadlineEmphasis', title: '[Certifications] Headline emphasis', type: 'string'}),
-    defineField({name: 'certDescription', title: '[Certifications] Description', type: 'text', rows: 3}),
+    isShowedField({name: 'certIsShowed', fieldset: 'cert'}),
+    defineField({name: 'certEyebrow', title: 'Eyebrow', type: 'string', fieldset: 'cert'}),
+    defineField({name: 'certHeadline', title: 'Headline', type: 'string', fieldset: 'cert'}),
+    defineField({name: 'certHeadlineEmphasis', title: 'Headline emphasis', type: 'string', fieldset: 'cert'}),
+    defineField({name: 'certDescription', title: 'Description', type: 'text', rows: 3, fieldset: 'cert'}),
     defineField({
       name: 'certBadges',
-      title: '[Certifications] Badges',
+      title: 'Badges',
       type: 'array',
       of: [{
         type: 'object',
@@ -218,10 +253,11 @@ export default defineType({
           },
         },
       }],
+      fieldset: 'cert',
     }),
     defineField({
       name: 'guaranteeCards',
-      title: '[Certifications] Guarantee cards',
+      title: 'Guarantee cards',
       type: 'array',
       of: [{
         type: 'object',
@@ -238,6 +274,7 @@ export default defineType({
           },
         },
       }],
+      fieldset: 'cert',
     }),
   ],
   preview: {

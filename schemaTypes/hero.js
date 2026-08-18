@@ -1,4 +1,5 @@
 import {defineField, defineType} from 'sanity'
+import {isShowedField} from './fields/isShowed'
 
 export default defineType({
   name: 'hero',
@@ -6,6 +7,7 @@ export default defineType({
   type: 'document',
   description: 'Single homepage hero — create one document and publish it.',
   fields: [
+    isShowedField(),
     defineField({
       name: 'locationLabel',
       title: 'Location label',

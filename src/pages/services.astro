@@ -49,9 +49,9 @@ if (pageMeta.jsonLd) {
   description="Full-range renovation and interior finishing services for Victoria and Vancouver Island — bathrooms, kitchens, flooring, full home renovations, and more."
   jsonLd={pageJsonLd}
 >
-  <TheNav client:load page="services" />
+  <TheNav client:load page="services" phone={site.phone} email={site.email} phoneHours={site.phoneHours} emailNote={site.emailNote} />
 
-  <!-- ══ HERO ══ -->
+  {page.heroIsShowed && (
   <section id="hero" class="svc-page-hero">
     <div class="hero-bg-img" style={heroBg}></div>
     <div class="hero-content">
@@ -89,8 +89,10 @@ if (pageMeta.jsonLd) {
 
     </div>
   </section>
+  )}
 
-  <!-- ══ SERVICES STRIP ══ -->
+  {page.listIsShowed && (
+  <>
   <section id="services-strip">
     <div class="strip-inner">
       {services.map((svc) => (
@@ -144,8 +146,10 @@ if (pageMeta.jsonLd) {
       </div>
     ))}
   </section>
+  </>
+  )}
 
-  <!-- ══ OUR PROCESS ══ -->
+  {page.processIsShowed && (
   <section id="our-process">
     <div class="svc-process-hero">
       <div class="svc-process-hero-img" style={processBg}></div>
@@ -157,9 +161,9 @@ if (pageMeta.jsonLd) {
     </div>
 
     <div class="process-steps">
-      {page.processSteps.map((step) => (
+      {page.processSteps.map((step, i) => (
         <div class="pstep">
-          <div class="pstep-num">{step.num}</div>
+          <div class="pstep-num">{String(i + 1).padStart(2, '0')}</div>
           <div class="pstep-icon"><i class={step.icon}></i></div>
           <div class="pstep-title">{step.title}</div>
           <p class="pstep-body">{step.body}</p>
@@ -167,8 +171,9 @@ if (pageMeta.jsonLd) {
       ))}
     </div>
   </section>
+  )}
 
-  <!-- ══ PRICING HINT ══ -->
+  {page.pricingIsShowed && (
   <section id="pricing-hint">
     <div class="ph-inner">
       <div class="ph-left">
@@ -190,8 +195,9 @@ if (pageMeta.jsonLd) {
       ))}
     </div>
   </section>
+  )}
 
-  <!-- ══ FAQ ══ -->
+  {page.faqIsShowed && (
   <section id="faq">
     <div class="faq-grid">
       <div class="faq-left">
@@ -215,8 +221,8 @@ if (pageMeta.jsonLd) {
       </div>
     </div>
   </section>
+  )}
 
-  <!-- ══ CONTACT ══ -->
   <SectionContact content={contact} site={site} />
   <TheFooter site={site} />
 

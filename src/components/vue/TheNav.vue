@@ -8,6 +8,8 @@ const props = defineProps<{
   page?: Page
   phone?: string
   email?: string
+  phoneHours?: string
+  emailNote?: string
 }>()
 
 const menuOpen   = ref(false)
@@ -65,6 +67,8 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
     :open="drawerOpen"
     :phone="phone"
     :email="email"
+    :phone-hours="phoneHours"
+    :email-note="emailNote"
     @close="closeDrawer"
   />
 </template>

@@ -1,10 +1,14 @@
 import {defineField, defineType} from 'sanity'
+import {isShowedField} from './fields/isShowed'
 
 export default defineType({
   name: 'homeContact',
   title: 'Homepage — Contact',
   type: 'document',
   fields: [
+    isShowedField({
+      description: 'When off, this section is hidden on the homepage. Other pages still show the contact block.',
+    }),
     defineField({name: 'eyebrow', title: 'Eyebrow', type: 'string', initialValue: 'Contact Us'}),
     defineField({name: 'headline', title: 'Headline', type: 'string'}),
     defineField({name: 'headlineEmphasis', title: 'Headline emphasis', type: 'string'}),

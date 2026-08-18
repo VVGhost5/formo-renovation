@@ -7,6 +7,8 @@ const props = defineProps<{
   open: boolean
   phone?: string
   email?: string
+  phoneHours?: string
+  emailNote?: string
   whatsapp?: string
 }>()
 
@@ -108,7 +110,7 @@ onUnmounted(() => document.removeEventListener('keydown', onKey))
               <div class="cd-ch-body">
                 <div class="cd-ch-label">Phone</div>
                 <div class="cd-ch-value">{{ phone ?? '+1 (250) 000-0000' }}</div>
-                <div class="cd-ch-note">Mon – Fri, 8:00 AM – 6:00 PM</div>
+                <div class="cd-ch-note">{{ phoneHours ?? 'Mon – Fri, 8:00 AM – 6:00 PM' }}</div>
               </div>
               <span class="cd-ch-arrow">→</span>
             </a>
@@ -118,7 +120,7 @@ onUnmounted(() => document.removeEventListener('keydown', onKey))
               <div class="cd-ch-body">
                 <div class="cd-ch-label">Email</div>
                 <div class="cd-ch-value">{{ email ?? 'hello@formorenovations.ca' }}</div>
-                <div class="cd-ch-note">Response within 1 business day</div>
+                <div class="cd-ch-note">{{ emailNote ?? 'Response within 1 business day' }}</div>
               </div>
               <span class="cd-ch-arrow">→</span>
             </a>

@@ -1,16 +1,19 @@
 ---
 import Layout        from '../layouts/Layout.astro'
 import TheNav        from '../components/vue/TheNav.vue'
+import SectionNumbers from '../components/SectionNumbers.astro'
 import SectionContact from '../components/SectionContact.astro'
 import TheFooter     from '../components/TheFooter.astro'
 import {
 	getAboutPage,
 	getSiteSettings,
 	getHomeContact,
+	getHomeNumbers,
 	getPageMetadata,
 	DEFAULT_ABOUT_PAGE,
 	DEFAULT_SITE_SETTINGS,
 	DEFAULT_HOME_CONTACT,
+	DEFAULT_HOME_NUMBERS,
 	DEFAULT_PAGE_SEO,
 } from '../utils/sanity'
 import {bgStyle} from '../utils/sanity/backgrounds'
@@ -18,10 +21,17 @@ import {bgStyle} from '../utils/sanity/backgrounds'
 let page = DEFAULT_ABOUT_PAGE
 let site = DEFAULT_SITE_SETTINGS
 let contact = DEFAULT_HOME_CONTACT
+let numbers = DEFAULT_HOME_NUMBERS
 let pageMeta = DEFAULT_PAGE_SEO.aboutUs
 
 try {
-	;[page, site, contact, pageMeta] = await Promise.all([getAboutPage(), getSiteSettings(), getHomeContact(), getPageMetadata('aboutUs')])
+	;[page, site, contact, numbers, pageMeta] = await Promise.all([
+		getAboutPage(),
+		getSiteSettings(),
+		getHomeContact(),
+		getHomeNumbers(),
+		getPageMetadata('aboutUs'),
+	])
 } catch (err) {
 	console.warn('[sanity] About page fallback.', err)
 }
@@ -29,6 +39,9 @@ try {
 const heroBg = bgStyle(page.heroImageUrl)
 const valuesBg = bgStyle(page.valuesHeroBackgroundUrl)
 const whyBg = bgStyle(page.whyBannerBackgroundUrl)
+
+const storyCta = /our story/i.test(page.primaryCtaLabel) || page.primaryCtaLink === '#our-story'
+const showPrimaryCta = Boolean(page.primaryCtaLabel) && !(storyCta && !page.storyIsShowed)
 
 let pageJsonLd: object | undefined
 if (pageMeta.jsonLd) {
@@ -41,10 +54,10 @@ if (pageMeta.jsonLd) {
   description="Learn the story behind Formo Renovations — our team, values, and commitment to quality craftsmanship across Victoria and Vancouver Island, BC since 2016."
   jsonLd={pageJsonLd}
 >
-  <TheNav client:load page="about-us" />
+  <TheNav client:load page="about-us" phone={site.phone} email={site.email} phoneHours={site.phoneHours} emailNote={site.emailNote} />
 
-  <!-- ══ HERO ══ -->
-  <section id="hero" class="about-page-hero">
+  {page.heroIsShowed && (
+  <section id="hero" class:list={['about-page-hero', !page.founderCardIsShowed && 'no-side-card']}>
     <div class="hero-bg-img" style={heroBg}></div>
 
     <div class="hero-content">
@@ -60,35 +73,42 @@ if (pageMeta.jsonLd) {
         <hr class="hero-line" />
         <p class="hero-desc">{page.description}</p>
         <div class="hero-actions">
-          <a href={page.primaryCtaLink} class="btn-dark">{page.primaryCtaLabel}</a>
-          <a href={page.secondaryCtaLink} class="btn-outline">{page.secondaryCtaLabel}</a>
+          {showPrimaryCta && (
+            <a href={page.primaryCtaLink} class="btn-dark">{page.primaryCtaLabel}</a>
+          )}
+          {page.secondaryCtaLabel && (
+            <a href={page.secondaryCtaLink} class="btn-outline">{page.secondaryCtaLabel}</a>
+          )}
         </div>
       </div>
 
-      <div class="hero-founder-card">
-        <div>
-          <div class="hero-founder-photo">{page.founderInitial}</div>
-        </div>
-        <div>
-          <div class="hero-founder-name">{page.founderName}</div>
-          <div class="hero-founder-role">{page.founderRole}</div>
-        </div>
-        <p class="hero-founder-quote">{page.founderQuote}</p>
-        <div class="hero-founder-stats">
-          {page.founderStats.map((stat) => (
-            <div class="hfs-cell">
-              <div class="hfs-val">
-                {stat.value}{stat.suffix ? <sup>{stat.suffix}</sup> : null}
+      {page.founderCardIsShowed && (
+        <div class="hero-founder-card">
+          <div>
+            <div class="hero-founder-photo">{page.founderInitial}</div>
+          </div>
+          <div>
+            <div class="hero-founder-name">{page.founderName}</div>
+            <div class="hero-founder-role">{page.founderRole}</div>
+          </div>
+          <p class="hero-founder-quote">{page.founderQuote}</p>
+          <div class="hero-founder-stats">
+            {page.founderStats.map((stat) => (
+              <div class="hfs-cell">
+                <div class="hfs-val">
+                  {stat.value}{stat.suffix ? <sup>{stat.suffix}</sup> : null}
+                </div>
+                <div class="hfs-label">{stat.label}</div>
               </div>
-              <div class="hfs-label">{stat.label}</div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   </section>
+  )}
 
-  <!-- ══ WHO WE ARE ══ -->
+  {page.whoIsShowed && (
   <section id="who-we-are">
     <div class="who-grid">
       <div class="who-left">
@@ -112,21 +132,11 @@ if (pageMeta.jsonLd) {
       </div>
     </div>
   </section>
+  )}
 
-  <!-- ══ NUMBERS ══ -->
-  <section id="numbers">
-    <div class="numbers-grid">
-      {page.aboutStats.map((stat) => (
-        <div class="num-cell">
-          <div class="num-val">{stat.value}{stat.suffix ? <sup>{stat.suffix}</sup> : null}</div>
-          <div class="num-label">{stat.label}</div>
-          <p class="num-desc">{stat.description}</p>
-        </div>
-      ))}
-    </div>
-  </section>
+  {numbers.isShowed && <SectionNumbers content={numbers} />}
 
-  <!-- ══ OUR STORY ══ -->
+  {page.storyIsShowed && (
   <section id="our-story">
     <div class="story-head">
       <div>
@@ -152,8 +162,9 @@ if (pageMeta.jsonLd) {
       ))}
     </div>
   </section>
+  )}
 
-  <!-- ══ OUR VALUES ══ -->
+  {page.valuesIsShowed && (
   <section id="our-values">
     <div class="values-hero">
       <div class="values-hero-img" style={valuesBg}></div>
@@ -178,8 +189,9 @@ if (pageMeta.jsonLd) {
       ))}
     </div>
   </section>
+  )}
 
-  <!-- ══ OUR TEAM ══ -->
+  {page.teamIsShowed && (
   <section id="our-team">
     <div class="team-head">
       <div>
@@ -205,8 +217,9 @@ if (pageMeta.jsonLd) {
       ))}
     </div>
   </section>
+  )}
 
-  <!-- ══ WHY CHOOSE US ══ -->
+  {page.whyIsShowed && (
   <section id="why-us">
     <div class="why-banner">
       <div class="why-banner-img" style={whyBg}></div>
@@ -238,8 +251,9 @@ if (pageMeta.jsonLd) {
       ))}
     </div>
   </section>
+  )}
 
-  <!-- ══ CERTIFICATIONS ══ -->
+  {page.certIsShowed && (
   <section id="certifications">
     <div class="cert-inner">
       <div class="cert-left">
@@ -269,8 +283,8 @@ if (pageMeta.jsonLd) {
       ))}
     </div>
   </section>
+  )}
 
-  <!-- ══ CONTACT ══ -->
   <SectionContact content={contact} site={site} />
   <TheFooter site={site} />
 

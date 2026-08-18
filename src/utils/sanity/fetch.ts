@@ -26,7 +26,6 @@ import {
 import type {
 	AboutPageContent,
 	AboutRow,
-	AboutStatItem,
 	BeforeAfterSlide,
 	CertBadge,
 	ContactsPageContent,
@@ -61,29 +60,37 @@ import type {
 } from './types'
 
 const str = (v?: string | null, fallback = '') => (v?.trim() ? v.trim() : fallback)
+const shown = (value: unknown, fallback = true) => (typeof value === 'boolean' ? value : fallback)
+const HIDDEN_SERVICE_META = /starting\s*from/i
 
 // ── Queries ─────────────────────────────────────────────────────────────────
 
 const HERO_Q = defineQuery(`coalesce(*[_id == "hero"][0], *[_type == "hero"][0]){
+  "isShowed": coalesce(isShowed, true),
   locationLabel, titleLine1, titleLine2, titleSub, description,
   primaryCtaLabel, secondaryCtaLabel, formTitle, formSubtext, formNote,
   backgroundImage{ asset, alt }
 }`)
 
 const SITE_Q = defineQuery(`*[_id == "siteSettings"][0]{
+  "testimonialsIsShowed": coalesce(testimonialsIsShowed, true),
   footerDescription, phone, phoneHours, email, emailNote, notificationEmail,
   whatsapp, whatsappNote, serviceArea, serviceAreaNote,
   instagramUrl, facebookUrl, houzzUrl, homestarsUrl
 }`)
 
-const NUMBERS_Q = defineQuery(`*[_id == "homeNumbers"][0]{ eyebrow, headline, stats }`)
+const NUMBERS_Q = defineQuery(`*[_id == "homeNumbers"][0]{
+  "isShowed": coalesce(isShowed, true), eyebrow, headline, stats
+}`)
 
 const SERVICES_HOME_Q = defineQuery(`*[_id == "homeServices"][0]{
+  "isShowed": coalesce(isShowed, true),
   eyebrow, title, titleAccent,
   cards[]{ name, link, image{ asset, alt } }
 }`)
 
 const ABOUT_HOME_Q = defineQuery(`*[_id == "homeAbout"][0]{
+  "isShowed": coalesce(isShowed, true),
   eyebrow, headline, headlineEmphasis, heroDescription, heroCtaLabel, heroCtaLink,
   heroImage{ asset, alt },
   rows[]{
@@ -93,18 +100,21 @@ const ABOUT_HOME_Q = defineQuery(`*[_id == "homeAbout"][0]{
 }`)
 
 const PORTFOLIO_HOME_Q = defineQuery(`*[_id == "homePortfolio"][0]{
+  "isShowed": coalesce(isShowed, true),
   eyebrow, headline, headlineEmphasis, description, ctaLabel, ctaLink, useFeaturedProjects,
   heroImage{ asset, alt },
   cards[]{ tag, title, meta, image{ asset, alt } }
 }`)
 
 const PROCESS_Q = defineQuery(`*[_id == "homeProcess"][0]{
+  "isShowed": coalesce(isShowed, true),
   eyebrow, headline, headlineEmphasis, description, ctaLabel,
   heroImage{ asset, alt },
-  steps[]{ num, title, description, arrow }
+  steps[]{ title, description }
 }`)
 
 const PRICING_Q = defineQuery(`*[_id == "homePricing"][0]{
+  "isShowed": coalesce(isShowed, true),
   eyebrow, headline, headlineEmphasis, heroDescription, heroCtaLabel,
   heroImage{ asset, alt },
   introTitle, introText,
@@ -113,11 +123,13 @@ const PRICING_Q = defineQuery(`*[_id == "homePricing"][0]{
 }`)
 
 const CONTACT_HOME_Q = defineQuery(`*[_id == "homeContact"][0]{
+  "isShowed": coalesce(isShowed, true),
   eyebrow, headline, headlineEmphasis, lead, ctaLabel, formTitle, formSubtext,
   photo{ asset, alt }, photoAlt
 }`)
 
 const HOME_BEFORE_AFTER_BANNER_Q = defineQuery(`*[_id == "homeBeforeAfter"][0]{
+  "isShowed": coalesce(isShowed, true),
   eyebrow, headline, headlineEmphasis, description, ctaLabel,
   heroBackground{ asset, alt }
 }`)
@@ -140,12 +152,17 @@ const PORTFOLIO_PROJECTS_Q = defineQuery(`*[_type == "portfolioProject"] | order
 }`)
 
 const SERVICES_PAGE_Q = defineQuery(`*[_id == "servicesPage"][0]{
+  "heroIsShowed": coalesce(heroIsShowed, true),
+  "listIsShowed": coalesce(listIsShowed, true),
+  "processIsShowed": coalesce(processIsShowed, true),
+  "pricingIsShowed": coalesce(pricingIsShowed, true),
+  "faqIsShowed": coalesce(faqIsShowed, true),
   locationLabel, titleBefore, titleEmphasis, description,
   primaryCtaLabel, primaryCtaLink, secondaryCtaLabel, secondaryCtaLink,
   heroImage{ asset, alt },
   processHeroBackground{ asset, alt },
   processEyebrow, processHeadline, processHeadlineEmphasis, processDescription,
-  processSteps[]{ num, icon, title, body },
+  processSteps[]{ icon, title, body },
   pricingEyebrow, pricingHeadline, pricingHeadlineEmphasis, pricingBody,
   pricingCards[]{ icon, title, body },
   faqEyebrow, faqTitle, faqTitleEmphasis, faqSub,
@@ -159,6 +176,14 @@ const PORTFOLIO_PAGE_Q = defineQuery(`*[_id == "portfolioPage"][0]{
 }`)
 
 const ABOUT_PAGE_Q = defineQuery(`*[_id == "aboutPage"][0]{
+  "heroIsShowed": coalesce(heroIsShowed, true),
+  "founderCardIsShowed": coalesce(founderCardIsShowed, false),
+  "whoIsShowed": coalesce(whoIsShowed, true),
+  "storyIsShowed": coalesce(storyIsShowed, false),
+  "valuesIsShowed": coalesce(valuesIsShowed, true),
+  "teamIsShowed": coalesce(teamIsShowed, false),
+  "whyIsShowed": coalesce(whyIsShowed, true),
+  "certIsShowed": coalesce(certIsShowed, true),
   locationLabel, titleBefore, titleEmphasis, description,
   primaryCtaLabel, primaryCtaLink, secondaryCtaLabel, secondaryCtaLink,
   heroImage{ asset, alt },
@@ -166,7 +191,6 @@ const ABOUT_PAGE_Q = defineQuery(`*[_id == "aboutPage"][0]{
   whyBannerBackground{ asset, alt },
   founderInitial, founderName, founderRole, founderQuote, founderStats,
   whoEyebrow, whoHeadline, whoHeadlineEmphasis, whoLead, whoBody, whoPills, whoCtaLabel, whoCtaLink,
-  aboutStats[]{ value, suffix, label, description },
   storyEyebrow, storyHeadline, storyHeadlineEmphasis, storyLead,
   timeline[]{ year, title, text, highlight },
   valuesEyebrow, valuesHeadline, valuesHeadlineEmphasis, valuesDescription,
@@ -219,6 +243,7 @@ export function mapHero(doc: Record<string, unknown> | null): HeroContent {
 	if (!doc) return DEFAULT_HERO
 	const d = doc as HeroContent & {backgroundImage?: {alt?: string}}
 	return {
+		isShowed: shown((d as {isShowed?: boolean}).isShowed, DEFAULT_HERO.isShowed),
 		locationLabel: str(d.locationLabel as string, DEFAULT_HERO.locationLabel),
 		titleLine1: str(d.titleLine1 as string, DEFAULT_HERO.titleLine1),
 		titleLine2: str(d.titleLine2 as string, DEFAULT_HERO.titleLine2),
@@ -238,6 +263,7 @@ export function mapSiteSettings(doc: Record<string, unknown> | null): SiteSettin
 	if (!doc) return DEFAULT_SITE_SETTINGS
 	const d = doc as SiteSettingsContent
 	return {
+		testimonialsIsShowed: shown((d as {testimonialsIsShowed?: boolean}).testimonialsIsShowed, DEFAULT_SITE_SETTINGS.testimonialsIsShowed),
 		footerDescription: str(d.footerDescription, DEFAULT_SITE_SETTINGS.footerDescription),
 		phone: str(d.phone, DEFAULT_SITE_SETTINGS.phone),
 		phoneHours: str(d.phoneHours, DEFAULT_SITE_SETTINGS.phoneHours),
@@ -270,6 +296,7 @@ export function mapHomeNumbers(doc: Record<string, unknown> | null): HomeNumbers
 	if (!doc) return DEFAULT_HOME_NUMBERS
 	const d = doc as HomeNumbersContent
 	return {
+		isShowed: shown((d as {isShowed?: boolean}).isShowed, DEFAULT_HOME_NUMBERS.isShowed),
 		eyebrow: str(d.eyebrow, DEFAULT_HOME_NUMBERS.eyebrow),
 		headline: str(d.headline, DEFAULT_HOME_NUMBERS.headline),
 		stats: mapStats(d.stats as never, DEFAULT_HOME_NUMBERS.stats),
@@ -287,6 +314,7 @@ export function mapHomeServices(doc: Record<string, unknown> | null): HomeServic
 		}))
 		.filter((c) => c.name && c.imageUrl)
 	return {
+		isShowed: shown((d as {isShowed?: boolean}).isShowed, DEFAULT_HOME_SERVICES.isShowed),
 		eyebrow: str(d.eyebrow, DEFAULT_HOME_SERVICES.eyebrow),
 		title: str(d.title, DEFAULT_HOME_SERVICES.title),
 		titleAccent: str(d.titleAccent, DEFAULT_HOME_SERVICES.titleAccent),
@@ -312,6 +340,7 @@ export function mapHomeAbout(doc: Record<string, unknown> | null): HomeAboutCont
 		}
 	})
 	return {
+		isShowed: shown((d as {isShowed?: boolean}).isShowed, DEFAULT_HOME_ABOUT.isShowed),
 		eyebrow: str(d.eyebrow, DEFAULT_HOME_ABOUT.eyebrow),
 		headline: str(d.headline, DEFAULT_HOME_ABOUT.headline),
 		headlineEmphasis: str(d.headlineEmphasis, DEFAULT_HOME_ABOUT.headlineEmphasis),
@@ -344,6 +373,7 @@ export function mapHomePortfolio(
 				? manual
 				: DEFAULT_HOME_PORTFOLIO.projects
 	return {
+		isShowed: shown((d as {isShowed?: boolean}).isShowed, DEFAULT_HOME_PORTFOLIO.isShowed),
 		eyebrow: str(d.eyebrow, DEFAULT_HOME_PORTFOLIO.eyebrow),
 		headline: str(d.headline, DEFAULT_HOME_PORTFOLIO.headline),
 		headlineEmphasis: str(d.headlineEmphasis, DEFAULT_HOME_PORTFOLIO.headlineEmphasis),
@@ -363,13 +393,12 @@ export function mapHomeProcess(doc: Record<string, unknown> | null): HomeProcess
 		.map((s, i) => {
 			const fb = DEFAULT_HOME_PROCESS.steps[i] ?? DEFAULT_HOME_PROCESS.steps[0]
 			return {
-				num: str(s.num, fb.num),
 				title: str(s.title, fb.title),
 				description: str(s.description, fb.description),
-				arrow: str(s.arrow, fb.arrow),
 			}
 		})
 	return {
+		isShowed: shown((d as {isShowed?: boolean}).isShowed, DEFAULT_HOME_PROCESS.isShowed),
 		eyebrow: str(d.eyebrow, DEFAULT_HOME_PROCESS.eyebrow),
 		headline: str(d.headline, DEFAULT_HOME_PROCESS.headline),
 		headlineEmphasis: str(d.headlineEmphasis, DEFAULT_HOME_PROCESS.headlineEmphasis),
@@ -390,6 +419,7 @@ export function mapHomePricing(doc: Record<string, unknown> | null): HomePricing
 			return {num: str(f.num, fb.num), title: str(f.title, fb.title), description: str(f.description, fb.description)}
 		})
 	return {
+		isShowed: shown((d as {isShowed?: boolean}).isShowed, DEFAULT_HOME_PRICING.isShowed),
 		eyebrow: str(d.eyebrow, DEFAULT_HOME_PRICING.eyebrow),
 		headline: str(d.headline, DEFAULT_HOME_PRICING.headline),
 		headlineEmphasis: str(d.headlineEmphasis, DEFAULT_HOME_PRICING.headlineEmphasis),
@@ -411,6 +441,7 @@ export function mapHomeContact(doc: Record<string, unknown> | null): HomeContact
 	if (!doc) return DEFAULT_HOME_CONTACT
 	const d = doc as HomeContactContent & {photo?: unknown}
 	return {
+		isShowed: shown((d as {isShowed?: boolean}).isShowed, DEFAULT_HOME_CONTACT.isShowed),
 		eyebrow: str(d.eyebrow, DEFAULT_HOME_CONTACT.eyebrow),
 		headline: str(d.headline, DEFAULT_HOME_CONTACT.headline),
 		headlineEmphasis: str(d.headlineEmphasis, DEFAULT_HOME_CONTACT.headlineEmphasis),
@@ -551,6 +582,7 @@ export function mapHomeBeforeAfterBanner(
 	if (!doc) return DEFAULT_HOME_BEFORE_AFTER_BANNER
 	const d = doc as HomeBeforeAfterBannerContent & {heroBackground?: unknown}
 	return {
+		isShowed: shown((d as {isShowed?: boolean}).isShowed, DEFAULT_HOME_BEFORE_AFTER_BANNER.isShowed),
 		eyebrow: str(d.eyebrow, DEFAULT_HOME_BEFORE_AFTER_BANNER.eyebrow),
 		headline: str(d.headline, DEFAULT_HOME_BEFORE_AFTER_BANNER.headline),
 		headlineEmphasis: str(d.headlineEmphasis, DEFAULT_HOME_BEFORE_AFTER_BANNER.headlineEmphasis),
@@ -576,7 +608,6 @@ export function mapServicesPage(doc: Record<string, unknown> | null): ServicesPa
 		.map((s, i) => {
 			const fb = DEFAULT_SERVICES_PAGE.processSteps[i] ?? DEFAULT_SERVICES_PAGE.processSteps[0]
 			return {
-				num: str(s.num, fb.num),
 				icon: str(s.icon, fb.icon),
 				title: str(s.title, fb.title),
 				body: str(s.body, fb.body),
@@ -596,6 +627,11 @@ export function mapServicesPage(doc: Record<string, unknown> | null): ServicesPa
 
 	return {
 		...base,
+		heroIsShowed: shown((d as {heroIsShowed?: boolean}).heroIsShowed, DEFAULT_SERVICES_PAGE.heroIsShowed),
+		listIsShowed: shown((d as {listIsShowed?: boolean}).listIsShowed, DEFAULT_SERVICES_PAGE.listIsShowed),
+		processIsShowed: shown((d as {processIsShowed?: boolean}).processIsShowed, DEFAULT_SERVICES_PAGE.processIsShowed),
+		pricingIsShowed: shown((d as {pricingIsShowed?: boolean}).pricingIsShowed, DEFAULT_SERVICES_PAGE.pricingIsShowed),
+		faqIsShowed: shown((d as {faqIsShowed?: boolean}).faqIsShowed, DEFAULT_SERVICES_PAGE.faqIsShowed),
 		processHeroBackgroundUrl: resolveBgUrl(urlForImage(d.processHeroBackground as never), 'servicesProcess'),
 		processEyebrow: str((d as {processEyebrow?: string}).processEyebrow, DEFAULT_SERVICES_PAGE.processEyebrow),
 		processHeadline: str((d as {processHeadline?: string}).processHeadline, DEFAULT_SERVICES_PAGE.processHeadline),
@@ -619,13 +655,6 @@ export function mapAboutPage(doc: Record<string, unknown> | null): AboutPageCont
 	if (!doc) return DEFAULT_ABOUT_PAGE
 	const base = mapPageHero(doc, DEFAULT_ABOUT_PAGE, 'aboutHero')
 	const d = doc as AboutPageContent & {valuesHeroBackground?: unknown; whyBannerBackground?: unknown}
-
-	const aboutStats = ((d as {aboutStats?: AboutStatItem[]}).aboutStats ?? [])
-		.filter((s) => s?.value && s?.label)
-		.map((s, i) => {
-			const fb = DEFAULT_ABOUT_PAGE.aboutStats[i] ?? DEFAULT_ABOUT_PAGE.aboutStats[0]
-			return {value: str(s.value, fb.value), suffix: str(s.suffix, fb.suffix), label: str(s.label, fb.label), description: str(s.description, fb.description)}
-		})
 
 	const timeline = ((d as {timeline?: TimelineItem[]}).timeline ?? [])
 		.filter((t) => t?.year && t?.title)
@@ -684,6 +713,14 @@ export function mapAboutPage(doc: Record<string, unknown> | null): AboutPageCont
 
 	return {
 		...base,
+		heroIsShowed: shown(d.heroIsShowed, DEFAULT_ABOUT_PAGE.heroIsShowed),
+		founderCardIsShowed: shown(d.founderCardIsShowed, DEFAULT_ABOUT_PAGE.founderCardIsShowed),
+		whoIsShowed: shown(d.whoIsShowed, DEFAULT_ABOUT_PAGE.whoIsShowed),
+		storyIsShowed: shown(d.storyIsShowed, DEFAULT_ABOUT_PAGE.storyIsShowed),
+		valuesIsShowed: shown(d.valuesIsShowed, DEFAULT_ABOUT_PAGE.valuesIsShowed),
+		teamIsShowed: shown(d.teamIsShowed, DEFAULT_ABOUT_PAGE.teamIsShowed),
+		whyIsShowed: shown(d.whyIsShowed, DEFAULT_ABOUT_PAGE.whyIsShowed),
+		certIsShowed: shown(d.certIsShowed, DEFAULT_ABOUT_PAGE.certIsShowed),
 		valuesHeroBackgroundUrl: resolveBgUrl(urlForImage(d.valuesHeroBackground as never), 'aboutValues'),
 		whyBannerBackgroundUrl: resolveBgUrl(urlForImage(d.whyBannerBackground as never), 'aboutWhy'),
 		founderInitial: str(d.founderInitial, DEFAULT_ABOUT_PAGE.founderInitial),
@@ -700,8 +737,6 @@ export function mapAboutPage(doc: Record<string, unknown> | null): AboutPageCont
 		whoPills: ((d as {whoPills?: string[]}).whoPills ?? []).filter(Boolean).length ? (d as {whoPills?: string[]}).whoPills!.filter(Boolean) : DEFAULT_ABOUT_PAGE.whoPills,
 		whoCtaLabel: str((d as {whoCtaLabel?: string}).whoCtaLabel, DEFAULT_ABOUT_PAGE.whoCtaLabel),
 		whoCtaLink: str((d as {whoCtaLink?: string}).whoCtaLink, DEFAULT_ABOUT_PAGE.whoCtaLink),
-		// Numbers
-		aboutStats: aboutStats.length ? aboutStats : DEFAULT_ABOUT_PAGE.aboutStats,
 		// Story
 		storyEyebrow: str((d as {storyEyebrow?: string}).storyEyebrow, DEFAULT_ABOUT_PAGE.storyEyebrow),
 		storyHeadline: str((d as {storyHeadline?: string}).storyHeadline, DEFAULT_ABOUT_PAGE.storyHeadline),
@@ -790,7 +825,9 @@ export function mapServicesList(docs: Record<string, unknown>[]): ServiceDetail[
 				title: str(d.title),
 				lead: str(d.lead),
 				includes: (d.includes ?? []).filter(Boolean),
-				meta: (d.meta ?? []).filter((m) => m.key && m.val).map((m) => ({key: str(m.key), val: str(m.val)})),
+				meta: (d.meta ?? [])
+					.filter((m) => m.key && m.val && !HIDDEN_SERVICE_META.test(m.key))
+					.map((m) => ({key: str(m.key), val: str(m.val)})),
 				imageUrl: urlForImage(d.image as never, 900) ?? '',
 				imageAlt: str(d.imageAlt, d.title ?? ''),
 			}

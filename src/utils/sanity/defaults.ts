@@ -23,6 +23,7 @@ import type {
 } from './types'
 
 export const DEFAULT_HERO: HeroContent = {
+	isShowed: true,
 	locationLabel: 'Victoria & Vancouver Island',
 	titleLine1: 'Premium',
 	titleLine2: 'Renovations',
@@ -39,6 +40,7 @@ export const DEFAULT_HERO: HeroContent = {
 }
 
 export const DEFAULT_SITE_SETTINGS: SiteSettingsContent = {
+	testimonialsIsShowed: true,
 	footerDescription:
 		'Premium renovation and interior finishing solutions for homes across Victoria and Vancouver Island, BC. European standards. Transparent process.',
 	phone: '+1 (250) 000-0000',
@@ -102,6 +104,7 @@ export const DEFAULT_PAGE_SEO: Record<SiteMetadataPageKey, PageSeo> = {
 }
 
 export const DEFAULT_HOME_NUMBERS: HomeNumbersContent = {
+	isShowed: true,
 	eyebrow: 'By the Numbers',
 	headline: '15 years of delivering spaces',
 	stats: [
@@ -113,6 +116,7 @@ export const DEFAULT_HOME_NUMBERS: HomeNumbersContent = {
 }
 
 export const DEFAULT_HOME_SERVICES: HomeServicesContent = {
+	isShowed: true,
 	eyebrow: 'Our Services',
 	title: 'Comprehensive Renovation',
 	titleAccent: '& Interior Finishing Solutions',
@@ -127,6 +131,7 @@ export const DEFAULT_HOME_SERVICES: HomeServicesContent = {
 }
 
 export const DEFAULT_HOME_ABOUT: HomeAboutContent = {
+	isShowed: true,
 	eyebrow: 'About Us',
 	headline: 'Built on Craft,',
 	headlineEmphasis: 'Driven by Standards',
@@ -179,6 +184,7 @@ export const DEFAULT_HOME_ABOUT: HomeAboutContent = {
 }
 
 export const DEFAULT_HOME_PORTFOLIO: HomePortfolioContent = {
+	isShowed: true,
 	eyebrow: 'Our Work',
 	headline: 'Real Projects,',
 	headlineEmphasis: 'Real Transformations',
@@ -197,6 +203,7 @@ export const DEFAULT_HOME_PORTFOLIO: HomePortfolioContent = {
 }
 
 export const DEFAULT_HOME_PROCESS: HomeProcessContent = {
+	isShowed: true,
 	eyebrow: 'How We Work',
 	headline: 'A Clear Process,',
 	headlineEmphasis: 'No Surprises',
@@ -205,18 +212,19 @@ export const DEFAULT_HOME_PROCESS: HomeProcessContent = {
 	ctaLabel: 'Book a Free Consultation →',
 	heroImageUrl: DEFAULT_BACKGROUNDS.homeProcess,
 	steps: [
-		{num: '01', title: 'Inquiry', description: 'You reach out or submit a request. We respond within 24 hours to schedule a first conversation.', arrow: '→'},
-		{num: '02', title: 'Free Consultation', description: 'We discuss your vision, scope and goals. No commitment required — this call is completely free.', arrow: '→'},
-		{num: '03', title: 'Site Assessment', description: 'We visit the property, take precise measurements and evaluate the full scope of work on-site.', arrow: '→'},
-		{num: '04', title: 'Estimate & Proposal', description: 'A detailed, itemised estimate with timeline, materials and full cost breakdown. No hidden fees.', arrow: '→'},
-		{num: '05', title: 'Contract Signing', description: 'A clear, fair agreement that protects both parties and outlines every commitment.', arrow: '→'},
-		{num: '06', title: 'Execution', description: 'Work begins with our team and vetted tradespeople under full coordination.', arrow: '→'},
-		{num: '07', title: 'Quality Checks', description: 'Documented inspections at each stage to ensure standards are met before proceeding.', arrow: '→'},
-		{num: '08', title: 'Project Handover', description: 'Final walkthrough, documentation package, and warranty confirmation.', arrow: '✓'},
+		{title: 'Inquiry', description: 'You reach out or submit a request. We respond within 24 hours to schedule a first conversation.'},
+		{title: 'Free Consultation', description: 'We discuss your vision, scope and goals. No commitment required — this call is completely free.'},
+		{title: 'Site Assessment', description: 'We visit the property, take precise measurements and evaluate the full scope of work on-site.'},
+		{title: 'Estimate & Proposal', description: 'A detailed, itemised estimate with timeline, materials and full cost breakdown. No hidden fees.'},
+		{title: 'Contract Signing', description: 'A clear, fair agreement that protects both parties and outlines every commitment.'},
+		{title: 'Execution', description: 'Work begins with our team and vetted tradespeople under full coordination.'},
+		{title: 'Quality Checks', description: 'Documented inspections at each stage to ensure standards are met before proceeding.'},
+		{title: 'Project Handover', description: 'Final walkthrough, documentation package, and warranty confirmation.'},
 	],
 }
 
 export const DEFAULT_HOME_PRICING: HomePricingContent = {
+	isShowed: true,
 	eyebrow: 'Pricing',
 	headline: 'No Ballpark Figures,',
 	headlineEmphasis: 'Just Honest Numbers',
@@ -244,6 +252,7 @@ export const DEFAULT_HOME_PRICING: HomePricingContent = {
 }
 
 export const DEFAULT_HOME_CONTACT: HomeContactContent = {
+	isShowed: true,
 	eyebrow: 'Contact Us',
 	headline: "Let's Start",
 	headlineEmphasis: 'Your Project',
@@ -256,6 +265,7 @@ export const DEFAULT_HOME_CONTACT: HomeContactContent = {
 }
 
 export const DEFAULT_HOME_BEFORE_AFTER_BANNER: HomeBeforeAfterBannerContent = {
+	isShowed: true,
 	eyebrow: 'Before & After',
 	headline: 'Real Results,',
 	headlineEmphasis: 'Real Spaces',
@@ -291,6 +301,11 @@ export const DEFAULT_PORTFOLIO_PAGE: PortfolioPageContent = {
 }
 
 export const DEFAULT_SERVICES_PAGE: ServicesPageContent = {
+	heroIsShowed: true,
+	listIsShowed: true,
+	processIsShowed: true,
+	pricingIsShowed: true,
+	faqIsShowed: true,
 	locationLabel: 'Victoria & Vancouver Island, BC',
 	titleBefore: 'What we',
 	titleEmphasis: 'build for you',
@@ -308,11 +323,11 @@ export const DEFAULT_SERVICES_PAGE: ServicesPageContent = {
 	processHeadlineEmphasis: 'final walkthrough',
 	processDescription: 'A clear, predictable process is how we eliminate stress and deliver consistent results — every time, for every client.',
 	processSteps: [
-		{num: '01', icon: 'fa-solid fa-phone', title: 'Free Consultation', body: 'We visit your home, listen to your goals, and assess the scope. No charge, no obligation. Usually 45–60 minutes.'},
-		{num: '02', icon: 'fa-solid fa-file-lines', title: 'Detailed Quote', body: 'Within 48 hours you receive a line-by-line estimate — materials, labour, timeline, and payment schedule. Everything in writing.'},
-		{num: '03', icon: 'fa-solid fa-file-signature', title: 'Signed Contract', body: "Once you're happy, we formalise everything in a clear contract. Scope, schedule, payment milestones, and warranty terms."},
-		{num: '04', icon: 'fa-solid fa-hammer', title: 'Construction', body: 'Work begins on the agreed date. Daily updates, weekly site reports, and proactive communication throughout.'},
-		{num: '05', icon: 'fa-solid fa-flag-checkered', title: 'Final Walkthrough', body: 'We walk the finished project with you. Any snags are addressed before final payment. Your warranty begins the day you sign off.'},
+		{icon: 'fa-solid fa-phone', title: 'Free Consultation', body: 'We visit your home, listen to your goals, and assess the scope. No charge, no obligation. Usually 45–60 minutes.'},
+		{icon: 'fa-solid fa-file-lines', title: 'Detailed Quote', body: 'Within 48 hours you receive a line-by-line estimate — materials, labour, timeline, and payment schedule. Everything in writing.'},
+		{icon: 'fa-solid fa-file-signature', title: 'Signed Contract', body: "Once you're happy, we formalise everything in a clear contract. Scope, schedule, payment milestones, and warranty terms."},
+		{icon: 'fa-solid fa-hammer', title: 'Construction', body: 'Work begins on the agreed date. Daily updates, weekly site reports, and proactive communication throughout.'},
+		{icon: 'fa-solid fa-flag-checkered', title: 'Final Walkthrough', body: 'We walk the finished project with you. Any snags are addressed before final payment. Your warranty begins the day you sign off.'},
 	],
 	// Pricing hint
 	pricingEyebrow: 'Transparent Pricing',
@@ -341,23 +356,31 @@ export const DEFAULT_SERVICES_PAGE: ServicesPageContent = {
 }
 
 export const DEFAULT_ABOUT_PAGE: AboutPageContent = {
+	heroIsShowed: true,
+	founderCardIsShowed: false,
+	whoIsShowed: true,
+	storyIsShowed: false,
+	valuesIsShowed: true,
+	teamIsShowed: false,
+	whyIsShowed: true,
+	certIsShowed: true,
 	locationLabel: 'Victoria & Vancouver Island, BC',
 	titleBefore: 'Built on',
 	titleEmphasis: 'trust & craft',
 	description:
 		"Formo Renovations was founded on a single belief: that every home deserves to be treated with the same care we'd give our own. Since 2016, we've been turning renovation visions into reality — on time, on budget, and built to last.",
-	primaryCtaLabel: 'Our Story ↓',
-	primaryCtaLink: '#our-story',
+	primaryCtaLabel: 'Get a Free Estimate →',
+	primaryCtaLink: '#contact',
 	secondaryCtaLabel: 'See Our Work',
 	secondaryCtaLink: '/portfolio/',
 	heroImageUrl: DEFAULT_BACKGROUNDS.aboutHero,
 	valuesHeroBackgroundUrl: DEFAULT_BACKGROUNDS.aboutValues,
 	whyBannerBackgroundUrl: DEFAULT_BACKGROUNDS.aboutWhy,
-	founderInitial: 'M',
-	founderName: 'Michael Formo',
-	founderRole: 'Founder & Lead Contractor',
+	founderInitial: 'F',
+	founderName: 'Formo Renovations',
+	founderRole: 'Licensed · Insured · Victoria, BC',
 	founderQuote:
-		'"I started Formo because I believed clients deserved complete transparency — from the first estimate to the final walkthrough. That principle still guides everything we do."',
+		'Transparent pricing, honest timelines, and craftsmanship you can see and feel — from the first estimate to the final walkthrough.',
 	founderStats: [
 		{value: '8', suffix: 'yr', label: 'In Business'},
 		{value: '120', suffix: '+', label: 'Projects'},
@@ -376,13 +399,6 @@ export const DEFAULT_ABOUT_PAGE: AboutPageContent = {
 	whoPills: ['Licensed & Insured', 'BC HomeWarranty', 'Trusted Since 2016', 'Local Team', 'No Subcontracting Surprises'],
 	whoCtaLabel: 'Start a Conversation →',
 	whoCtaLink: '#contact',
-	// Numbers
-	aboutStats: [
-		{value: '120', suffix: '+', label: 'Projects Completed', description: 'From single-room upgrades to full-home renovations across Victoria and the Island.'},
-		{value: '98', suffix: '%', label: 'Client Satisfaction', description: 'Based on post-project surveys from every client since 2019.'},
-		{value: '8', suffix: '+', label: 'Years in Business', description: 'Established in 2016 with a focus on quality over volume.'},
-		{value: '12', suffix: 'mo', label: 'Workmanship Warranty', description: 'Every project backed by a full 12-month workmanship guarantee — no questions asked.'},
-	],
 	// Our Story
 	storyEyebrow: 'Our Story',
 	storyHeadline: 'Eight years of',
@@ -479,7 +495,7 @@ export const DEFAULT_SERVICES: ServiceDetail[] = [
 		title: 'From dated to spa-worthy — completely reimagined',
 		lead: "Whether you're working with a compact ensuite or a master bathroom with room to breathe, we design and deliver bathroom renovations that combine precise tile work, quality fixtures, and smart layout decisions.",
 		includes: ['Full demolition & removal', 'Waterproofing & tanking', 'Large-format & mosaic tiling', 'Frameless glass shower enclosures', 'Freestanding & built-in tubs', 'Floating & vanity unit installation', 'Heated floor systems', 'LED & recessed lighting', 'Custom mirror & storage solutions', 'Plumbing rough-in & finishing'],
-		meta: [{key: 'Typical Duration', val: '2 – 4 Weeks'}, {key: 'Starting From', val: '$8,500 CAD'}, {key: 'Warranty', val: '12 Months'}],
+		meta: [{key: 'Typical Duration', val: '2 – 4 Weeks'}, {key: 'Warranty', val: '12 Months'}],
 		imageUrl: '/services/bathroom.webp',
 		imageAlt: 'Bathroom Renovation',
 	},
@@ -494,7 +510,7 @@ export const DEFAULT_SERVICES: ServiceDetail[] = [
 		title: 'The heart of your home, done right',
 		lead: 'We handle everything from a full kitchen gut-and-rebuild to a targeted cabinet refresh or countertop upgrade. Our team coordinates cabinetry, counters, tile, appliances, lighting, and plumbing.',
 		includes: ['Custom & semi-custom cabinetry', 'Quartz, stone & solid-surface counters', 'Waterfall island designs', 'Backsplash tile installation', 'Appliance connection & integration', 'Under-cabinet & pot lighting', 'Open-plan layout reconfiguration', 'Pantry & storage optimisation', 'Sink, tap & plumbing rough-in', 'Soft-close hardware throughout'],
-		meta: [{key: 'Typical Duration', val: '4 – 8 Weeks'}, {key: 'Starting From', val: '$14,000 CAD'}, {key: 'Warranty', val: '12 Months'}],
+		meta: [{key: 'Typical Duration', val: '4 – 8 Weeks'}, {key: 'Warranty', val: '12 Months'}],
 		imageUrl: '/services/kitchen.webp',
 		imageAlt: 'Kitchen Renovation',
 	},
@@ -509,7 +525,7 @@ export const DEFAULT_SERVICES: ServiceDetail[] = [
 		title: 'Spaces that feel like they were meant to be yours',
 		lead: 'We transform dark, compartmentalised, or simply tired spaces into open, light-filled rooms with thoughtful detailing — custom built-ins, feature walls, updated lighting, and finishes that last.',
 		includes: ['Wall removal & structural work', 'Custom built-in shelving & wardrobes', 'Feature wall & accent finishes', 'Fireplace surround remodelling', 'Coffered & tray ceiling detail', 'Recessed & feature lighting', 'Window trim & casement upgrades', 'Closet organisation systems', 'Drywall, skim coat & paint', 'Baseboard & moulding installation'],
-		meta: [{key: 'Typical Duration', val: '2 – 5 Weeks'}, {key: 'Starting From', val: '$6,000 CAD'}, {key: 'Warranty', val: '12 Months'}],
+		meta: [{key: 'Typical Duration', val: '2 – 5 Weeks'}, {key: 'Warranty', val: '12 Months'}],
 		imageUrl: '/services/living.webp',
 		imageAlt: 'Living Room Renovation',
 	},
@@ -524,7 +540,7 @@ export const DEFAULT_SERVICES: ServiceDetail[] = [
 		title: 'Turnkey transformations, one team, zero chaos',
 		lead: 'We make it manageable by acting as your single point of contact across every trade — from demolition and structural work right through to the final coat of paint. You won\'t need to manage subcontractors. We do that.',
 		includes: ['Full project management', 'Demolition & site preparation', 'Structural & framing work', 'Electrical rough-in & fit-out', 'Plumbing rough-in & fit-out', 'Insulation & drywall', 'All flooring throughout', 'Full kitchen & bathroom renovation', 'Interior painting & trim', 'Permit coordination & inspection'],
-		meta: [{key: 'Typical Duration', val: '8 – 16 Weeks'}, {key: 'Starting From', val: '$45,000 CAD'}, {key: 'Warranty', val: '12 Months'}],
+		meta: [{key: 'Typical Duration', val: '8 – 16 Weeks'}, {key: 'Warranty', val: '12 Months'}],
 		imageUrl: '/services/full-home.webp',
 		imageAlt: 'Full Home Renovation',
 	},
@@ -539,7 +555,7 @@ export const DEFAULT_SERVICES: ServiceDetail[] = [
 		title: 'The foundation of every beautiful room',
 		lead: 'We supply and install a full range of materials — from engineered hardwood and wide-plank oak to luxury vinyl plank and large-format porcelain. Every installation includes proper subfloor preparation.',
 		includes: ['Engineered & solid hardwood', 'Wide-plank white oak & walnut', 'Luxury vinyl plank (LVP)', 'Large-format porcelain tile', 'Natural stone installation', 'Subfloor repair & levelling', 'Radiant heat system integration', 'Stair nosing & transition strips', 'Site finishing & staining', 'Old floor removal & disposal'],
-		meta: [{key: 'Typical Duration', val: '3 – 10 Days'}, {key: 'Starting From', val: '$3,500 CAD'}, {key: 'Warranty', val: '12 Months'}],
+		meta: [{key: 'Typical Duration', val: '3 – 10 Days'}, {key: 'Warranty', val: '12 Months'}],
 		imageUrl: '/services/flooring.webp',
 		imageAlt: 'Flooring',
 	},
@@ -554,7 +570,7 @@ export const DEFAULT_SERVICES: ServiceDetail[] = [
 		title: 'The details that define the final result',
 		lead: 'Our finishing team handles painting, trim carpentry, moulding, and all the fine detail work that separates a professional result from a DIY job. We use only low-VOC, premium-grade paints and prepare surfaces properly.',
 		includes: ['Full-home interior painting', 'Surface preparation & skim coat', 'Crown moulding & coffering', 'Baseboard & casing installation', 'Wainscoting & panel moulding', 'Feature wall treatments', 'Door & window trim upgrades', 'Closet & built-in finishing', 'Low-VOC premium paint products', 'Final touch-up & inspection'],
-		meta: [{key: 'Typical Duration', val: '3 Days – 3 Weeks'}, {key: 'Starting From', val: '$2,800 CAD'}, {key: 'Warranty', val: '12 Months'}],
+		meta: [{key: 'Typical Duration', val: '3 Days – 3 Weeks'}, {key: 'Warranty', val: '12 Months'}],
 		imageUrl: '/services/finishing.webp',
 		imageAlt: 'Interior Finishing',
 	},

@@ -5,6 +5,7 @@ export type SanityImage = (SanityImageObject & {alt?: string | null}) | null | u
 export type Stat = {value: string; suffix?: string; label: string}
 
 export type HeroContent = {
+	isShowed: boolean
 	locationLabel: string
 	titleLine1: string
 	titleLine2: string
@@ -28,6 +29,7 @@ export type TestimonialSlide = {
 }
 
 export type SiteSettingsContent = {
+	testimonialsIsShowed: boolean
 	footerDescription: string
 	phone: string
 	phoneHours: string
@@ -60,6 +62,7 @@ export type PageSeo = {
 }
 
 export type HomeNumbersContent = {
+	isShowed: boolean
 	eyebrow: string
 	headline: string
 	stats: Stat[]
@@ -68,6 +71,7 @@ export type HomeNumbersContent = {
 export type ServiceCard = {name: string; imageUrl: string; link?: string}
 
 export type HomeServicesContent = {
+	isShowed: boolean
 	eyebrow: string
 	title: string
 	titleAccent: string
@@ -86,6 +90,7 @@ export type AboutRow = {
 }
 
 export type HomeAboutContent = {
+	isShowed: boolean
 	eyebrow: string
 	headline: string
 	headlineEmphasis: string
@@ -104,6 +109,7 @@ export type PortfolioSlide = {
 }
 
 export type HomePortfolioContent = {
+	isShowed: boolean
 	eyebrow: string
 	headline: string
 	headlineEmphasis: string
@@ -115,13 +121,12 @@ export type HomePortfolioContent = {
 }
 
 export type ProcessStep = {
-	num: string
 	title: string
 	description: string
-	arrow: string
 }
 
 export type HomeProcessContent = {
+	isShowed: boolean
 	eyebrow: string
 	headline: string
 	headlineEmphasis: string
@@ -134,6 +139,7 @@ export type HomeProcessContent = {
 export type PricingFactor = {num: string; title: string; description: string}
 
 export type HomePricingContent = {
+	isShowed: boolean
 	eyebrow: string
 	headline: string
 	headlineEmphasis: string
@@ -151,6 +157,7 @@ export type HomePricingContent = {
 }
 
 export type HomeContactContent = {
+	isShowed: boolean
 	eyebrow: string
 	headline: string
 	headlineEmphasis: string
@@ -163,6 +170,7 @@ export type HomeContactContent = {
 }
 
 export type HomeBeforeAfterBannerContent = {
+	isShowed: boolean
 	eyebrow: string
 	headline: string
 	headlineEmphasis: string
@@ -193,13 +201,6 @@ export type PageHeroContent = {
 }
 
 // ── About Page ───────────────────────────────────────────────────────────────
-
-export type AboutStatItem = {
-	value: string
-	suffix?: string
-	label: string
-	description: string
-}
 
 export type TimelineItem = {
 	year: string
@@ -244,6 +245,14 @@ export type GuaranteeCard = {
 }
 
 export type AboutPageContent = PageHeroContent & {
+	heroIsShowed: boolean
+	founderCardIsShowed: boolean
+	whoIsShowed: boolean
+	storyIsShowed: boolean
+	valuesIsShowed: boolean
+	teamIsShowed: boolean
+	whyIsShowed: boolean
+	certIsShowed: boolean
 	valuesHeroBackgroundUrl: string
 	whyBannerBackgroundUrl: string
 	founderInitial: string
@@ -260,8 +269,6 @@ export type AboutPageContent = PageHeroContent & {
 	whoPills: string[]
 	whoCtaLabel: string
 	whoCtaLink: string
-	// Numbers
-	aboutStats: AboutStatItem[]
 	// Our Story
 	storyEyebrow: string
 	storyHeadline: string
@@ -298,7 +305,6 @@ export type AboutPageContent = PageHeroContent & {
 // ── Services Page ────────────────────────────────────────────────────────────
 
 export type ServiceProcessStep = {
-	num: string
 	icon: string
 	title: string
 	body: string
@@ -316,6 +322,11 @@ export type FaqItem = {
 }
 
 export type ServicesPageContent = PageHeroContent & {
+	heroIsShowed: boolean
+	listIsShowed: boolean
+	processIsShowed: boolean
+	pricingIsShowed: boolean
+	faqIsShowed: boolean
 	processHeroBackgroundUrl: string
 	// Process section
 	processEyebrow: string

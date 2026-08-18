@@ -48,7 +48,7 @@ if (pageMeta.jsonLd) {
   description="Browse our completed renovation projects across Victoria and Vancouver Island, BC — kitchens, bathrooms, living rooms, and full apartment transformations."
   jsonLd={pageJsonLd}
 >
-  <TheNav client:load page="portfolio" />
+  <TheNav client:load page="portfolio" phone={site.phone} email={site.email} phoneHours={site.phoneHours} emailNote={site.emailNote} />
 
   <section id="hero" class="portfolio-hero-page">
     <div class="hero-bg-img" style={heroBg}></div>

@@ -31,6 +31,7 @@ export default defineType({
       name: 'meta',
       title: 'Meta items',
       type: 'array',
+      description: 'e.g. Typical Duration, Warranty. Do not add starting prices.',
       of: [{type: 'keyValue'}],
     }),
     defineField({name: 'image', title: 'Image', type: 'image', options: {hotspot: true}}),

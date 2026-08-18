@@ -1,63 +1,79 @@
 import {defineField, defineType} from 'sanity'
+import {isShowedField} from './fields/isShowed'
 
 export default defineType({
   name: 'servicesPage',
   title: 'Services Page',
   type: 'document',
+  fieldsets: [
+    {name: 'hero', title: 'Hero', options: {collapsible: true, collapsed: false}},
+    {name: 'list', title: 'Services list', options: {collapsible: true, collapsed: true}},
+    {name: 'process', title: 'Process', options: {collapsible: true, collapsed: true}},
+    {name: 'pricing', title: 'Pricing hint', options: {collapsible: true, collapsed: true}},
+    {name: 'faq', title: 'FAQ', options: {collapsible: true, collapsed: true}},
+  ],
   fields: [
     // ── HERO ────────────────────────────────────────────────────────────────
-    defineField({name: 'locationLabel', title: 'Location label', type: 'string'}),
-    defineField({name: 'titleBefore', title: 'Title — before emphasis', type: 'string'}),
-    defineField({name: 'titleEmphasis', title: 'Title — emphasis', type: 'string'}),
-    defineField({name: 'description', title: 'Description', type: 'text', rows: 3}),
-    defineField({name: 'primaryCtaLabel', title: 'Primary CTA', type: 'string'}),
-    defineField({name: 'primaryCtaLink', title: 'Primary CTA link', type: 'string'}),
-    defineField({name: 'secondaryCtaLabel', title: 'Secondary CTA', type: 'string'}),
-    defineField({name: 'secondaryCtaLink', title: 'Secondary CTA link', type: 'string'}),
-    defineField({name: 'heroImage', title: 'Hero background', type: 'image', options: {hotspot: true}}),
+    isShowedField({name: 'heroIsShowed', fieldset: 'hero'}),
+    defineField({name: 'locationLabel', title: 'Location label', type: 'string', fieldset: 'hero'}),
+    defineField({name: 'titleBefore', title: 'Title — before emphasis', type: 'string', fieldset: 'hero'}),
+    defineField({name: 'titleEmphasis', title: 'Title — emphasis', type: 'string', fieldset: 'hero'}),
+    defineField({name: 'description', title: 'Description', type: 'text', rows: 3, fieldset: 'hero'}),
+    defineField({name: 'primaryCtaLabel', title: 'Primary CTA', type: 'string', fieldset: 'hero'}),
+    defineField({name: 'primaryCtaLink', title: 'Primary CTA link', type: 'string', fieldset: 'hero'}),
+    defineField({name: 'secondaryCtaLabel', title: 'Secondary CTA', type: 'string', fieldset: 'hero'}),
+    defineField({name: 'secondaryCtaLink', title: 'Secondary CTA link', type: 'string', fieldset: 'hero'}),
+    defineField({name: 'heroImage', title: 'Hero background', type: 'image', options: {hotspot: true}, fieldset: 'hero'}),
+
+    // ── SERVICES LIST ───────────────────────────────────────────────────────
+    isShowedField({
+      name: 'listIsShowed',
+      fieldset: 'list',
+      description: 'Show the services strip and detailed service blocks.',
+    }),
 
     // ── OUR PROCESS ─────────────────────────────────────────────────────────
-    defineField({name: 'processEyebrow', title: '[Process] Eyebrow', type: 'string'}),
-    defineField({name: 'processHeadline', title: '[Process] Headline', type: 'string'}),
-    defineField({name: 'processHeadlineEmphasis', title: '[Process] Headline emphasis', type: 'string'}),
-    defineField({name: 'processDescription', title: '[Process] Description', type: 'text', rows: 2}),
+    isShowedField({name: 'processIsShowed', fieldset: 'process'}),
+    defineField({name: 'processEyebrow', title: 'Eyebrow', type: 'string', fieldset: 'process'}),
+    defineField({name: 'processHeadline', title: 'Headline', type: 'string', fieldset: 'process'}),
+    defineField({name: 'processHeadlineEmphasis', title: 'Headline emphasis', type: 'string', fieldset: 'process'}),
+    defineField({name: 'processDescription', title: 'Description', type: 'text', rows: 2, fieldset: 'process'}),
     defineField({
       name: 'processHeroBackground',
-      title: '[Process] Background image',
+      title: 'Background image',
       type: 'image',
       options: {hotspot: true},
       description: 'Background for the "How We Work" band on the services page',
+      fieldset: 'process',
     }),
     defineField({
       name: 'processSteps',
-      title: '[Process] Steps',
+      title: 'Steps',
       type: 'array',
       of: [{
         type: 'object',
         name: 'svcProcessStep',
         fields: [
-          defineField({name: 'num', type: 'string', title: 'Number'}),
           defineField({name: 'icon', type: 'string', title: 'Icon (FA class)', description: 'e.g. fa-solid fa-phone'}),
           defineField({name: 'title', type: 'string', title: 'Title', validation: R => R.required()}),
           defineField({name: 'body', type: 'text', title: 'Body text', rows: 3}),
         ],
         preview: {
-          select: {num: 'num', title: 'title'},
-          prepare({num, title}) {
-            return {title: `${num} — ${title}`}
-          },
+          select: {title: 'title'},
         },
       }],
+      fieldset: 'process',
     }),
 
     // ── PRICING HINT ────────────────────────────────────────────────────────
-    defineField({name: 'pricingEyebrow', title: '[Pricing Hint] Eyebrow', type: 'string'}),
-    defineField({name: 'pricingHeadline', title: '[Pricing Hint] Headline', type: 'string'}),
-    defineField({name: 'pricingHeadlineEmphasis', title: '[Pricing Hint] Headline emphasis', type: 'string'}),
-    defineField({name: 'pricingBody', title: '[Pricing Hint] Body paragraph', type: 'text', rows: 4}),
+    isShowedField({name: 'pricingIsShowed', fieldset: 'pricing'}),
+    defineField({name: 'pricingEyebrow', title: 'Eyebrow', type: 'string', fieldset: 'pricing'}),
+    defineField({name: 'pricingHeadline', title: 'Headline', type: 'string', fieldset: 'pricing'}),
+    defineField({name: 'pricingHeadlineEmphasis', title: 'Headline emphasis', type: 'string', fieldset: 'pricing'}),
+    defineField({name: 'pricingBody', title: 'Body paragraph', type: 'text', rows: 4, fieldset: 'pricing'}),
     defineField({
       name: 'pricingCards',
-      title: '[Pricing Hint] Cards',
+      title: 'Cards',
       type: 'array',
       of: [{
         type: 'object',
@@ -74,16 +90,18 @@ export default defineType({
           },
         },
       }],
+      fieldset: 'pricing',
     }),
 
     // ── FAQ ─────────────────────────────────────────────────────────────────
-    defineField({name: 'faqEyebrow', title: '[FAQ] Eyebrow', type: 'string'}),
-    defineField({name: 'faqTitle', title: '[FAQ] Title', type: 'string'}),
-    defineField({name: 'faqTitleEmphasis', title: '[FAQ] Title emphasis', type: 'string'}),
-    defineField({name: 'faqSub', title: '[FAQ] Sub text', type: 'text', rows: 2}),
+    isShowedField({name: 'faqIsShowed', fieldset: 'faq'}),
+    defineField({name: 'faqEyebrow', title: 'Eyebrow', type: 'string', fieldset: 'faq'}),
+    defineField({name: 'faqTitle', title: 'Title', type: 'string', fieldset: 'faq'}),
+    defineField({name: 'faqTitleEmphasis', title: 'Title emphasis', type: 'string', fieldset: 'faq'}),
+    defineField({name: 'faqSub', title: 'Sub text', type: 'text', rows: 2, fieldset: 'faq'}),
     defineField({
       name: 'faqItems',
-      title: '[FAQ] Items',
+      title: 'Items',
       type: 'array',
       of: [{
         type: 'object',
@@ -99,6 +117,7 @@ export default defineType({
           },
         },
       }],
+      fieldset: 'faq',
     }),
   ],
   preview: {

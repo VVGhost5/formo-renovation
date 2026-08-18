@@ -37,7 +37,7 @@ const waHref = `https://wa.me/${site.whatsapp.replace(/\D/g, '')}`
   description="Get in touch with Formo Renovations. Free on-site consultations across Victoria and Vancouver Island, BC. Call, email, or fill in the form."
   jsonLd={pageJsonLd}
 >
-  <TheNav client:load page="contacts" />
+  <TheNav client:load page="contacts" phone={site.phone} email={site.email} phoneHours={site.phoneHours} emailNote={site.emailNote} />
 
   <!-- ══ HERO ══ -->
   <section id="hero" class="contact-page-hero">

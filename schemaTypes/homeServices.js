@@ -1,10 +1,12 @@
 import {defineField, defineType} from 'sanity'
+import {isShowedField} from './fields/isShowed'
 
 export default defineType({
   name: 'homeServices',
   title: 'Homepage — Services',
   type: 'document',
   fields: [
+    isShowedField(),
     defineField({name: 'eyebrow', title: 'Eyebrow', type: 'string', initialValue: 'Our Services'}),
     defineField({name: 'title', title: 'Title', type: 'string'}),
     defineField({name: 'titleAccent', title: 'Title accent line', type: 'string'}),

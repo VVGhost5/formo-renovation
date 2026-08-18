@@ -26,12 +26,12 @@ const heroBg = bgStyle(content.heroImageUrl)
   </div>
 
   <div class="process-grid">
-    {content.steps.map((s) => (
+    {content.steps.map((s, i) => (
       <div class="pstep-card">
-        <div class="pstep-big-num" aria-hidden="true">{s.num}</div>
+        <div class="pstep-big-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</div>
         <div class="pstep-title">{s.title}</div>
         <div class="pstep-desc">{s.description}</div>
-        <div class="pstep-arrow" aria-hidden="true">{s.arrow}</div>
+        <div class="pstep-arrow" aria-hidden="true">{i === content.steps.length - 1 ? '✓' : '→'}</div>
       </div>
     ))}
   </div>

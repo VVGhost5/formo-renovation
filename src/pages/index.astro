@@ -188,17 +188,17 @@ if (pageMeta.jsonLd) {
 ---
 
 <Layout title="Formo Renovations — Design & Renovation Solutions" jsonLd={homepageJsonLd}>
-  <TheNav client:load page="home" />
+  <TheNav client:load page="home" phone={home.site.phone} email={home.site.email} phoneHours={home.site.phoneHours} emailNote={home.site.emailNote} />
 
-  <SectionHero hero={home.hero} />
-  <SectionNumbers content={home.numbers} />
-  <SectionServices content={home.services} />
-  <SectionAbout content={home.about} />
-  <SectionPortfolio content={home.portfolio} />
-  <SectionProcess content={home.process} />
-  <SectionPricing content={home.pricing} />
-  <BeforeAfterSlider client:visible items={home.beforeAfter} banner={home.beforeAfterBanner} />
-  <TestimonialsSlider client:visible items={home.testimonials} />
-  <SectionContact content={home.contact} site={home.site} />
+  {home.hero.isShowed && <SectionHero hero={home.hero} />}
+  {home.numbers.isShowed && <SectionNumbers content={home.numbers} />}
+  {home.services.isShowed && <SectionServices content={home.services} />}
+  {home.about.isShowed && <SectionAbout content={home.about} />}
+  {home.portfolio.isShowed && <SectionPortfolio content={home.portfolio} />}
+  {home.process.isShowed && <SectionProcess content={home.process} />}
+  {home.pricing.isShowed && <SectionPricing content={home.pricing} />}
+  {home.beforeAfterBanner.isShowed && <BeforeAfterSlider client:visible items={home.beforeAfter} banner={home.beforeAfterBanner} />}
+  {home.site.testimonialsIsShowed && <TestimonialsSlider client:visible items={home.testimonials} />}
+  {home.contact.isShowed && <SectionContact content={home.contact} site={home.site} />}
   <TheFooter site={home.site} />
 </Layout>
