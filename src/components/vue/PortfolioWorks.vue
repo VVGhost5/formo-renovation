@@ -357,40 +357,43 @@ const filterLabels: Record<Category, string> = {
             </div>
           </div>
 
-          <!-- Before / After slider -->
-          <div class="project-ba-label">Before &amp; After</div>
-          <div
-            class="project-ba-wrap"
-            :data-ba-idx="idx"
-            @mousedown.prevent="startBaDrag($event, idx)"
-            @touchstart.prevent="startBaDrag($event, idx)"
-            @touchmove.prevent="onBaTouchMove($event, idx)"
-          >
-            <img 
-                width="1280"
-                height="420"
-                :src="p.baAfter" 
-                alt="After" />
+          <!-- Before / After slider — only when both images exist -->
+          <template v-if="p.baBefore && p.baAfter">
+            <div class="project-ba-label">Before &amp; After</div>
             <div
-              class="project-ba-before-layer"
-              :style="{ clipPath: `inset(0 ${100 - baPositions[idx]}% 0 0)` }"
+              class="project-ba-wrap"
+              :data-ba-idx="idx"
+              @mousedown.prevent="startBaDrag($event, idx)"
+              @touchstart.prevent="startBaDrag($event, idx)"
+              @touchmove.prevent="onBaTouchMove($event, idx)"
             >
               <img
                   width="1280"
                   height="420"
-                  :src="p.baBefore" 
-                  alt="Before" 
+                  :src="p.baAfter"
+                  alt="After"
               />
-            </div>
-            <span class="ba-label-inner before">BEFORE</span>
-            <span class="ba-label-inner after">AFTER</span>
-            <div class="ba-handle-inner" :style="{ left: baPositions[idx] + '%' }">
-              <div class="ba-grip-inner">
-                <div class="ba-arr ba-arr-l"></div>
-                <div class="ba-arr ba-arr-r"></div>
+              <div
+                class="project-ba-before-layer"
+                :style="{ clipPath: `inset(0 ${100 - baPositions[idx]}% 0 0)` }"
+              >
+                <img
+                    width="1280"
+                    height="420"
+                    :src="p.baBefore"
+                    alt="Before"
+                />
+              </div>
+              <span class="ba-label-inner before">BEFORE</span>
+              <span class="ba-label-inner after">AFTER</span>
+              <div class="ba-handle-inner" :style="{ left: baPositions[idx] + '%' }">
+                <div class="ba-grip-inner">
+                  <div class="ba-arr ba-arr-l"></div>
+                  <div class="ba-arr ba-arr-r"></div>
+                </div>
               </div>
             </div>
-          </div>
+          </template>
 
         </div>
       </div>

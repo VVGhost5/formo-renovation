@@ -57,8 +57,20 @@ export default defineType({
         }),
       ],
     }),
-    defineField({name: 'beforeImage', title: 'Before image', type: 'image', options: {hotspot: true}}),
-    defineField({name: 'afterImage', title: 'After image', type: 'image', options: {hotspot: true}}),
+    defineField({
+      name: 'beforeImage',
+      title: 'Before image',
+      type: 'image',
+      options: {hotspot: true},
+      description: 'Optional. Together with After, shows the before/after slider on the project page.',
+    }),
+    defineField({
+      name: 'afterImage',
+      title: 'After image',
+      type: 'image',
+      options: {hotspot: true},
+      description: 'Cover image. If empty, the first gallery photo is used instead.',
+    }),
     defineField({
       name: 'featuredOnHome',
       title: 'Featured on homepage',

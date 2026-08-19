@@ -572,18 +572,19 @@ export function mapPortfolioProject(doc: Record<string, unknown>, index: number)
 		beforeImage?: unknown
 		afterImage?: unknown
 	}
-	const after = urlForImage(d.afterImage as never, 1400)
-	const before = urlForImage(d.beforeImage as never, 1400)
-	if (!d.name || !after || !before) return null
-	const cat = d.category as PortfolioProject['category']
-	const category =
-		cat === 'kitchen' || cat === 'bathroom' || cat === 'living' || cat === 'full' ? cat : 'full'
 	const gallery = (d.gallery ?? [])
 		.map((g) => {
 			const src = urlForImage(g as never, 1200)
 			return src ? {src, alt: str(g.alt, d.name)} : null
 		})
 		.filter((g): g is {src: string; alt: string} => Boolean(g))
+	const afterImage = urlForImage(d.afterImage as never, 1400)
+	const beforeImage = urlForImage(d.beforeImage as never, 1400)
+	const cover = afterImage ?? gallery[0]?.src ?? null
+	if (!d.name || !cover) return null
+	const cat = d.category as PortfolioProject['category']
+	const category =
+		cat === 'kitchen' || cat === 'bathroom' || cat === 'living' || cat === 'full' ? cat : 'full'
 	return {
 		id: str(d.id, `project-${index + 1}`),
 		num: str(d.num, String(index + 1).padStart(2, '0')),
@@ -597,9 +598,9 @@ export function mapPortfolioProject(doc: Record<string, unknown>, index: number)
 		specs: (d.specs ?? [])
 			.filter((s) => s.key && s.val)
 			.map((s) => ({key: str(s.key), val: str(s.val)})),
-		gallery: gallery.length ? gallery : [{src: after, alt: d.name}],
-		baAfter: after,
-		baBefore: before,
+		gallery: gallery.length ? gallery : [{src: cover, alt: d.name}],
+		baAfter: afterImage && beforeImage ? afterImage : '',
+		baBefore: afterImage && beforeImage ? beforeImage : '',
 	}
 }
 
@@ -607,8 +608,16 @@ export function mapFeaturedSlides(docs: Record<string, unknown>[]): PortfolioSli
 	return docs
 		.filter((d) => (d as {featuredOnHome?: boolean}).featuredOnHome)
 		.map((doc) => {
-			const d = doc as {homeTag?: string; name?: string; homeMeta?: string; afterImage?: unknown; category?: string}
-			const imageUrl = urlForImage(d.afterImage as never, 900)
+			const d = doc as {
+				homeTag?: string
+				name?: string
+				homeMeta?: string
+				afterImage?: unknown
+				category?: string
+				gallery?: {asset?: unknown}[]
+			}
+			const imageUrl =
+				urlForImage(d.afterImage as never, 900) ?? urlForImage(d.gallery?.[0] as never, 900)
 			if (!d.name || !imageUrl) return null
 			return {
 				tag: str(d.homeTag, d.category ?? 'Project'),
