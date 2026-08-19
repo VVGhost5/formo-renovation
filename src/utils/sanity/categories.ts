@@ -3,10 +3,8 @@ export const PORTFOLIO_CATEGORY_OPTIONS = [
 	{title: 'Bedroom', value: 'bedroom'},
 	{title: 'Hallway', value: 'hallway'},
 	{title: 'Wardrobe', value: 'wardrobe'},
-	{title: 'Dining', value: 'dining'},
-	{title: 'Toilet', value: 'toilet'},
 	{title: 'Bathroom', value: 'bathroom'},
-	{title: 'Guest', value: 'guest'},
+	{title: 'Living Room', value: 'living'},
 ] as const
 
 export type PortfolioCategory = (typeof PORTFOLIO_CATEGORY_OPTIONS)[number]['value']
@@ -25,9 +23,21 @@ export function categoryLabel(value: PortfolioCategory): string {
 	return PORTFOLIO_CATEGORY_OPTIONS.find((option) => option.value === value)?.title ?? value
 }
 
+const LEGACY_CATEGORY_MAP: Record<string, PortfolioCategory> = {
+	guest: 'living',
+}
+
 export function normalizeCategories(raw: unknown): PortfolioCategory[] {
 	const list = Array.isArray(raw) ? raw : typeof raw === 'string' && raw ? [raw] : []
-	return [...new Set(list.filter((value): value is PortfolioCategory => typeof value === 'string' && isPortfolioCategory(value)))]
+	return [
+		...new Set(
+			list.flatMap((value) => {
+				if (typeof value !== 'string') return []
+				const mapped = LEGACY_CATEGORY_MAP[value] ?? value
+				return isPortfolioCategory(mapped) ? [mapped] : []
+			}),
+		),
+	]
 }
 
 export function projectMatchesCategory(

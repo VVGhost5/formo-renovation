@@ -83,7 +83,7 @@ const FALLBACK_PROJECTS: Project[] = [
     baBefore: 'https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=1400&q=85',
   },
   {
-    id: 'project-3', num: '03', categories: ['guest'],
+    id: 'project-3', num: '03', categories: ['living'],
     name: 'Contemporary Living Room',
     tags: ['Living Room', 'Flooring', '2025'],
     location: 'Saanich, Victoria', duration: '4 Weeks', year: '2025',
