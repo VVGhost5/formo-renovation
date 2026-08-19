@@ -1,0 +1,202 @@
+---
+import Layout from '../layouts/Layout.astro'
+import TheNav from '../components/vue/TheNav.vue'
+import TheFooter from '../components/TheFooter.astro'
+import {DEFAULT_SITE_SETTINGS, getSiteSettings} from '../utils/sanity'
+
+let site = DEFAULT_SITE_SETTINGS
+try {
+	site = await getSiteSettings()
+} catch (err) {
+	console.warn('[sanity] Privacy page site settings fallback.', err)
+}
+
+const updated = 'August 19, 2026'
+---
+
+<Layout
+  title="Privacy Policy — Formo Renovations"
+  description="How Formo Renovations collects, uses, and protects personal information from homeowners across Victoria and Vancouver Island, BC."
+>
+  <TheNav client:load phone={site.phone} email={site.email} phoneHours={site.phoneHours} officeWeekdayHours={site.officeWeekdayHours} emailNote={site.emailNote} />
+
+  <main class="pp-page">
+    <header class="pp-hero">
+      <div class="pp-hero-inner">
+        <span class="pp-eyebrow">Legal</span>
+        <h1 class="pp-title">Privacy Policy</h1>
+        <p class="pp-sub">Last updated {updated}</p>
+      </div>
+    </header>
+
+    <article class="pp-body">
+      <p>
+        Formo Renovations (“we”, “us”) is a renovation company based in Victoria, British Columbia.
+        This page explains what personal information we collect through this website, why we collect it,
+        and how we handle it. We follow Canada’s Personal Information Protection and Electronic Documents Act (PIPEDA)
+        and British Columbia’s Personal Information Protection Act (PIPA).
+      </p>
+
+      <h2>1. What we collect</h2>
+      <p>We only collect information you choose to give us, or that is created when you use the site:</p>
+      <ul>
+        <li><strong>Contact forms</strong> — name, email, phone number, project location, services of interest, budget range, preferred start date, and your message.</li>
+        <li><strong>Reviews</strong> — name, location, service type, rating, and review text. Reviews are moderated before they appear on the site.</li>
+        <li><strong>Usage data</strong> — pages visited and general traffic, via Google Analytics. This does not include your form contents.</li>
+      </ul>
+
+      <h2>2. How we use it</h2>
+      <p>We use this information to:</p>
+      <ul>
+        <li>Respond to estimate requests and questions</li>
+        <li>Prepare quotes and schedule on-site consultations</li>
+        <li>Publish approved client reviews</li>
+        <li>Improve the website and understand which pages are useful</li>
+      </ul>
+      <p>We do not sell, rent, or trade your personal information.</p>
+
+      <h2>3. Who we share it with</h2>
+      <p>
+        Form submissions are emailed to our team. The site is hosted on Cloudflare, content is managed in Sanity,
+        and analytics are provided by Google. These providers process data only as needed to run the service.
+        We may disclose information if required by law.
+      </p>
+
+      <h2>4. Cookies and analytics</h2>
+      <p>
+        We use Google Analytics (measurement ID G-HPTRQ67KC8) to see aggregated site usage.
+        Google may set cookies in your browser. You can block cookies in your browser settings;
+        the site will still work.
+      </p>
+
+      <h2>5. How long we keep it</h2>
+      <p>
+        Inquiry details are kept as long as needed to handle your project and for reasonable business records.
+        Unpublished or rejected reviews can be deleted on request. Analytics data is retained according to Google’s settings.
+      </p>
+
+      <h2>6. Your choices</h2>
+      <p>You can ask us to:</p>
+      <ul>
+        <li>See the personal information we hold about you</li>
+        <li>Correct or update it</li>
+        <li>Delete it, where we no longer need it for a project or legal record</li>
+        <li>Remove a published review</li>
+      </ul>
+      <p>
+        Email <a href={`mailto:${site.email}`}>{site.email}</a>
+        or call <a href={`tel:${site.phone.replace(/\D/g, '')}`}>{site.phone}</a>.
+        We aim to respond within 30 days.
+      </p>
+
+      <h2>7. Children</h2>
+      <p>This website is intended for homeowners and adults arranging renovation work. We do not knowingly collect information from children.</p>
+
+      <h2>8. Changes</h2>
+      <p>If we change this policy, we will update this page and the date at the top.</p>
+
+      <h2>9. Contact</h2>
+      <p>
+        Formo Renovations<br />
+        {site.serviceArea}, {site.serviceAreaNote}<br />
+        <a href={`mailto:${site.email}`}>{site.email}</a><br />
+        <a href={`tel:${site.phone.replace(/\D/g, '')}`}>{site.phone}</a>
+      </p>
+    </article>
+  </main>
+
+  <TheFooter site={site} />
+</Layout>
+
+<style lang="scss">
+  .pp-page {
+    background: var(--hero-bg);
+    min-height: calc(100vh - 60px);
+    padding-top: 60px;
+  }
+
+  .pp-hero {
+    background: var(--nav-grad);
+    padding: 72px var(--px) 60px;
+    position: relative;
+    overflow: hidden;
+
+    &::after {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(circle at 20% 0%, rgba(255, 255, 255, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 90% 100%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
+      pointer-events: none;
+    }
+  }
+
+  .pp-hero-inner {
+    position: relative; z-index: 1;
+    max-width: 760px;
+  }
+
+  .pp-eyebrow {
+    display: inline-block;
+    font-family: var(--font);
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.78);
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    padding: 6px 14px;
+    border-radius: var(--r-pill);
+    margin-bottom: 18px;
+  }
+
+  .pp-title {
+    font-family: var(--font);
+    font-size: clamp(34px, 4vw, 52px);
+    font-weight: 700; line-height: 1.07;
+    color: #fff;
+    letter-spacing: -0.03em;
+    margin-bottom: 14px;
+  }
+
+  .pp-sub {
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  .pp-body {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 64px var(--px) 96px;
+    color: var(--text-mid);
+    font-size: 1.0625rem;
+    line-height: 1.75;
+
+    h2 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      letter-spacing: -0.02em;
+      margin: 40px 0 12px;
+    }
+
+    p { margin: 0 0 16px; }
+
+    ul {
+      margin: 0 0 16px;
+      padding-left: 1.2em;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    a { color: var(--gold); }
+
+    strong { color: var(--text-dark); font-weight: 600; }
+  }
+
+  @media (max-width: 767px) {
+    .pp-hero { padding: 56px var(--px) 44px; }
+    .pp-body { padding: 44px var(--px) 72px; }
+  }
+</style>
