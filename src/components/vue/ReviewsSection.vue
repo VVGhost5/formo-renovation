@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, computed } from 'vue'
 
 interface Review {
   _id: string
@@ -19,11 +19,10 @@ const SANITY_PROJECT_ID = '9g3zb5ng'
 const SANITY_DATASET = 'production'
 const SANITY_API_VERSION = '2024-01-01'
 
-const READ_URL = `https://${SANITY_PROJECT_ID}.api.sanity.io/v${SANITY_API_VERSION}/data/query/${SANITY_DATASET}`
 const MUTATE_URL = `https://${SANITY_PROJECT_ID}.api.sanity.io/v${SANITY_API_VERSION}/data/mutate/${SANITY_DATASET}`
 
 const reviews = ref<Review[]>(props.initialReviews ?? [])
-const loading = ref(!props.initialReviews?.length)
+const loading = ref(false)
 const fetchError = ref('')
 
 const form = ref({ name: '', location: '', service: '', rating: 5, comment: '' })
@@ -47,21 +46,6 @@ const ratingCounts = computed(() => {
   })
   return counts
 })
-
-async function fetchReviews() {
-  try {
-    const query = encodeURIComponent(
-      '*[_type == "review" && approved == true] | order(_createdAt desc){ _id, name, location, service, rating, comment, _createdAt }'
-    )
-    const res = await fetch(`${READ_URL}?query=${query}`)
-    const data = await res.json()
-    reviews.value = data.result || []
-  } catch {
-    fetchError.value = 'Could not load reviews right now.'
-  } finally {
-    loading.value = false
-  }
-}
 
 function validateForm() {
   const errors: Record<string, string> = {}
@@ -123,11 +107,6 @@ function setRating(n: number) {
   form.value.rating = n
 }
 
-onMounted(() => {
-  if (!props.initialReviews?.length) {
-    fetchReviews()
-  }
-})
 </script>
 
 <template>

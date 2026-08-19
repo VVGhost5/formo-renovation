@@ -8,6 +8,7 @@ const props = defineProps<{
   phone?: string
   email?: string
   phoneHours?: string
+  officeWeekdayHours?: string
   emailNote?: string
   whatsapp?: string
 }>()
@@ -110,7 +111,7 @@ onUnmounted(() => document.removeEventListener('keydown', onKey))
               <div class="cd-ch-body">
                 <div class="cd-ch-label">Phone</div>
                 <div class="cd-ch-value">{{ phone ?? '+1 (250) 000-0000' }}</div>
-                <div class="cd-ch-note">{{ phoneHours ?? 'Mon – Fri, 8:00 AM – 6:00 PM' }}</div>
+                <div class="cd-ch-note">{{ phoneHours ?? 'Mon – Fri, 8:00 AM – 5:00 PM' }}</div>
               </div>
               <span class="cd-ch-arrow">→</span>
             </a>
@@ -134,25 +135,17 @@ onUnmounted(() => document.removeEventListener('keydown', onKey))
             </div>
             <div class="cd-hours-rows">
               <div class="cd-hours-row">
-                <span class="cd-hours-day">Monday – Thursday</span>
-                <span class="cd-hours-time">8:00 AM – 6:00 PM</span>
-              </div>
-              <div class="cd-hours-row">
-                <span class="cd-hours-day">Friday</span>
-                <span class="cd-hours-time">8:00 AM – 5:00 PM</span>
+                <span class="cd-hours-day">Monday – Friday</span>
+                <span class="cd-hours-time">{{ officeWeekdayHours ?? '8:00 AM – 5:00 PM' }}</span>
               </div>
               <div class="cd-hours-row">
                 <span class="cd-hours-day">Saturday</span>
-                <span class="cd-hours-time">10:00 AM – 3:00 PM</span>
+                <span class="cd-hours-closed">Closed</span>
               </div>
               <div class="cd-hours-row">
                 <span class="cd-hours-day">Sunday</span>
                 <span class="cd-hours-closed">Closed</span>
               </div>
-            </div>
-            <div class="cd-hours-badge">
-              <span class="cd-hours-dot"></span>
-              Currently accepting new projects
             </div>
           </div>
 

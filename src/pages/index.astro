@@ -133,7 +133,7 @@ const autoJsonLd = {
 					'@type': 'OpeningHoursSpecification',
 					dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
 					opens: '08:00',
-					closes: '18:00',
+					closes: '17:00',
 				},
 			],
 			priceRange: '$$',
@@ -153,7 +153,7 @@ const autoJsonLd = {
 					'@type': 'OpeningHoursSpecification',
 					dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
 					opens: '08:00',
-					closes: '18:00',
+					closes: '17:00',
 				},
 			},
 			...(sameAsUrls.length > 0 && {sameAs: sameAsUrls}),
@@ -188,7 +188,7 @@ if (pageMeta.jsonLd) {
 ---
 
 <Layout title="Formo Renovations — Design & Renovation Solutions" jsonLd={homepageJsonLd}>
-  <TheNav client:load page="home" phone={home.site.phone} email={home.site.email} phoneHours={home.site.phoneHours} emailNote={home.site.emailNote} />
+  <TheNav client:load page="home" phone={home.site.phone} email={home.site.email} phoneHours={home.site.phoneHours} officeWeekdayHours={home.site.officeWeekdayHours} emailNote={home.site.emailNote} />
 
   {home.hero.isShowed && <SectionHero hero={home.hero} />}
   {home.numbers.isShowed && <SectionNumbers content={home.numbers} />}

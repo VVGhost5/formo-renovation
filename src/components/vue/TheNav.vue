@@ -9,6 +9,7 @@ const props = defineProps<{
   phone?: string
   email?: string
   phoneHours?: string
+  officeWeekdayHours?: string
   emailNote?: string
 }>()
 
@@ -68,6 +69,7 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
     :phone="phone"
     :email="email"
     :phone-hours="phoneHours"
+    :office-weekday-hours="officeWeekdayHours"
     :email-note="emailNote"
     @close="closeDrawer"
   />

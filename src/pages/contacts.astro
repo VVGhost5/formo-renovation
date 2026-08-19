@@ -37,7 +37,7 @@ const waHref = `https://wa.me/${site.whatsapp.replace(/\D/g, '')}`
   description="Get in touch with Formo Renovations. Free on-site consultations across Victoria and Vancouver Island, BC. Call, email, or fill in the form."
   jsonLd={pageJsonLd}
 >
-  <TheNav client:load page="contacts" phone={site.phone} email={site.email} phoneHours={site.phoneHours} emailNote={site.emailNote} />
+  <TheNav client:load page="contacts" phone={site.phone} email={site.email} phoneHours={site.phoneHours} officeWeekdayHours={site.officeWeekdayHours} emailNote={site.emailNote} />
 
   <!-- ══ HERO ══ -->
   <section id="hero" class="contact-page-hero">
@@ -168,7 +168,7 @@ const waHref = `https://wa.me/${site.whatsapp.replace(/\D/g, '')}`
           </div>
           <div class="form-submit-row">
             <button class="cform-submit" id="form-submit">Send Message →</button>
-            <p class="form-privacy">We never share your details. By submitting, you agree to our <a href="#">Privacy Policy</a>.</p>
+            <p class="form-privacy">We never share your details. By submitting, you agree to our <a href="/privacy/">Privacy Policy</a>.</p>
           </div>
         </div>
       </div>
@@ -211,32 +211,9 @@ const waHref = `https://wa.me/${site.whatsapp.replace(/\D/g, '')}`
             <div class="ih-title">Office Hours</div>
           </div>
           <div class="ih-rows">
-            <div class="ih-row"><span class="ih-day">Monday – Thursday</span><span class="ih-time">8:00 AM – 6:00 PM</span></div>
-            <div class="ih-row"><span class="ih-day">Friday</span><span class="ih-time">8:00 AM – 5:00 PM</span></div>
-            <div class="ih-row"><span class="ih-day">Saturday</span><span class="ih-time">10:00 AM – 3:00 PM</span></div>
+            <div class="ih-row"><span class="ih-day">Monday – Friday</span><span class="ih-time">{site.officeWeekdayHours}</span></div>
+            <div class="ih-row"><span class="ih-day">Saturday</span><span class="ih-closed">Closed</span></div>
             <div class="ih-row"><span class="ih-day">Sunday</span><span class="ih-closed">Closed</span></div>
-          </div>
-          <div class="ih-badge">
-            <div class="ih-badge-dot"></div>
-            Currently accepting new projects
-          </div>
-        </div>
-
-        <div class="info-social">
-          <div class="is-label">Follow Our Work</div>
-          <div class="is-buttons">
-            {site.instagramUrl && site.instagramUrl !== '#' && (
-              <a href={site.instagramUrl} class="is-btn" target="_blank" rel="noopener noreferrer"><span class="is-btn-icon"><i class="fa-brands fa-instagram"></i></span>Instagram</a>
-            )}
-            {site.facebookUrl && site.facebookUrl !== '#' && (
-              <a href={site.facebookUrl} class="is-btn" target="_blank" rel="noopener noreferrer"><span class="is-btn-icon"><i class="fa-brands fa-facebook-f"></i></span>Facebook</a>
-            )}
-            {site.houzzUrl && site.houzzUrl !== '#' && (
-              <a href={site.houzzUrl} class="is-btn" target="_blank" rel="noopener noreferrer"><span class="is-btn-icon"><i class="fa-brands fa-houzz"></i></span>Houzz</a>
-            )}
-            {site.homestarsUrl && site.homestarsUrl !== '#' && (
-              <a href={site.homestarsUrl} class="is-btn" target="_blank" rel="noopener noreferrer"><span class="is-btn-icon"><i class="fa-solid fa-star"></i></span>HomeStars</a>
-            )}
           </div>
         </div>
       </div>

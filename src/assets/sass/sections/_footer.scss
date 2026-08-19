@@ -74,9 +74,18 @@ footer {
 
 .footer-sub {
   display: flex; align-items: center; justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
   padding: 20px var(--px);
 
-  p { font-size: 0.875rem; color: #ddd9d7; }
+  p { font-size: 0.875rem; color: #ddd9d7; margin: 0; }
+
+  a {
+    font-size: 0.875rem; color: #ddd9d7; text-decoration: none;
+    transition: color .2s;
+
+    &:hover { color: #fff; }
+  }
 }
 
 @media (max-width: 1023px) {

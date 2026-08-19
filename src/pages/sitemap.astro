@@ -20,6 +20,7 @@ const sections = [
 			{href: '/services/',  name: 'Services',  desc: 'Full breakdown of every renovation service'},
 			{href: '/portfolio/', name: 'Portfolio', desc: 'Completed projects and case studies'},
 			{href: '/contacts/',  name: 'Contact',   desc: 'Get in touch, request a free estimate'},
+			{href: '/privacy/',   name: 'Privacy Policy', desc: 'How we collect, use, and protect your information'},
 		],
 	},
 	{
@@ -40,7 +41,7 @@ const sections = [
   title="Sitemap — Formo Renovations"
   description="A complete list of all pages on the Formo Renovations website — main pages and direct links to each renovation service."
 >
-  <TheNav client:load phone={site.phone} email={site.email} phoneHours={site.phoneHours} emailNote={site.emailNote} />
+  <TheNav client:load phone={site.phone} email={site.email} phoneHours={site.phoneHours} officeWeekdayHours={site.officeWeekdayHours} emailNote={site.emailNote} />
 
   <main class="sm-page">
     <header class="sm-hero">

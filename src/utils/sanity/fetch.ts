@@ -75,7 +75,7 @@ const HERO_Q = defineQuery(`coalesce(*[_id == "hero"][0], *[_type == "hero"][0])
 
 const SITE_Q = defineQuery(`*[_id == "siteSettings"][0]{
   "testimonialsIsShowed": coalesce(testimonialsIsShowed, true),
-  footerDescription, phone, phoneHours, email, emailNote, notificationEmail,
+  footerDescription, phone, phoneHours, officeWeekdayHours, email, emailNote, notificationEmail,
   whatsapp, whatsappNote, serviceArea, serviceAreaNote,
   instagramUrl, facebookUrl, houzzUrl, homestarsUrl
 }`)
@@ -333,6 +333,7 @@ export function mapSiteSettings(doc: Record<string, unknown> | null): SiteSettin
 		footerDescription: str(d.footerDescription, DEFAULT_SITE_SETTINGS.footerDescription),
 		phone: str(d.phone, DEFAULT_SITE_SETTINGS.phone),
 		phoneHours: str(d.phoneHours, DEFAULT_SITE_SETTINGS.phoneHours),
+		officeWeekdayHours: str(d.officeWeekdayHours, DEFAULT_SITE_SETTINGS.officeWeekdayHours),
 		email: str(d.email, DEFAULT_SITE_SETTINGS.email),
 		emailNote: str(d.emailNote, DEFAULT_SITE_SETTINGS.emailNote),
 		notificationEmail: str(d.notificationEmail, DEFAULT_SITE_SETTINGS.notificationEmail),

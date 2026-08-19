@@ -296,50 +296,6 @@ input[type="range"] {
 .ih-time { font-size: 0.875rem; font-weight: 600; color: var(--text-dark); }
 .ih-closed { font-size: 0.875rem; font-weight: 500; color: var(--text-dim); font-style: italic; }
 
-.ih-badge {
-  display: inline-flex; align-items: center; gap: 6px;
-  margin-top: 14px; padding: 7px 14px;
-  background: rgba(87,53,16,0.08);
-  border: 1px solid rgba(87,53,16,0.18);
-  border-radius: 100px;
-  font-size: 0.8125rem; font-weight: 500; color: var(--gold);
-}
-
-.ih-badge-dot {
-  width: 7px; height: 7px; border-radius: 50%; background: #4caf50;
-  animation: pulse 2s infinite;
-}
-
-// Social card
-.info-social {
-  background: var(--numbers-bg);
-  border: 1px solid rgba(28,20,13,0.08);
-  border-radius: var(--r-md);
-  padding: 24px;
-}
-
-.is-label {
-  font-family: var(--font-mono);
-  font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase;
-  color: var(--gold); margin-bottom: 14px;
-}
-
-.is-buttons { display: flex; gap: 8px; flex-wrap: wrap; }
-
-.is-btn {
-  display: flex; align-items: center; gap: 8px;
-  padding: 10px 16px; border-radius: 100px;
-  background: var(--hero-bg);
-  border: 1px solid rgba(28,20,13,0.12);
-  font-size: 0.875rem; font-weight: 500; color: var(--text-dark);
-  text-decoration: none; cursor: pointer;
-  transition: background .2s, border-color .2s;
-
-  &:hover { background: var(--sand-light); border-color: var(--sand-border); }
-}
-
-.is-btn-icon { font-size: 15px; }
-
 // ── Map Section ─────────────────────────────────────────────
 #map-section {
   background: var(--numbers-bg);
@@ -447,8 +403,7 @@ input[type="range"] {
 @media (max-width: 1100px) {
   .contact-grid { grid-template-columns: 1fr; }
   .info-side { position: static; display: grid; grid-template-columns: 1fr 1fr; }
-  .info-hours,
-  .info-social { grid-column: span 2; }
+  .info-hours { grid-column: span 2; }
 }
 
 
@@ -459,8 +414,7 @@ input[type="range"] {
   .map-grid { grid-template-columns: 1fr; }
   .map-frame { min-height: 320px; iframe { min-height: 320px; } }
   .info-side { grid-template-columns: 1fr; }
-  .info-hours,
-  .info-social { grid-column: span 1; }
+  .info-hours { grid-column: span 1; }
   .service-checks { grid-template-columns: 1fr; }
 }
 

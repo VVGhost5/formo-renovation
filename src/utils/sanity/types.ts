@@ -34,6 +34,7 @@ export type SiteSettingsContent = {
 	footerDescription: string
 	phone: string
 	phoneHours: string
+	officeWeekdayHours: string
 	email: string
 	emailNote: string
 	notificationEmail: string

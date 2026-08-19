@@ -44,7 +44,8 @@ export const DEFAULT_SITE_SETTINGS: SiteSettingsContent = {
 	footerDescription:
 		'Premium renovation and interior finishing solutions for homes across Victoria and Vancouver Island, BC. European standards. Transparent process.',
 	phone: '+1 (250) 000-0000',
-	phoneHours: 'Mon – Fri, 8:00 AM – 6:00 PM',
+	phoneHours: 'Mon – Fri, 8:00 AM – 5:00 PM',
+	officeWeekdayHours: '8:00 AM – 5:00 PM',
 	email: 'hello@formorenovations.ca',
 	emailNote: 'Response within 1 business day',
 	notificationEmail: '',

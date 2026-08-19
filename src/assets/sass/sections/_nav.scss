@@ -253,20 +253,6 @@ nav {
 .cd-hours-time { color: #1a1208; font-weight: 600; }
 .cd-hours-closed { color: #b04040; font-weight: 600; }
 
-.cd-hours-badge {
-  display: flex; align-items: center; gap: 7px;
-  margin-top: 12px; padding-top: 12px;
-  border-top: 1px solid #ede8e1;
-  font-family: var(--font); font-size: 12px; font-weight: 600;
-  color: #2e7d32;
-}
-
-.cd-hours-dot {
-  width: 7px; height: 7px; border-radius: 50%;
-  background: #4caf50; flex-shrink: 0;
-  box-shadow: 0 0 0 3px rgba(76,175,80,0.2);
-}
-
 /* Quick form */
 .cd-form-wrap {
   display: flex; flex-direction: column; gap: 14px;

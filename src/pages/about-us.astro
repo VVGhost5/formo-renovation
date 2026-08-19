@@ -54,7 +54,7 @@ if (pageMeta.jsonLd) {
   description="Learn the story behind Formo Renovations — our team, values, and commitment to quality craftsmanship across Victoria and Vancouver Island, BC since 2016."
   jsonLd={pageJsonLd}
 >
-  <TheNav client:load page="about-us" phone={site.phone} email={site.email} phoneHours={site.phoneHours} emailNote={site.emailNote} />
+  <TheNav client:load page="about-us" phone={site.phone} email={site.email} phoneHours={site.phoneHours} officeWeekdayHours={site.officeWeekdayHours} emailNote={site.emailNote} />
 
   {page.heroIsShowed && (
   <section id="hero" class:list={['about-page-hero', !page.founderCardIsShowed && 'no-side-card']}>
