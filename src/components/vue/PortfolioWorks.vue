@@ -1,6 +1,12 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 import type { PortfolioProject } from '../../utils/sanity'
+import {
+  PORTFOLIO_CATEGORY_OPTIONS,
+  categoryLabel,
+  projectMatchesCategory,
+  type PortfolioCategory,
+} from '../../utils/sanity/categories'
 
 const props = defineProps<{
   projects?: PortfolioProject[]
@@ -13,7 +19,7 @@ interface Image { src: string; alt: string }
 interface Project {
   id: string
   num: string
-  category: 'kitchen' | 'bathroom' | 'living' | 'full'
+  categories: PortfolioCategory[]
   name: string
   tags: string[]
   location: string
@@ -29,7 +35,7 @@ interface Project {
 // ── Data ─────────────────────────────────────────────────────────────────────
 const FALLBACK_PROJECTS: Project[] = [
   {
-    id: 'project-1', num: '01', category: 'kitchen',
+    id: 'project-1', num: '01', categories: ['kitchen'],
     name: 'Modern Kitchen Renovation',
     tags: ['Kitchen', 'Full Remodel', '2024'],
     location: 'Fairfield, Victoria', duration: '6 Weeks', year: '2024',
@@ -53,7 +59,7 @@ const FALLBACK_PROJECTS: Project[] = [
     baBefore: 'https://images.unsplash.com/photo-1484101403633-562f891dc89a?w=1400&q=85',
   },
   {
-    id: 'project-2', num: '02', category: 'bathroom',
+    id: 'project-2', num: '02', categories: ['bathroom'],
     name: 'Spa-Style Bathroom Remodel',
     tags: ['Bathroom', 'Tile Work', '2024'],
     location: 'Oak Bay, Victoria', duration: '3 Weeks', year: '2024',
@@ -77,7 +83,7 @@ const FALLBACK_PROJECTS: Project[] = [
     baBefore: 'https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=1400&q=85',
   },
   {
-    id: 'project-3', num: '03', category: 'living',
+    id: 'project-3', num: '03', categories: ['guest'],
     name: 'Contemporary Living Room',
     tags: ['Living Room', 'Flooring', '2025'],
     location: 'Saanich, Victoria', duration: '4 Weeks', year: '2025',
@@ -101,7 +107,7 @@ const FALLBACK_PROJECTS: Project[] = [
     baBefore: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1400&q=85',
   },
   {
-    id: 'project-4', num: '04', category: 'full',
+    id: 'project-4', num: '04', categories: ['kitchen', 'bedroom', 'bathroom'],
     name: 'Full Apartment Transformation',
     tags: ['Full Apartment', 'Turnkey', '2025'],
     location: 'James Bay, Victoria', duration: '12 Weeks', year: '2025',
@@ -131,10 +137,10 @@ const allProjects = computed<Project[]>(() =>
 )
 
 // ── Filter ───────────────────────────────────────────────────────────────────
-type Category = 'all' | 'kitchen' | 'bathroom' | 'living' | 'full'
-const activeFilter = ref<Category>('all')
+type Filter = 'all' | PortfolioCategory
+const activeFilter = ref<Filter>('all')
 
-function setFilter(cat: Category) {
+function setFilter(cat: Filter) {
   activeFilter.value = cat
   // Close any open accordion when filter changes
   openId.value = null
@@ -143,7 +149,7 @@ function setFilter(cat: Category) {
 const visibleProjects = computed(() =>
   activeFilter.value === 'all'
     ? allProjects.value
-    : allProjects.value.filter(p => p.category === activeFilter.value),
+    : allProjects.value.filter((p) => projectMatchesCategory(p, activeFilter.value as PortfolioCategory)),
 )
 
 // ── Accordion ────────────────────────────────────────────────────────────────
@@ -255,12 +261,17 @@ onMounted(()  => document.addEventListener('keydown', onLbKey))
 onUnmounted(() => document.removeEventListener('keydown', onLbKey))
 
 // ── Filter labels ─────────────────────────────────────────────────────────────
-const filterLabels: Record<Category, string> = {
-  all:      'All Projects',
-  kitchen:  'Kitchen',
-  bathroom: 'Bathroom',
-  living:   'Living Room',
-  full:     'Full Apartment',
+const filterButtons: {id: Filter; label: string}[] = [
+  {id: 'all', label: 'All Projects'},
+  ...PORTFOLIO_CATEGORY_OPTIONS.map((option) => ({id: option.value, label: option.title})),
+]
+
+function displayTags(project: Project): string[] {
+  const fromCategories = project.categories.map(categoryLabel)
+  const extras = project.tags.filter(
+    (tag) => !fromCategories.some((label) => label.toLowerCase() === tag.trim().toLowerCase()),
+  )
+  return [...fromCategories, ...extras]
 }
 </script>
 
@@ -278,12 +289,12 @@ const filterLabels: Record<Category, string> = {
         </p>
         <div class="works-filter-row">
           <button
-            v-for="f in (['all','kitchen','bathroom','living','full'] as const)"
-            :key="f"
+            v-for="f in filterButtons"
+            :key="f.id"
             class="works-filter"
-            :class="{ active: activeFilter === f }"
-            @click="setFilter(f)"
-          >{{ filterLabels[f] }}</button>
+            :class="{ active: activeFilter === f.id }"
+            @click="setFilter(f.id)"
+          >{{ f.label }}</button>
         </div>
       </div>
     </div>
@@ -301,7 +312,7 @@ const filterLabels: Record<Category, string> = {
         <div class="project-meta">
           <span class="project-name">{{ p.name }}</span>
           <div class="project-tags">
-            <span v-for="tag in p.tags" :key="tag" class="project-tag">{{ tag }}</span>
+            <span v-for="tag in displayTags(p)" :key="tag" class="project-tag">{{ tag }}</span>
           </div>
         </div>
         <div class="project-info">

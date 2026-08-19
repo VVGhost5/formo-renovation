@@ -15,17 +15,24 @@ export default defineType({
     defineField({name: 'num', title: 'Number label', type: 'string', description: 'e.g. 01'}),
     defineField({
       name: 'category',
-      title: 'Category',
-      type: 'string',
+      title: 'Categories',
+      type: 'array',
+      of: [{type: 'string'}],
       options: {
         list: [
           {title: 'Kitchen', value: 'kitchen'},
+          {title: 'Bedroom', value: 'bedroom'},
+          {title: 'Hallway', value: 'hallway'},
+          {title: 'Wardrobe', value: 'wardrobe'},
+          {title: 'Dining', value: 'dining'},
+          {title: 'Toilet', value: 'toilet'},
           {title: 'Bathroom', value: 'bathroom'},
-          {title: 'Living', value: 'living'},
-          {title: 'Full renovation', value: 'full'},
+          {title: 'Guest', value: 'guest'},
         ],
+        layout: 'grid',
       },
-      validation: (R) => R.required(),
+      description: 'Select every room type this project covers. Used as filters on the Portfolio page.',
+      validation: (R) => R.required().min(1),
     }),
     defineField({name: 'name', title: 'Project name', type: 'string', validation: (R) => R.required()}),
     defineField({
@@ -90,6 +97,10 @@ export default defineType({
     {title: 'Sort order', name: 'sortOrderAsc', by: [{field: 'sortOrder', direction: 'asc'}]},
   ],
   preview: {
-    select: {title: 'name', subtitle: 'location', media: 'afterImage'},
+    select: {title: 'name', cats: 'category', media: 'afterImage'},
+    prepare({title, cats, media}) {
+      const subtitle = Array.isArray(cats) ? cats.join(', ') : cats
+      return {title, subtitle, media}
+    },
   },
 })

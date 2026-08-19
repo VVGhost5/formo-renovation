@@ -1,4 +1,5 @@
 export * from './types'
+export * from './categories'
 export * from './defaults'
 export * from './backgrounds'
 export * from './image'

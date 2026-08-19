@@ -3,6 +3,7 @@ import {sanityClient} from 'sanity:client'
 import {defineQuery} from 'groq'
 import {urlForImage} from './image'
 import {resolveBgUrl, type BackgroundKey} from './backgrounds'
+import {categoryLabel, normalizeCategories} from './categories'
 import {
 	DEFAULT_ABOUT_PAGE,
 	DEFAULT_BEFORE_AFTER,
@@ -560,7 +561,7 @@ export function mapPortfolioProject(doc: Record<string, unknown>, index: number)
 	const d = doc as {
 		id?: string
 		num?: string
-		category?: string
+		category?: string | string[]
 		name?: string
 		tags?: string[]
 		location?: string
@@ -582,13 +583,10 @@ export function mapPortfolioProject(doc: Record<string, unknown>, index: number)
 	const beforeImage = urlForImage(d.beforeImage as never, 1400)
 	const cover = afterImage ?? gallery[0]?.src ?? null
 	if (!d.name || !cover) return null
-	const cat = d.category as PortfolioProject['category']
-	const category =
-		cat === 'kitchen' || cat === 'bathroom' || cat === 'living' || cat === 'full' ? cat : 'full'
 	return {
 		id: str(d.id, `project-${index + 1}`),
 		num: str(d.num, String(index + 1).padStart(2, '0')),
-		category,
+		categories: normalizeCategories(d.category),
 		name: d.name,
 		tags: (d.tags ?? []).filter(Boolean),
 		location: str(d.location),
@@ -613,14 +611,15 @@ export function mapFeaturedSlides(docs: Record<string, unknown>[]): PortfolioSli
 				name?: string
 				homeMeta?: string
 				afterImage?: unknown
-				category?: string
+				category?: string | string[]
 				gallery?: {asset?: unknown}[]
 			}
 			const imageUrl =
 				urlForImage(d.afterImage as never, 900) ?? urlForImage(d.gallery?.[0] as never, 900)
 			if (!d.name || !imageUrl) return null
+			const firstCategory = normalizeCategories(d.category)[0]
 			return {
-				tag: str(d.homeTag, d.category ?? 'Project'),
+				tag: str(d.homeTag, firstCategory ? categoryLabel(firstCategory) : 'Project'),
 				title: d.name,
 				meta: str(d.homeMeta),
 				imageUrl,

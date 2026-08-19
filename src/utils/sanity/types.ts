@@ -1,4 +1,5 @@
 import type {SanityImageObject} from '@sanity/image-url'
+import type {PortfolioCategory} from './categories'
 
 export type SanityImage = (SanityImageObject & {alt?: string | null}) | null | undefined
 
@@ -396,7 +397,7 @@ export type ContactsPageContent = {
 export type PortfolioProject = {
 	id: string
 	num: string
-	category: 'kitchen' | 'bathroom' | 'living' | 'full'
+	categories: PortfolioCategory[]
 	name: string
 	tags: string[]
 	location: string
