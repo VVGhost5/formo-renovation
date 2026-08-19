@@ -179,10 +179,10 @@ if (pageMeta.jsonLd) {
     </div>
 
     <div class="values-grid">
-      {page.valueCards.map((card) => (
+      {page.valueCards.map((card, i) => (
         <div class="val-card">
           <div class="val-icon"><i class={card.icon}></i></div>
-          <div class="val-num">{card.num}</div>
+          <div class="val-num">{String(i + 1).padStart(2, '0')}</div>
           <div class="val-title">{card.title}</div>
           <p class="val-body">{card.body}</p>
         </div>
@@ -237,7 +237,7 @@ if (pageMeta.jsonLd) {
             <img width="720" height="426" src={row.imageUrl} alt={row.imageAlt} loading="lazy" />
           </div>
           <div class="why-row-text">
-            <div class="why-row-num">{row.num}</div>
+            <div class="why-row-num">{String(i + 1).padStart(2, '0')}</div>
             <div class="mono-label">{row.label}</div>
             <h3 class="why-row-title">{row.title}</h3>
             <p class="why-row-body">{row.body}</p>

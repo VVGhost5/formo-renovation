@@ -32,9 +32,9 @@ const heroBg = bgStyle(content.heroImageUrl)
     </div>
 
     <div class="pricing-grid">
-      {content.factors.map((f) => (
+      {content.factors.map((f, i) => (
         <div class="pfactor-card">
-          <div class="pfactor-num">{f.num}</div>
+          <div class="pfactor-num">{String(i + 1).padStart(2, '0')}</div>
           <div class="pfactor-body">
             <div class="pfactor-title">{f.title}</div>
             <div class="pfactor-desc">{f.description}</div>

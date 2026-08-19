@@ -297,7 +297,7 @@ const filterLabels: Record<Category, string> = {
     >
       <!-- Header row -->
       <div class="project-header" @click="toggleProject(p.id)">
-        <div class="project-num">{{ p.num }}</div>
+        <div class="project-num">{{ String(idx + 1).padStart(2, '0') }}</div>
         <div class="project-meta">
           <span class="project-name">{{ p.name }}</span>
           <div class="project-tags">

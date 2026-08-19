@@ -127,97 +127,89 @@ function startDrag(e: MouseEvent | TouchEvent) {
 
 <template>
   <section id="beforeafter">
-    <!-- Banner -->
-    <div class="ba-hero">
-      <div class="ba-hero-img" :style="bannerBg"></div>
-      <div class="ba-hero-content">
-        <div class="ba-eyebrow">{{ banner.eyebrow }}</div>
-        <h2 class="ba-headline">
-          {{ banner.headline }}
-          <em>{{ banner.headlineEmphasis }}</em>
-        </h2>
-        <p class="ba-desc">{{ banner.description }}</p>
-        <a href="/portfolio/" class="btn-outline-light">{{ banner.ctaLabel }}</a>
-      </div>
-    </div>
+    <div class="ba-grid">
 
-    <!-- Interactive slider content -->
-    <div class="ba-content">
-
-      <!-- Project selector tabs -->
-      <div class="ba-tabs">
-        <button
-          v-for="(p, i) in projects"
-          :key="p.name"
-          class="ba-tab"
-          :class="{ active: activeIdx === i }"
-          @click="loadProject(i)"
-        >{{ p.name }}</button>
-      </div>
-
-      <!-- Drag slider -->
-      <div
-        class="ba-slider-wrap"
-        @mousedown="startDrag"
-        @touchstart.prevent="startDrag"
-      >
-        <!-- After image (base layer) -->
-        <img 
-          width="1280"
-          height="640"
-          class="ba-after-img"
-          :src="active().after"
-          alt="After renovation"
-          draggable="false"
-        />
-
-        <!-- Before image (clipped overlay) -->
+      <!-- LEFT col (2fr): Drag slider -->
+      <div class="ba-slider-col">
         <div
-          class="ba-before-layer"
-          :style="{ clipPath: `inset(0 ${100 - position}% 0 0)` }"
+          class="ba-slider-wrap"
+          @mousedown="startDrag"
+          @touchstart.prevent="startDrag"
         >
           <img
-              width="1280"
-              height="640"
-              :src="active().before" 
-              alt="Before renovation" 
-              draggable="false"
+            width="1280"
+            height="720"
+            class="ba-after-img"
+            :src="active().after"
+            alt="After renovation"
+            draggable="false"
           />
-        </div>
-
-        <!-- Labels -->
-        <div class="ba-label ba-label-before">Before</div>
-        <div class="ba-label ba-label-after">After</div>
-
-        <!-- Drag handle -->
-        <div class="ba-handle" :style="{ left: position + '%' }">
-          <div class="ba-handle-grip">
-            <div class="ba-arrows">
-              <div class="ba-arrow ba-arrow-left"></div>
-              <div class="ba-arrow ba-arrow-right"></div>
+          <div
+            class="ba-before-layer"
+            :style="{ clipPath: `inset(0 ${100 - position}% 0 0)` }"
+          >
+            <img
+              width="1280"
+              height="720"
+              :src="active().before"
+              alt="Before renovation"
+              draggable="false"
+            />
+          </div>
+          <div class="ba-label ba-label-before">Before</div>
+          <div class="ba-label ba-label-after">After</div>
+          <div class="ba-handle" :style="{ left: position + '%' }">
+            <div class="ba-handle-grip">
+              <div class="ba-arrows">
+                <div class="ba-arrow ba-arrow-left"></div>
+                <div class="ba-arrow ba-arrow-right"></div>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Project info row -->
-      <div class="ba-info-row">
-        <div class="ba-info-cell">
-          <div class="ba-info-label">Project</div>
-          <div class="ba-info-value">{{ active().name }}</div>
+      <!-- RIGHT col (1fr): Data about object -->
+      <div class="ba-data-col">
+        <div class="ba-data-top">
+          <div class="ba-eyebrow">{{ banner.eyebrow }}</div>
+          <h2 class="ba-headline">
+            {{ banner.headline }}
+            <em>{{ banner.headlineEmphasis }}</em>
+          </h2>
+          <p class="ba-desc">{{ banner.description }}</p>
         </div>
-        <div class="ba-info-cell">
-          <div class="ba-info-label">Location</div>
-          <div class="ba-info-value">{{ active().loc }}</div>
+
+        <div class="ba-tabs">
+          <button
+            v-for="(p, i) in projects"
+            :key="p.name"
+            class="ba-tab"
+            :class="{ active: activeIdx === i }"
+            @click="loadProject(i)"
+          >{{ p.name }}</button>
         </div>
-        <div class="ba-info-cell">
-          <div class="ba-info-label">Duration</div>
-          <div class="ba-info-value">{{ active().dur }}</div>
+
+        <div class="ba-info">
+          <div class="ba-info-cell">
+            <div class="ba-info-label">Project</div>
+            <div class="ba-info-value">{{ active().name }}</div>
+          </div>
+          <div class="ba-info-cell">
+            <div class="ba-info-label">Location</div>
+            <div class="ba-info-value">{{ active().loc }}</div>
+          </div>
+          <div class="ba-info-cell">
+            <div class="ba-info-label">Duration</div>
+            <div class="ba-info-value">{{ active().dur }}</div>
+          </div>
+          <div class="ba-info-cell">
+            <div class="ba-info-label">Completed</div>
+            <div class="ba-info-value">{{ active().year }}</div>
+          </div>
         </div>
-        <div class="ba-info-cell">
-          <div class="ba-info-label">Completed</div>
-          <div class="ba-info-value">{{ active().year }}</div>
-        </div>
+
+        <a href="/portfolio/" class="btn-outline-light">{{ banner.ctaLabel }}</a>
       </div>
 
     </div>

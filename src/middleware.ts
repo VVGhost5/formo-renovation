@@ -81,28 +81,35 @@ export const onRequest = defineMiddleware(async (context, next) => {
 	// Always let Sanity Studio through
 	if (url.pathname.startsWith('/studio')) return next()
 
-	// Check bypass cookie first (fast path for repeat admin visits)
-	const bypassCookie = cookies.get(BYPASS_COOKIE)
-	if (bypassCookie?.value === maintenanceSecret) return next()
-
-	// Check ?admin=SECRET query param → set cookie and redirect to clean URL
 	const adminParam = url.searchParams.get('admin')
+	const secureFlag = url.protocol === 'https:' ? '; Secure' : ''
+	const bypassCookie = `${BYPASS_COOKIE}=${maintenanceSecret}; Path=/; Max-Age=${COOKIE_MAX_AGE}; HttpOnly; SameSite=Lax${secureFlag}`
+	const clearCookie = `${BYPASS_COOKIE}=; Path=/; Max-Age=0; HttpOnly; SameSite=Lax${secureFlag}`
+
+	// ?admin=SECRET grants access: store the cookie, then redirect to the clean URL
 	if (adminParam === maintenanceSecret) {
 		const cleanUrl = new URL(url)
 		cleanUrl.searchParams.delete('admin')
 		const response = context.redirect(cleanUrl.toString(), 302)
-		response.headers.append(
-			'Set-Cookie',
-			`${BYPASS_COOKIE}=${maintenanceSecret}; Path=/; Max-Age=${COOKIE_MAX_AGE}; HttpOnly; SameSite=Lax`,
-		)
+		response.headers.append('Set-Cookie', bypassCookie)
 		return response
 	}
 
-	return new Response(MAINTENANCE_HTML, {
+	// ?admin=off drops the bypass — useful to check what visitors actually see
+	const hasBypass = cookies.get(BYPASS_COOKIE)?.value === maintenanceSecret
+	if (hasBypass && adminParam !== 'off') return next()
+
+	const response = new Response(MAINTENANCE_HTML, {
 		status: 503,
 		headers: {
 			'Content-Type': 'text/html; charset=utf-8',
 			'Retry-After': '3600',
+			// Never cache the placeholder — otherwise it survives in browser/edge
+			// caches after MAINTENANCE_MODE is switched back off.
+			'Cache-Control': 'no-store, must-revalidate',
+			'X-Robots-Tag': 'noindex, nofollow',
 		},
 	})
+	if (adminParam === 'off') response.headers.append('Set-Cookie', clearCookie)
+	return response
 })
