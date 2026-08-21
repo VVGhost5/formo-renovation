@@ -31,11 +31,17 @@ export const structure = (S) =>
               S.divider(),
               S.listItem()
                 .title('Testimonials')
-                .child(S.documentTypeList('testimonial').title('Testimonials')),
+                .child(
+                  S.documentTypeList('testimonial')
+                    .title('Testimonials')
+                    .defaultOrdering([{field: 'sortOrder', direction: 'asc'}]),
+                ),
               S.listItem()
                 .title('Before & After — Projects')
                 .child(
-                  S.documentTypeList('beforeAfterProject').title('Slider projects'),
+                  S.documentTypeList('beforeAfterProject')
+                    .title('Slider projects')
+                    .defaultOrdering([{field: 'sortOrder', direction: 'asc'}]),
                 ),
             ]),
         ),
@@ -66,7 +72,11 @@ export const structure = (S) =>
               singleton(S, 'servicesHero', 'Hero', 'servicesHero'),
               S.listItem()
                 .title('Services List')
-                .child(S.documentTypeList('service').title('Service Items')),
+                .child(
+                  S.documentTypeList('service')
+                    .title('Service Items')
+                    .defaultOrdering([{field: 'sortOrder', direction: 'asc'}]),
+                ),
               singleton(S, 'servicesProcess', 'Process', 'servicesProcess'),
               singleton(S, 'servicesPricing', 'Pricing Hint', 'servicesPricing'),
               singleton(S, 'servicesFaq', 'FAQ', 'servicesFaq'),
@@ -84,7 +94,11 @@ export const structure = (S) =>
               singleton(S, 'portfolioPage', 'Page — Hero', 'portfolioPage'),
               S.listItem()
                 .title('Projects')
-                .child(S.documentTypeList('portfolioProject').title('Portfolio Projects')),
+                .child(
+                  S.documentTypeList('portfolioProject')
+                    .title('Portfolio Projects')
+                    .defaultOrdering([{field: 'sortOrder', direction: 'asc'}]),
+                ),
             ]),
         ),
 
