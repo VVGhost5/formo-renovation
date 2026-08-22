@@ -9,6 +9,16 @@ interface Props {
 
 const {site = DEFAULT_SITE_SETTINGS} = Astro.props
 const phoneHref = `tel:${site.phone.replace(/\D/g, '')}`
+const socialUrl = (url?: string) => {
+	const value = url?.trim()
+	return value && value !== '#' ? value : ''
+}
+const socials = [
+	{href: socialUrl(site.instagramUrl), title: 'Instagram', icon: 'fa-brands fa-instagram'},
+	{href: socialUrl(site.facebookUrl), title: 'Facebook', icon: 'fa-brands fa-facebook-f'},
+	{href: socialUrl(site.houzzUrl), title: 'Houzz', icon: 'fa-brands fa-houzz'},
+	{href: socialUrl(site.homestarsUrl), title: 'HomeStars', icon: 'fa-solid fa-star'},
+].filter((item) => item.href)
 ---
 <footer>
   <div class="footer-main">
@@ -18,17 +28,15 @@ const phoneHref = `tel:${site.phone.replace(/\D/g, '')}`
         <img width="120" height="120" src={logoIcon.src} alt="Formo Renovations" class="footer-logo-img" />
       </a>
       <p>{site.footerDescription}</p>
-      <div class="footer-socials">
-        <a class="social-btn" href={site.instagramUrl} title="Instagram" aria-label="Instagram">
-          <i class="fa-brands fa-instagram"></i>
-        </a>
-        <a class="social-btn" href={site.facebookUrl} title="Facebook" aria-label="Facebook">
-          <i class="fa-brands fa-facebook-f"></i>
-        </a>
-        <a class="social-btn" href={site.houzzUrl} title="Houzz" aria-label="Houzz">
-          <i class="fa-brands fa-houzz"></i>
-        </a>
-      </div>
+      {socials.length > 0 && (
+        <div class="footer-socials">
+          {socials.map((item) => (
+            <a class="social-btn" href={item.href} title={item.title} aria-label={item.title}>
+              <i class={item.icon}></i>
+            </a>
+          ))}
+        </div>
+      )}
     </div>
 
     <div class="footer-col">

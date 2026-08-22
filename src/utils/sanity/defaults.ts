@@ -53,10 +53,10 @@ export const DEFAULT_SITE_SETTINGS: SiteSettingsContent = {
 	whatsappNote: 'Quick questions & project photos',
 	serviceArea: 'Victoria & Vancouver Island',
 	serviceAreaNote: 'BC, Canada',
-	instagramUrl: '#',
-	facebookUrl: '#',
-	houzzUrl: '#',
-	homestarsUrl: '#',
+	instagramUrl: '',
+	facebookUrl: '',
+	houzzUrl: '',
+	homestarsUrl: '',
 }
 
 export const DEFAULT_PAGE_SEO: Record<SiteMetadataPageKey, PageSeo> = {

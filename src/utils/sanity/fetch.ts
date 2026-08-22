@@ -341,10 +341,10 @@ export function mapSiteSettings(doc: Record<string, unknown> | null): SiteSettin
 		whatsappNote: str(d.whatsappNote, DEFAULT_SITE_SETTINGS.whatsappNote),
 		serviceArea: str(d.serviceArea, DEFAULT_SITE_SETTINGS.serviceArea),
 		serviceAreaNote: str(d.serviceAreaNote, DEFAULT_SITE_SETTINGS.serviceAreaNote),
-		instagramUrl: str(d.instagramUrl, DEFAULT_SITE_SETTINGS.instagramUrl),
-		facebookUrl: str(d.facebookUrl, DEFAULT_SITE_SETTINGS.facebookUrl),
-		houzzUrl: str(d.houzzUrl, DEFAULT_SITE_SETTINGS.houzzUrl),
-		homestarsUrl: str(d.homestarsUrl, DEFAULT_SITE_SETTINGS.homestarsUrl),
+		instagramUrl: str(d.instagramUrl),
+		facebookUrl: str(d.facebookUrl),
+		houzzUrl: str(d.houzzUrl),
+		homestarsUrl: str(d.homestarsUrl),
 	}
 }
 
