@@ -135,17 +135,19 @@ const HOME_BEFORE_AFTER_BANNER_Q = defineQuery(`*[_id == "homeBeforeAfter"][0]{
   heroBackground{ asset, alt }
 }`)
 
-const TESTIMONIALS_Q = defineQuery(`*[_type == "testimonial"] | order(coalesce(sortOrder, 9999) asc, _createdAt asc){
+const SORT_ORDER = `select(defined(sortOrder) && sortOrder > 0 => sortOrder, 9999)`
+
+const TESTIMONIALS_Q = defineQuery(`*[_type == "testimonial"] | order(${SORT_ORDER} asc, _createdAt asc){
   name, meta, quote, initial, rating
 }`)
 
-const BEFORE_AFTER_Q = defineQuery(`*[_type == "beforeAfterProject"] | order(coalesce(sortOrder, 9999) asc, _createdAt asc){
+const BEFORE_AFTER_Q = defineQuery(`*[_type == "beforeAfterProject"] | order(${SORT_ORDER} asc, _createdAt asc){
   name, location, duration, year,
   beforeImage{ asset, alt }, afterImage{ asset, alt }
 }`)
 
-const PORTFOLIO_PROJECTS_Q = defineQuery(`*[_type == "portfolioProject"] | order(coalesce(sortOrder, 9999) asc, _createdAt asc){
-  "id": slug.current, num, category, name, tags, location, duration, year, description,
+const PORTFOLIO_PROJECTS_Q = defineQuery(`*[_type == "portfolioProject"] | order(${SORT_ORDER} asc, _createdAt asc){
+  "id": slug.current, "sortOrder": ${SORT_ORDER}, num, category, name, tags, location, duration, year, description,
   specs[]{ key, val },
   gallery[]{ alt, asset },
   beforeImage{ asset, alt }, afterImage{ asset, alt },
@@ -283,7 +285,7 @@ const REVIEWS_Q = defineQuery(`*[_type == "review" && approved == true] | order(
   _id, name, location, service, rating, comment, approved, _createdAt
 }`)
 
-const SERVICES_LIST_Q = defineQuery(`*[_type == "service"] | order(coalesce(sortOrder, 9999) asc, _createdAt asc){
+const SERVICES_LIST_Q = defineQuery(`*[_type == "service"] | order(${SORT_ORDER} asc, _createdAt asc){
   "id": slug.current, num, icon, stripName, quickName, quickSub,
   eyebrow, title, lead,
   includes,
@@ -1000,14 +1002,24 @@ export async function getBeforeAfterSlides() {
 	return mapped.length ? mapped : DEFAULT_BEFORE_AFTER
 }
 
+function bySortOrder(a: Record<string, unknown>, b: Record<string, unknown>) {
+	const ao = typeof a.sortOrder === 'number' && a.sortOrder > 0 ? a.sortOrder : 9999
+	const bo = typeof b.sortOrder === 'number' && b.sortOrder > 0 ? b.sortOrder : 9999
+	return ao - bo
+}
+
 export async function getPortfolioProjects() {
 	const docs = await safeFetch(PORTFOLIO_PROJECTS_Q, [] as Record<string, unknown>[])
-	return docs.map(mapPortfolioProject).filter((p): p is PortfolioProject => Boolean(p))
+	return docs
+		.slice()
+		.sort(bySortOrder)
+		.map(mapPortfolioProject)
+		.filter((p): p is PortfolioProject => Boolean(p))
 }
 
 export async function getHomePortfolio() {
 	const rawProjects = await safeFetch(PORTFOLIO_PROJECTS_Q, [] as Record<string, unknown>[])
-	const featured = mapFeaturedSlides(rawProjects)
+	const featured = mapFeaturedSlides(rawProjects.slice().sort(bySortOrder))
 	const doc = await safeFetch(PORTFOLIO_HOME_Q, null)
 	return mapHomePortfolio(doc, featured)
 }

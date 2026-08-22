@@ -93,17 +93,18 @@ export default defineType({
       name: 'sortOrder',
       title: 'Sort order',
       type: 'number',
-      description: 'Lower number = earlier in the list. Leave empty to place at the end.',
+      description: '1 = first, 2 = second, and so on. Empty or 0 goes to the end.',
     }),
   ],
   orderings: [
     {title: 'Sort order', name: 'sortOrderAsc', by: [{field: 'sortOrder', direction: 'asc'}]},
   ],
   preview: {
-    select: {title: 'name', cats: 'category', media: 'afterImage'},
-    prepare({title, cats, media}) {
-      const subtitle = Array.isArray(cats) ? cats.join(', ') : cats
-      return {title, subtitle, media}
+    select: {title: 'name', cats: 'category', media: 'afterImage', sortOrder: 'sortOrder'},
+    prepare({title, cats, media, sortOrder}) {
+      const catsText = Array.isArray(cats) ? cats.join(', ') : cats || ''
+      const orderText = typeof sortOrder === 'number' && sortOrder > 0 ? `#${sortOrder}` : 'no order'
+      return {title, subtitle: [orderText, catsText].filter(Boolean).join(' · '), media}
     },
   },
 })
