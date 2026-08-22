@@ -45,8 +45,7 @@ export default defineType({
       name: 'sortOrder',
       title: 'Sort order',
       type: 'number',
-      description: 'Lower numbers appear first in the slider',
-      initialValue: 0,
+      description: 'Lower number = appears earlier in the slider. Leave empty to place at the end.',
     }),
   ],
   orderings: [

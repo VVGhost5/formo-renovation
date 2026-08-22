@@ -89,7 +89,12 @@ export default defineType({
       description: 'Short tag on homepage portfolio grid',
     }),
     defineField({name: 'homeMeta', title: 'Homepage card meta', type: 'string'}),
-    defineField({name: 'sortOrder', title: 'Sort order', type: 'number', initialValue: 0}),
+    defineField({
+      name: 'sortOrder',
+      title: 'Sort order',
+      type: 'number',
+      description: 'Lower number = earlier in the list. Leave empty to place at the end.',
+    }),
   ],
   orderings: [
     {title: 'Sort order', name: 'sortOrderAsc', by: [{field: 'sortOrder', direction: 'asc'}]},

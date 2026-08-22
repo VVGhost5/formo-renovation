@@ -11,7 +11,12 @@ export default defineType({
     defineField({name: 'year', title: 'Year', type: 'string'}),
     defineField({name: 'beforeImage', title: 'Before image', type: 'image', options: {hotspot: true}}),
     defineField({name: 'afterImage', title: 'After image', type: 'image', options: {hotspot: true}}),
-    defineField({name: 'sortOrder', title: 'Sort order', type: 'number', initialValue: 0}),
+    defineField({
+      name: 'sortOrder',
+      title: 'Sort order',
+      type: 'number',
+      description: 'Lower number = earlier in the list. Leave empty to place at the end.',
+    }),
   ],
   orderings: [
     {title: 'Sort order', name: 'sortOrderAsc', by: [{field: 'sortOrder', direction: 'asc'}]},

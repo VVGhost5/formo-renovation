@@ -36,7 +36,12 @@ export default defineType({
     }),
     defineField({name: 'image', title: 'Image', type: 'image', options: {hotspot: true}}),
     defineField({name: 'imageAlt', title: 'Image alt', type: 'string'}),
-    defineField({name: 'sortOrder', title: 'Sort order', type: 'number', initialValue: 0}),
+    defineField({
+      name: 'sortOrder',
+      title: 'Sort order',
+      type: 'number',
+      description: 'Lower number = earlier in the list. Leave empty to place at the end.',
+    }),
   ],
   orderings: [
     {title: 'Sort order', name: 'sortOrderAsc', by: [{field: 'sortOrder', direction: 'asc'}]},
