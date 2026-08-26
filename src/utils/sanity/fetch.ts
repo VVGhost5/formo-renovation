@@ -2,11 +2,9 @@
 import {sanityClient} from 'sanity:client'
 import {defineQuery} from 'groq'
 import {urlForImage} from './image'
-import {resolveBgUrl, type BackgroundKey} from './backgrounds'
 import {categoryLabel, normalizeCategories} from './categories'
 import {
 	DEFAULT_ABOUT_PAGE,
-	DEFAULT_BEFORE_AFTER,
 	DEFAULT_CONTACTS_PAGE,
 	DEFAULT_REVIEWS_PAGE,
 	DEFAULT_HERO,
@@ -19,7 +17,6 @@ import {
 	DEFAULT_HOME_PROCESS,
 	DEFAULT_HOME_SERVICES,
 	DEFAULT_PORTFOLIO_PAGE,
-	DEFAULT_SERVICES,
 	DEFAULT_SERVICES_PAGE,
 	DEFAULT_SITE_SETTINGS,
 	DEFAULT_PAGE_SEO,
@@ -43,6 +40,7 @@ import type {
 	HomeProcessContent,
 	HomeServicesContent,
 	HeroContent,
+	PageSeo,
 	PricingHintCard,
 	PortfolioPageContent,
 	PortfolioProject,
@@ -52,6 +50,7 @@ import type {
 	ServiceDetail,
 	ServiceProcessStep,
 	ServicesPageContent,
+	SiteMetadataPageKey,
 	SiteSettingsContent,
 	TeamMember,
 	TestimonialSlide,
@@ -68,7 +67,7 @@ const HIDDEN_SERVICE_META = /starting\s*from/i
 
 const HERO_Q = defineQuery(`coalesce(*[_id == "hero"][0], *[_type == "hero"][0]){
   "isShowed": coalesce(isShowed, true),
-  locationLabel, titleLine1, titleLine2, titleSub, description,
+  locationLabel, titleLine1, description,
   primaryCtaLabel, secondaryCtaLabel, formTitle, formSubtext, formNote,
   backgroundImage{ asset, alt }
 }`)
@@ -310,20 +309,19 @@ const METADATA_Q = defineQuery(`*[_id == "metaData"][0]{
 export function mapHero(doc: Record<string, unknown> | null): HeroContent {
 	if (!doc) return DEFAULT_HERO
 	const d = doc as HeroContent & {backgroundImage?: {alt?: string}}
+	const alt = str((d.backgroundImage as {alt?: string})?.alt)
 	return {
 		isShowed: shown((d as {isShowed?: boolean}).isShowed, DEFAULT_HERO.isShowed),
-		locationLabel: str(d.locationLabel as string, DEFAULT_HERO.locationLabel),
-		titleLine1: str(d.titleLine1 as string, DEFAULT_HERO.titleLine1),
-		titleLine2: str(d.titleLine2 as string, DEFAULT_HERO.titleLine2),
-		titleSub: str(d.titleSub as string, DEFAULT_HERO.titleSub),
-		description: str(d.description as string, DEFAULT_HERO.description),
-		primaryCtaLabel: str(d.primaryCtaLabel as string, DEFAULT_HERO.primaryCtaLabel),
-		secondaryCtaLabel: str(d.secondaryCtaLabel as string, DEFAULT_HERO.secondaryCtaLabel),
-		formTitle: str(d.formTitle as string, DEFAULT_HERO.formTitle),
-		formSubtext: str(d.formSubtext as string, DEFAULT_HERO.formSubtext),
-		formNote: str(d.formNote as string, DEFAULT_HERO.formNote),
-		backgroundImageUrl: resolveBgUrl(urlForImage(d.backgroundImage as never), 'homeHero'),
-		backgroundImageAlt: str((d.backgroundImage as {alt?: string})?.alt, DEFAULT_HERO.backgroundImageAlt ?? ''),
+		locationLabel: str(d.locationLabel as string),
+		titleLine1: str(d.titleLine1 as string),
+		description: str(d.description as string),
+		primaryCtaLabel: str(d.primaryCtaLabel as string),
+		secondaryCtaLabel: str(d.secondaryCtaLabel as string),
+		formTitle: str(d.formTitle as string),
+		formSubtext: str(d.formSubtext as string),
+		formNote: str(d.formNote as string),
+		backgroundImageUrl: urlForImage(d.backgroundImage as never) ?? '',
+		backgroundImageAlt: alt || null,
 	}
 }
 
@@ -332,17 +330,17 @@ export function mapSiteSettings(doc: Record<string, unknown> | null): SiteSettin
 	const d = doc as SiteSettingsContent
 	return {
 		testimonialsIsShowed: shown((d as {testimonialsIsShowed?: boolean}).testimonialsIsShowed, DEFAULT_SITE_SETTINGS.testimonialsIsShowed),
-		footerDescription: str(d.footerDescription, DEFAULT_SITE_SETTINGS.footerDescription),
-		phone: str(d.phone, DEFAULT_SITE_SETTINGS.phone),
-		phoneHours: str(d.phoneHours, DEFAULT_SITE_SETTINGS.phoneHours),
-		officeWeekdayHours: str(d.officeWeekdayHours, DEFAULT_SITE_SETTINGS.officeWeekdayHours),
-		email: str(d.email, DEFAULT_SITE_SETTINGS.email),
-		emailNote: str(d.emailNote, DEFAULT_SITE_SETTINGS.emailNote),
-		notificationEmail: str(d.notificationEmail, DEFAULT_SITE_SETTINGS.notificationEmail),
-		whatsapp: str(d.whatsapp, DEFAULT_SITE_SETTINGS.whatsapp),
-		whatsappNote: str(d.whatsappNote, DEFAULT_SITE_SETTINGS.whatsappNote),
-		serviceArea: str(d.serviceArea, DEFAULT_SITE_SETTINGS.serviceArea),
-		serviceAreaNote: str(d.serviceAreaNote, DEFAULT_SITE_SETTINGS.serviceAreaNote),
+		footerDescription: str(d.footerDescription),
+		phone: str(d.phone),
+		phoneHours: str(d.phoneHours),
+		officeWeekdayHours: str(d.officeWeekdayHours),
+		email: str(d.email),
+		emailNote: str(d.emailNote),
+		notificationEmail: str(d.notificationEmail),
+		whatsapp: str(d.whatsapp),
+		whatsappNote: str(d.whatsappNote),
+		serviceArea: str(d.serviceArea),
+		serviceAreaNote: str(d.serviceAreaNote),
 		instagramUrl: str(d.instagramUrl),
 		facebookUrl: str(d.facebookUrl),
 		houzzUrl: str(d.houzzUrl),
@@ -350,15 +348,14 @@ export function mapSiteSettings(doc: Record<string, unknown> | null): SiteSettin
 	}
 }
 
-function mapStats(raw: {value?: string; suffix?: string; label?: string}[] | undefined, fallback: Stat[]): Stat[] {
-	const stats = (raw ?? [])
+function mapStats(raw: {value?: string; suffix?: string; label?: string}[] | undefined): Stat[] {
+	return (raw ?? [])
 		.filter((s) => s?.value && s?.label)
 		.map((s) => ({
 			value: str(s.value),
 			suffix: str(s.suffix),
 			label: str(s.label),
 		}))
-	return stats.length ? stats : fallback
 }
 
 export function mapHomeNumbers(doc: Record<string, unknown> | null): HomeNumbersContent {
@@ -366,9 +363,9 @@ export function mapHomeNumbers(doc: Record<string, unknown> | null): HomeNumbers
 	const d = doc as HomeNumbersContent
 	return {
 		isShowed: shown((d as {isShowed?: boolean}).isShowed, DEFAULT_HOME_NUMBERS.isShowed),
-		eyebrow: str(d.eyebrow, DEFAULT_HOME_NUMBERS.eyebrow),
-		headline: str(d.headline, DEFAULT_HOME_NUMBERS.headline),
-		stats: mapStats(d.stats as never, DEFAULT_HOME_NUMBERS.stats),
+		eyebrow: str(d.eyebrow),
+		headline: str(d.headline),
+		stats: mapStats(d.stats as never),
 	}
 }
 
@@ -384,40 +381,39 @@ export function mapHomeServices(doc: Record<string, unknown> | null): HomeServic
 		.filter((c) => c.name && c.imageUrl)
 	return {
 		isShowed: shown((d as {isShowed?: boolean}).isShowed, DEFAULT_HOME_SERVICES.isShowed),
-		eyebrow: str(d.eyebrow, DEFAULT_HOME_SERVICES.eyebrow),
-		title: str(d.title, DEFAULT_HOME_SERVICES.title),
-		titleAccent: str(d.titleAccent, DEFAULT_HOME_SERVICES.titleAccent),
-		cards: cards.length ? cards : DEFAULT_HOME_SERVICES.cards,
+		eyebrow: str(d.eyebrow),
+		title: str(d.title),
+		titleAccent: str(d.titleAccent),
+		cards,
 	}
 }
 
 export function mapHomeAbout(doc: Record<string, unknown> | null): HomeAboutContent {
 	if (!doc) return DEFAULT_HOME_ABOUT
 	const d = doc as HomeAboutContent & {rows?: AboutRow[]; heroImage?: unknown}
-	const rows = (d.rows as AboutRow[] | undefined)?.map((r, i) => {
-		const fb = DEFAULT_HOME_ABOUT.rows[i] ?? DEFAULT_HOME_ABOUT.rows[0]
+	const rows = (d.rows as AboutRow[] | undefined)?.map((r) => {
 		const img = (r as AboutRow & {image?: unknown}).image
 		return {
-			label: str(r.label, fb.label),
-			headingBefore: str(r.headingBefore, fb.headingBefore),
-			headingEmphasis: str(r.headingEmphasis, fb.headingEmphasis),
-			paragraphs: (r.paragraphs ?? fb.paragraphs).filter(Boolean),
-			pills: (r.pills ?? fb.pills).filter(Boolean),
-			imageUrl: urlForImage(img as never, 1000) ?? fb.imageUrl,
-			imageAlt: str(r.imageAlt, fb.imageAlt),
+			label: str(r.label),
+			headingBefore: str(r.headingBefore),
+			headingEmphasis: str(r.headingEmphasis),
+			paragraphs: (r.paragraphs ?? []).filter(Boolean),
+			pills: (r.pills ?? []).filter(Boolean),
+			imageUrl: urlForImage(img as never, 1000) ?? '',
+			imageAlt: str(r.imageAlt),
 			reverse: Boolean(r.reverse),
 		}
 	})
 	return {
 		isShowed: shown((d as {isShowed?: boolean}).isShowed, DEFAULT_HOME_ABOUT.isShowed),
-		eyebrow: str(d.eyebrow, DEFAULT_HOME_ABOUT.eyebrow),
-		headline: str(d.headline, DEFAULT_HOME_ABOUT.headline),
-		headlineEmphasis: str(d.headlineEmphasis, DEFAULT_HOME_ABOUT.headlineEmphasis),
-		heroDescription: str(d.heroDescription, DEFAULT_HOME_ABOUT.heroDescription),
-		heroCtaLabel: str(d.heroCtaLabel, DEFAULT_HOME_ABOUT.heroCtaLabel),
-		heroCtaLink: str(d.heroCtaLink, DEFAULT_HOME_ABOUT.heroCtaLink),
-		heroImageUrl: resolveBgUrl(urlForImage(d.heroImage as never), 'homeAbout'),
-		rows: rows?.length ? rows : DEFAULT_HOME_ABOUT.rows,
+		eyebrow: str(d.eyebrow),
+		headline: str(d.headline),
+		headlineEmphasis: str(d.headlineEmphasis),
+		heroDescription: str(d.heroDescription),
+		heroCtaLabel: str(d.heroCtaLabel),
+		heroCtaLink: str(d.heroCtaLink),
+		heroImageUrl: urlForImage(d.heroImage as never) ?? '',
+		rows: rows ?? [],
 	}
 }
 
@@ -425,7 +421,7 @@ export function mapHomePortfolio(
 	doc: Record<string, unknown> | null,
 	featured: PortfolioSlide[],
 ): HomePortfolioContent {
-	if (!doc) return {...DEFAULT_HOME_PORTFOLIO, projects: featured.length ? featured : DEFAULT_HOME_PORTFOLIO.projects}
+	if (!doc) return {...DEFAULT_HOME_PORTFOLIO, projects: featured}
 	const d = doc as HomePortfolioContent & {useFeaturedProjects?: boolean; cards?: PortfolioSlide[]; heroImage?: unknown}
 	const manual = (d.cards ?? [])
 		.map((c) => ({
@@ -438,18 +434,16 @@ export function mapHomePortfolio(
 	const projects =
 		d.useFeaturedProjects !== false && featured.length
 			? featured
-			: manual.length
-				? manual
-				: DEFAULT_HOME_PORTFOLIO.projects
+			: manual
 	return {
 		isShowed: shown((d as {isShowed?: boolean}).isShowed, DEFAULT_HOME_PORTFOLIO.isShowed),
-		eyebrow: str(d.eyebrow, DEFAULT_HOME_PORTFOLIO.eyebrow),
-		headline: str(d.headline, DEFAULT_HOME_PORTFOLIO.headline),
-		headlineEmphasis: str(d.headlineEmphasis, DEFAULT_HOME_PORTFOLIO.headlineEmphasis),
-		description: str(d.description, DEFAULT_HOME_PORTFOLIO.description),
-		ctaLabel: str(d.ctaLabel, DEFAULT_HOME_PORTFOLIO.ctaLabel),
-		ctaLink: str(d.ctaLink, DEFAULT_HOME_PORTFOLIO.ctaLink),
-		heroImageUrl: resolveBgUrl(urlForImage(d.heroImage as never), 'homePortfolio'),
+		eyebrow: str(d.eyebrow),
+		headline: str(d.headline),
+		headlineEmphasis: str(d.headlineEmphasis),
+		description: str(d.description),
+		ctaLabel: str(d.ctaLabel),
+		ctaLink: str(d.ctaLink),
+		heroImageUrl: urlForImage(d.heroImage as never) ?? '',
 		projects,
 	}
 }
@@ -459,22 +453,19 @@ export function mapHomeProcess(doc: Record<string, unknown> | null): HomeProcess
 	const d = doc as HomeProcessContent & {heroImage?: unknown; steps?: HomeProcessContent['steps']}
 	const steps = (d.steps ?? [])
 		.filter((s) => s?.title)
-		.map((s, i) => {
-			const fb = DEFAULT_HOME_PROCESS.steps[i] ?? DEFAULT_HOME_PROCESS.steps[0]
-			return {
-				title: str(s.title, fb.title),
-				description: str(s.description, fb.description),
-			}
-		})
+		.map((s) => ({
+			title: str(s.title),
+			description: str(s.description),
+		}))
 	return {
 		isShowed: shown((d as {isShowed?: boolean}).isShowed, DEFAULT_HOME_PROCESS.isShowed),
-		eyebrow: str(d.eyebrow, DEFAULT_HOME_PROCESS.eyebrow),
-		headline: str(d.headline, DEFAULT_HOME_PROCESS.headline),
-		headlineEmphasis: str(d.headlineEmphasis, DEFAULT_HOME_PROCESS.headlineEmphasis),
-		description: str(d.description, DEFAULT_HOME_PROCESS.description),
-		ctaLabel: str(d.ctaLabel, DEFAULT_HOME_PROCESS.ctaLabel),
-		heroImageUrl: resolveBgUrl(urlForImage(d.heroImage as never), 'homeProcess'),
-		steps: steps.length ? steps : DEFAULT_HOME_PROCESS.steps,
+		eyebrow: str(d.eyebrow),
+		headline: str(d.headline),
+		headlineEmphasis: str(d.headlineEmphasis),
+		description: str(d.description),
+		ctaLabel: str(d.ctaLabel),
+		heroImageUrl: urlForImage(d.heroImage as never) ?? '',
+		steps,
 	}
 }
 
@@ -483,26 +474,27 @@ export function mapHomePricing(doc: Record<string, unknown> | null): HomePricing
 	const d = doc as HomePricingContent & {heroImage?: unknown; factors?: HomePricingContent['factors']}
 	const factors = (d.factors ?? [])
 		.filter((f) => f?.title)
-		.map((f, i) => {
-			const fb = DEFAULT_HOME_PRICING.factors[i] ?? DEFAULT_HOME_PRICING.factors[0]
-			return {num: str(f.num, fb.num), title: str(f.title, fb.title), description: str(f.description, fb.description)}
-		})
+		.map((f) => ({
+			num: str(f.num),
+			title: str(f.title),
+			description: str(f.description),
+		}))
 	return {
 		isShowed: shown((d as {isShowed?: boolean}).isShowed, DEFAULT_HOME_PRICING.isShowed),
-		eyebrow: str(d.eyebrow, DEFAULT_HOME_PRICING.eyebrow),
-		headline: str(d.headline, DEFAULT_HOME_PRICING.headline),
-		headlineEmphasis: str(d.headlineEmphasis, DEFAULT_HOME_PRICING.headlineEmphasis),
-		heroDescription: str(d.heroDescription, DEFAULT_HOME_PRICING.heroDescription),
-		heroCtaLabel: str(d.heroCtaLabel, DEFAULT_HOME_PRICING.heroCtaLabel),
-		heroImageUrl: resolveBgUrl(urlForImage(d.heroImage as never), 'homePricing'),
-		introTitle: str(d.introTitle, DEFAULT_HOME_PRICING.introTitle),
-		introText: str(d.introText, DEFAULT_HOME_PRICING.introText),
-		factors: factors.length ? factors : DEFAULT_HOME_PRICING.factors,
-		ctaLabel: str(d.ctaLabel, DEFAULT_HOME_PRICING.ctaLabel),
-		ctaTitle: str(d.ctaTitle, DEFAULT_HOME_PRICING.ctaTitle),
-		ctaSubtext: str(d.ctaSubtext, DEFAULT_HOME_PRICING.ctaSubtext),
-		ctaPrimaryLabel: str(d.ctaPrimaryLabel, DEFAULT_HOME_PRICING.ctaPrimaryLabel),
-		ctaSecondaryLabel: str(d.ctaSecondaryLabel, DEFAULT_HOME_PRICING.ctaSecondaryLabel),
+		eyebrow: str(d.eyebrow),
+		headline: str(d.headline),
+		headlineEmphasis: str(d.headlineEmphasis),
+		heroDescription: str(d.heroDescription),
+		heroCtaLabel: str(d.heroCtaLabel),
+		heroImageUrl: urlForImage(d.heroImage as never) ?? '',
+		introTitle: str(d.introTitle),
+		introText: str(d.introText),
+		factors,
+		ctaLabel: str(d.ctaLabel),
+		ctaTitle: str(d.ctaTitle),
+		ctaSubtext: str(d.ctaSubtext),
+		ctaPrimaryLabel: str(d.ctaPrimaryLabel),
+		ctaSecondaryLabel: str(d.ctaSecondaryLabel),
 	}
 }
 
@@ -511,15 +503,15 @@ export function mapHomeContact(doc: Record<string, unknown> | null): HomeContact
 	const d = doc as HomeContactContent & {photo?: unknown}
 	return {
 		isShowed: shown((d as {isShowed?: boolean}).isShowed, DEFAULT_HOME_CONTACT.isShowed),
-		eyebrow: str(d.eyebrow, DEFAULT_HOME_CONTACT.eyebrow),
-		headline: str(d.headline, DEFAULT_HOME_CONTACT.headline),
-		headlineEmphasis: str(d.headlineEmphasis, DEFAULT_HOME_CONTACT.headlineEmphasis),
-		lead: str(d.lead, DEFAULT_HOME_CONTACT.lead),
-		ctaLabel: str(d.ctaLabel, DEFAULT_HOME_CONTACT.ctaLabel),
-		formTitle: str(d.formTitle, DEFAULT_HOME_CONTACT.formTitle),
-		formSubtext: str(d.formSubtext, DEFAULT_HOME_CONTACT.formSubtext),
-		photoUrl: urlForImage(d.photo as never, 1200) ?? DEFAULT_HOME_CONTACT.photoUrl,
-		photoAlt: str(d.photoAlt, DEFAULT_HOME_CONTACT.photoAlt),
+		eyebrow: str(d.eyebrow),
+		headline: str(d.headline),
+		headlineEmphasis: str(d.headlineEmphasis),
+		lead: str(d.lead),
+		ctaLabel: str(d.ctaLabel),
+		formTitle: str(d.formTitle),
+		formSubtext: str(d.formSubtext),
+		photoUrl: urlForImage(d.photo as never, 1200) ?? '',
+		photoAlt: str(d.photoAlt),
 	}
 }
 
@@ -622,7 +614,7 @@ export function mapFeaturedSlides(docs: Record<string, unknown>[]): PortfolioSli
 			if (!d.name || !imageUrl) return null
 			const firstCategory = normalizeCategories(d.category)[0]
 			return {
-				tag: str(d.homeTag, firstCategory ? categoryLabel(firstCategory) : 'Project'),
+				tag: str(d.homeTag, firstCategory ? categoryLabel(firstCategory) : ''),
 				title: d.name,
 				meta: str(d.homeMeta),
 				imageUrl,
@@ -634,21 +626,20 @@ export function mapFeaturedSlides(docs: Record<string, unknown>[]): PortfolioSli
 function mapPageHero<T extends {heroImageUrl: string}>(
 	doc: Record<string, unknown> | null,
 	defaults: T,
-	bgKey: BackgroundKey,
 ): T {
 	if (!doc) return defaults
 	const d = doc as T & {heroImage?: unknown}
 	return {
 		...defaults,
-		locationLabel: str((d as {locationLabel?: string}).locationLabel, (defaults as {locationLabel?: string}).locationLabel ?? ''),
-		titleBefore: str((d as {titleBefore?: string}).titleBefore, (defaults as {titleBefore?: string}).titleBefore ?? ''),
-		titleEmphasis: str((d as {titleEmphasis?: string}).titleEmphasis, (defaults as {titleEmphasis?: string}).titleEmphasis ?? ''),
-		description: str((d as {description?: string}).description, (defaults as {description?: string}).description ?? ''),
-		primaryCtaLabel: str((d as {primaryCtaLabel?: string}).primaryCtaLabel, (defaults as {primaryCtaLabel?: string}).primaryCtaLabel ?? ''),
-		primaryCtaLink: str((d as {primaryCtaLink?: string}).primaryCtaLink, (defaults as {primaryCtaLink?: string}).primaryCtaLink ?? ''),
-		secondaryCtaLabel: str((d as {secondaryCtaLabel?: string}).secondaryCtaLabel, (defaults as {secondaryCtaLabel?: string}).secondaryCtaLabel ?? ''),
-		secondaryCtaLink: str((d as {secondaryCtaLink?: string}).secondaryCtaLink, (defaults as {secondaryCtaLink?: string}).secondaryCtaLink ?? ''),
-		heroImageUrl: resolveBgUrl(urlForImage(d.heroImage as never), bgKey),
+		locationLabel: str((d as {locationLabel?: string}).locationLabel),
+		titleBefore: str((d as {titleBefore?: string}).titleBefore),
+		titleEmphasis: str((d as {titleEmphasis?: string}).titleEmphasis),
+		description: str((d as {description?: string}).description),
+		primaryCtaLabel: str((d as {primaryCtaLabel?: string}).primaryCtaLabel),
+		primaryCtaLink: str((d as {primaryCtaLink?: string}).primaryCtaLink),
+		secondaryCtaLabel: str((d as {secondaryCtaLabel?: string}).secondaryCtaLabel),
+		secondaryCtaLink: str((d as {secondaryCtaLink?: string}).secondaryCtaLink),
+		heroImageUrl: urlForImage(d.heroImage as never) ?? '',
 	} as T
 }
 
@@ -659,43 +650,41 @@ export function mapHomeBeforeAfterBanner(
 	const d = doc as HomeBeforeAfterBannerContent & {heroBackground?: unknown}
 	return {
 		isShowed: shown((d as {isShowed?: boolean}).isShowed, DEFAULT_HOME_BEFORE_AFTER_BANNER.isShowed),
-		eyebrow: str(d.eyebrow, DEFAULT_HOME_BEFORE_AFTER_BANNER.eyebrow),
-		headline: str(d.headline, DEFAULT_HOME_BEFORE_AFTER_BANNER.headline),
-		headlineEmphasis: str(d.headlineEmphasis, DEFAULT_HOME_BEFORE_AFTER_BANNER.headlineEmphasis),
-		description: str(d.description, DEFAULT_HOME_BEFORE_AFTER_BANNER.description),
-		ctaLabel: str(d.ctaLabel, DEFAULT_HOME_BEFORE_AFTER_BANNER.ctaLabel),
-		heroBackgroundUrl: resolveBgUrl(urlForImage(d.heroBackground as never), 'homeBeforeAfter'),
+		eyebrow: str(d.eyebrow),
+		headline: str(d.headline),
+		headlineEmphasis: str(d.headlineEmphasis),
+		description: str(d.description),
+		ctaLabel: str(d.ctaLabel),
+		heroBackgroundUrl: urlForImage(d.heroBackground as never) ?? '',
 	}
 }
 
 export function mapPortfolioPage(doc: Record<string, unknown> | null): PortfolioPageContent {
 	if (!doc) return DEFAULT_PORTFOLIO_PAGE
-	const base = mapPageHero(doc, DEFAULT_PORTFOLIO_PAGE, 'portfolioHero')
-	return {...base, stats: mapStats((doc as PortfolioPageContent).stats as never, DEFAULT_PORTFOLIO_PAGE.stats)}
+	const base = mapPageHero(doc, DEFAULT_PORTFOLIO_PAGE)
+	return {...base, stats: mapStats((doc as PortfolioPageContent).stats as never)}
 }
 
 export function mapServicesPage(doc: Record<string, unknown> | null): ServicesPageContent {
 	if (!doc) return DEFAULT_SERVICES_PAGE
 	const d = doc as ServicesPageContent & {heroImage?: unknown; processHeroBackground?: unknown}
-	const base = mapPageHero(doc, DEFAULT_SERVICES_PAGE, 'servicesHero')
+	const base = mapPageHero(doc, DEFAULT_SERVICES_PAGE)
 
 	const processSteps = ((d as {processSteps?: ServiceProcessStep[]}).processSteps ?? [])
 		.filter((s) => s?.title)
-		.map((s, i) => {
-			const fb = DEFAULT_SERVICES_PAGE.processSteps[i] ?? DEFAULT_SERVICES_PAGE.processSteps[0]
-			return {
-				icon: str(s.icon, fb.icon),
-				title: str(s.title, fb.title),
-				body: str(s.body, fb.body),
-			}
-		})
+		.map((s) => ({
+			icon: str(s.icon),
+			title: str(s.title),
+			body: str(s.body),
+		}))
 
 	const pricingCards = ((d as {pricingCards?: PricingHintCard[]}).pricingCards ?? [])
 		.filter((c) => c?.title)
-		.map((c, i) => {
-			const fb = DEFAULT_SERVICES_PAGE.pricingCards[i] ?? DEFAULT_SERVICES_PAGE.pricingCards[0]
-			return {icon: str(c.icon, fb.icon), title: str(c.title, fb.title), body: str(c.body, fb.body)}
-		})
+		.map((c) => ({
+			icon: str(c.icon),
+			title: str(c.title),
+			body: str(c.body),
+		}))
 
 	const faqItems = ((d as {faqItems?: FaqItem[]}).faqItems ?? [])
 		.filter((f) => f?.question)
@@ -708,84 +697,83 @@ export function mapServicesPage(doc: Record<string, unknown> | null): ServicesPa
 		processIsShowed: shown((d as {processIsShowed?: boolean}).processIsShowed, DEFAULT_SERVICES_PAGE.processIsShowed),
 		pricingIsShowed: shown((d as {pricingIsShowed?: boolean}).pricingIsShowed, DEFAULT_SERVICES_PAGE.pricingIsShowed),
 		faqIsShowed: shown((d as {faqIsShowed?: boolean}).faqIsShowed, DEFAULT_SERVICES_PAGE.faqIsShowed),
-		processHeroBackgroundUrl: resolveBgUrl(urlForImage(d.processHeroBackground as never), 'servicesProcess'),
-		processEyebrow: str((d as {processEyebrow?: string}).processEyebrow, DEFAULT_SERVICES_PAGE.processEyebrow),
-		processHeadline: str((d as {processHeadline?: string}).processHeadline, DEFAULT_SERVICES_PAGE.processHeadline),
-		processHeadlineEmphasis: str((d as {processHeadlineEmphasis?: string}).processHeadlineEmphasis, DEFAULT_SERVICES_PAGE.processHeadlineEmphasis),
-		processDescription: str((d as {processDescription?: string}).processDescription, DEFAULT_SERVICES_PAGE.processDescription),
-		processSteps: processSteps.length ? processSteps : DEFAULT_SERVICES_PAGE.processSteps,
-		pricingEyebrow: str((d as {pricingEyebrow?: string}).pricingEyebrow, DEFAULT_SERVICES_PAGE.pricingEyebrow),
-		pricingHeadline: str((d as {pricingHeadline?: string}).pricingHeadline, DEFAULT_SERVICES_PAGE.pricingHeadline),
-		pricingHeadlineEmphasis: str((d as {pricingHeadlineEmphasis?: string}).pricingHeadlineEmphasis, DEFAULT_SERVICES_PAGE.pricingHeadlineEmphasis),
-		pricingBody: str((d as {pricingBody?: string}).pricingBody, DEFAULT_SERVICES_PAGE.pricingBody),
-		pricingCards: pricingCards.length ? pricingCards : DEFAULT_SERVICES_PAGE.pricingCards,
-		faqEyebrow: str((d as {faqEyebrow?: string}).faqEyebrow, DEFAULT_SERVICES_PAGE.faqEyebrow),
-		faqTitle: str((d as {faqTitle?: string}).faqTitle, DEFAULT_SERVICES_PAGE.faqTitle),
-		faqTitleEmphasis: str((d as {faqTitleEmphasis?: string}).faqTitleEmphasis, DEFAULT_SERVICES_PAGE.faqTitleEmphasis),
-		faqSub: str((d as {faqSub?: string}).faqSub, DEFAULT_SERVICES_PAGE.faqSub),
-		faqItems: faqItems.length ? faqItems : DEFAULT_SERVICES_PAGE.faqItems,
+		processHeroBackgroundUrl: urlForImage(d.processHeroBackground as never) ?? '',
+		processEyebrow: str((d as {processEyebrow?: string}).processEyebrow),
+		processHeadline: str((d as {processHeadline?: string}).processHeadline),
+		processHeadlineEmphasis: str((d as {processHeadlineEmphasis?: string}).processHeadlineEmphasis),
+		processDescription: str((d as {processDescription?: string}).processDescription),
+		processSteps,
+		pricingEyebrow: str((d as {pricingEyebrow?: string}).pricingEyebrow),
+		pricingHeadline: str((d as {pricingHeadline?: string}).pricingHeadline),
+		pricingHeadlineEmphasis: str((d as {pricingHeadlineEmphasis?: string}).pricingHeadlineEmphasis),
+		pricingBody: str((d as {pricingBody?: string}).pricingBody),
+		pricingCards,
+		faqEyebrow: str((d as {faqEyebrow?: string}).faqEyebrow),
+		faqTitle: str((d as {faqTitle?: string}).faqTitle),
+		faqTitleEmphasis: str((d as {faqTitleEmphasis?: string}).faqTitleEmphasis),
+		faqSub: str((d as {faqSub?: string}).faqSub),
+		faqItems,
 	}
 }
 
 export function mapAboutPage(doc: Record<string, unknown> | null): AboutPageContent {
 	if (!doc) return DEFAULT_ABOUT_PAGE
-	const base = mapPageHero(doc, DEFAULT_ABOUT_PAGE, 'aboutHero')
+	const base = mapPageHero(doc, DEFAULT_ABOUT_PAGE)
 	const d = doc as AboutPageContent & {valuesHeroBackground?: unknown; whyBannerBackground?: unknown}
 
 	const timeline = ((d as {timeline?: TimelineItem[]}).timeline ?? [])
 		.filter((t) => t?.year && t?.title)
-		.map((t, i) => {
-			const fb = DEFAULT_ABOUT_PAGE.timeline[i] ?? DEFAULT_ABOUT_PAGE.timeline[0]
-			return {year: str(t.year, fb.year), title: str(t.title, fb.title), text: str(t.text, fb.text), highlight: Boolean(t.highlight)}
-		})
+		.map((t) => ({
+			year: str(t.year),
+			title: str(t.title),
+			text: str(t.text),
+			highlight: Boolean(t.highlight),
+		}))
 
 	const valueCards = ((d as {valueCards?: ValueCard[]}).valueCards ?? [])
 		.filter((v) => v?.title)
-		.map((v, i) => {
-			const fb = DEFAULT_ABOUT_PAGE.valueCards[i] ?? DEFAULT_ABOUT_PAGE.valueCards[0]
-			return {icon: str(v.icon, fb.icon), num: str(v.num, fb.num), title: str(v.title, fb.title), body: str(v.body, fb.body)}
-		})
+		.map((v) => ({
+			icon: str(v.icon),
+			num: str(v.num),
+			title: str(v.title),
+			body: str(v.body),
+		}))
 
 	const teamMembers = ((d as {teamMembers?: (TeamMember & {photo?: unknown})[]}).teamMembers ?? [])
 		.filter((m) => m?.name)
-		.map((m, i) => {
-			const fb = DEFAULT_ABOUT_PAGE.teamMembers[i] ?? DEFAULT_ABOUT_PAGE.teamMembers[0]
-			return {
-				name: str(m.name, fb.name),
-				role: str(m.role, fb.role),
-				bio: str(m.bio, fb.bio),
-				photoUrl: urlForImage(m.photo as never, 400) ?? fb.photoUrl,
-			}
-		})
+		.map((m) => ({
+			name: str(m.name),
+			role: str(m.role),
+			bio: str(m.bio),
+			photoUrl: urlForImage(m.photo as never, 400) ?? '',
+		}))
 
 	const whyRows = ((d as {whyRows?: (WhyRow & {image?: unknown})[]}).whyRows ?? [])
 		.filter((r) => r?.title)
-		.map((r, i) => {
-			const fb = DEFAULT_ABOUT_PAGE.whyRows[i] ?? DEFAULT_ABOUT_PAGE.whyRows[0]
-			return {
-				num: str(r.num, fb.num),
-				label: str(r.label, fb.label),
-				title: str(r.title, fb.title),
-				body: str(r.body, fb.body),
-				pills: (r.pills ?? fb.pills).filter(Boolean),
-				imageUrl: urlForImage(r.image as never, 900) ?? fb.imageUrl,
-				imageAlt: str(r.imageAlt, fb.imageAlt),
-			}
-		})
+		.map((r) => ({
+			num: str(r.num),
+			label: str(r.label),
+			title: str(r.title),
+			body: str(r.body),
+			pills: (r.pills ?? []).filter(Boolean),
+			imageUrl: urlForImage(r.image as never, 900) ?? '',
+			imageAlt: str(r.imageAlt),
+		}))
 
 	const certBadges = ((d as {certBadges?: CertBadge[]}).certBadges ?? [])
 		.filter((b) => b?.name)
-		.map((b, i) => {
-			const fb = DEFAULT_ABOUT_PAGE.certBadges[i] ?? DEFAULT_ABOUT_PAGE.certBadges[0]
-			return {icon: str(b.icon, fb.icon), name: str(b.name, fb.name)}
-		})
+		.map((b) => ({
+			icon: str(b.icon),
+			name: str(b.name),
+		}))
 
 	const guaranteeCards = ((d as {guaranteeCards?: GuaranteeCard[]}).guaranteeCards ?? [])
 		.filter((g) => g?.title)
-		.map((g, i) => {
-			const fb = DEFAULT_ABOUT_PAGE.guaranteeCards[i] ?? DEFAULT_ABOUT_PAGE.guaranteeCards[0]
-			return {icon: str(g.icon, fb.icon), title: str(g.title, fb.title), text: str(g.text, fb.text)}
-		})
+		.map((g) => ({
+			icon: str(g.icon),
+			title: str(g.title),
+			text: str(g.text),
+		}))
 
 	return {
 		...base,
@@ -797,53 +785,47 @@ export function mapAboutPage(doc: Record<string, unknown> | null): AboutPageCont
 		teamIsShowed: shown(d.teamIsShowed, DEFAULT_ABOUT_PAGE.teamIsShowed),
 		whyIsShowed: shown(d.whyIsShowed, DEFAULT_ABOUT_PAGE.whyIsShowed),
 		certIsShowed: shown(d.certIsShowed, DEFAULT_ABOUT_PAGE.certIsShowed),
-		valuesHeroBackgroundUrl: resolveBgUrl(urlForImage(d.valuesHeroBackground as never), 'aboutValues'),
-		whyBannerBackgroundUrl: resolveBgUrl(urlForImage(d.whyBannerBackground as never), 'aboutWhy'),
-		founderInitial: str(d.founderInitial, DEFAULT_ABOUT_PAGE.founderInitial),
-		founderName: str(d.founderName, DEFAULT_ABOUT_PAGE.founderName),
-		founderRole: str(d.founderRole, DEFAULT_ABOUT_PAGE.founderRole),
-		founderQuote: str(d.founderQuote, DEFAULT_ABOUT_PAGE.founderQuote),
-		founderStats: mapStats(d.founderStats as never, DEFAULT_ABOUT_PAGE.founderStats),
-		// Who We Are
-		whoEyebrow: str((d as {whoEyebrow?: string}).whoEyebrow, DEFAULT_ABOUT_PAGE.whoEyebrow),
-		whoHeadline: str((d as {whoHeadline?: string}).whoHeadline, DEFAULT_ABOUT_PAGE.whoHeadline),
-		whoHeadlineEmphasis: str((d as {whoHeadlineEmphasis?: string}).whoHeadlineEmphasis, DEFAULT_ABOUT_PAGE.whoHeadlineEmphasis),
-		whoLead: str((d as {whoLead?: string}).whoLead, DEFAULT_ABOUT_PAGE.whoLead),
-		whoBody: ((d as {whoBody?: string[]}).whoBody ?? []).filter(Boolean).length ? (d as {whoBody?: string[]}).whoBody!.filter(Boolean) : DEFAULT_ABOUT_PAGE.whoBody,
-		whoPills: ((d as {whoPills?: string[]}).whoPills ?? []).filter(Boolean).length ? (d as {whoPills?: string[]}).whoPills!.filter(Boolean) : DEFAULT_ABOUT_PAGE.whoPills,
-		whoCtaLabel: str((d as {whoCtaLabel?: string}).whoCtaLabel, DEFAULT_ABOUT_PAGE.whoCtaLabel),
-		whoCtaLink: str((d as {whoCtaLink?: string}).whoCtaLink, DEFAULT_ABOUT_PAGE.whoCtaLink),
-		// Story
-		storyEyebrow: str((d as {storyEyebrow?: string}).storyEyebrow, DEFAULT_ABOUT_PAGE.storyEyebrow),
-		storyHeadline: str((d as {storyHeadline?: string}).storyHeadline, DEFAULT_ABOUT_PAGE.storyHeadline),
-		storyHeadlineEmphasis: str((d as {storyHeadlineEmphasis?: string}).storyHeadlineEmphasis, DEFAULT_ABOUT_PAGE.storyHeadlineEmphasis),
-		storyLead: str((d as {storyLead?: string}).storyLead, DEFAULT_ABOUT_PAGE.storyLead),
-		timeline: timeline.length ? timeline : DEFAULT_ABOUT_PAGE.timeline,
-		// Values
-		valuesEyebrow: str((d as {valuesEyebrow?: string}).valuesEyebrow, DEFAULT_ABOUT_PAGE.valuesEyebrow),
-		valuesHeadline: str((d as {valuesHeadline?: string}).valuesHeadline, DEFAULT_ABOUT_PAGE.valuesHeadline),
-		valuesHeadlineEmphasis: str((d as {valuesHeadlineEmphasis?: string}).valuesHeadlineEmphasis, DEFAULT_ABOUT_PAGE.valuesHeadlineEmphasis),
-		valuesDescription: str((d as {valuesDescription?: string}).valuesDescription, DEFAULT_ABOUT_PAGE.valuesDescription),
-		valueCards: valueCards.length ? valueCards : DEFAULT_ABOUT_PAGE.valueCards,
-		// Team
-		teamEyebrow: str((d as {teamEyebrow?: string}).teamEyebrow, DEFAULT_ABOUT_PAGE.teamEyebrow),
-		teamHeadline: str((d as {teamHeadline?: string}).teamHeadline, DEFAULT_ABOUT_PAGE.teamHeadline),
-		teamHeadlineEmphasis: str((d as {teamHeadlineEmphasis?: string}).teamHeadlineEmphasis, DEFAULT_ABOUT_PAGE.teamHeadlineEmphasis),
-		teamDescription: str((d as {teamDescription?: string}).teamDescription, DEFAULT_ABOUT_PAGE.teamDescription),
-		teamMembers: teamMembers.length ? teamMembers : DEFAULT_ABOUT_PAGE.teamMembers,
-		// Why Us
-		whyEyebrow: str((d as {whyEyebrow?: string}).whyEyebrow, DEFAULT_ABOUT_PAGE.whyEyebrow),
-		whyBannerHeadline: str((d as {whyBannerHeadline?: string}).whyBannerHeadline, DEFAULT_ABOUT_PAGE.whyBannerHeadline),
-		whyBannerHeadlineEmphasis: str((d as {whyBannerHeadlineEmphasis?: string}).whyBannerHeadlineEmphasis, DEFAULT_ABOUT_PAGE.whyBannerHeadlineEmphasis),
-		whyBannerDescription: str((d as {whyBannerDescription?: string}).whyBannerDescription, DEFAULT_ABOUT_PAGE.whyBannerDescription),
-		whyRows: whyRows.length ? whyRows : DEFAULT_ABOUT_PAGE.whyRows,
-		// Certifications
-		certEyebrow: str((d as {certEyebrow?: string}).certEyebrow, DEFAULT_ABOUT_PAGE.certEyebrow),
-		certHeadline: str((d as {certHeadline?: string}).certHeadline, DEFAULT_ABOUT_PAGE.certHeadline),
-		certHeadlineEmphasis: str((d as {certHeadlineEmphasis?: string}).certHeadlineEmphasis, DEFAULT_ABOUT_PAGE.certHeadlineEmphasis),
-		certDescription: str((d as {certDescription?: string}).certDescription, DEFAULT_ABOUT_PAGE.certDescription),
-		certBadges: certBadges.length ? certBadges : DEFAULT_ABOUT_PAGE.certBadges,
-		guaranteeCards: guaranteeCards.length ? guaranteeCards : DEFAULT_ABOUT_PAGE.guaranteeCards,
+		valuesHeroBackgroundUrl: urlForImage(d.valuesHeroBackground as never) ?? '',
+		whyBannerBackgroundUrl: urlForImage(d.whyBannerBackground as never) ?? '',
+		founderInitial: str(d.founderInitial),
+		founderName: str(d.founderName),
+		founderRole: str(d.founderRole),
+		founderQuote: str(d.founderQuote),
+		founderStats: mapStats(d.founderStats as never),
+		whoEyebrow: str((d as {whoEyebrow?: string}).whoEyebrow),
+		whoHeadline: str((d as {whoHeadline?: string}).whoHeadline),
+		whoHeadlineEmphasis: str((d as {whoHeadlineEmphasis?: string}).whoHeadlineEmphasis),
+		whoLead: str((d as {whoLead?: string}).whoLead),
+		whoBody: ((d as {whoBody?: string[]}).whoBody ?? []).filter(Boolean),
+		whoPills: ((d as {whoPills?: string[]}).whoPills ?? []).filter(Boolean),
+		whoCtaLabel: str((d as {whoCtaLabel?: string}).whoCtaLabel),
+		whoCtaLink: str((d as {whoCtaLink?: string}).whoCtaLink),
+		storyEyebrow: str((d as {storyEyebrow?: string}).storyEyebrow),
+		storyHeadline: str((d as {storyHeadline?: string}).storyHeadline),
+		storyHeadlineEmphasis: str((d as {storyHeadlineEmphasis?: string}).storyHeadlineEmphasis),
+		storyLead: str((d as {storyLead?: string}).storyLead),
+		timeline,
+		valuesEyebrow: str((d as {valuesEyebrow?: string}).valuesEyebrow),
+		valuesHeadline: str((d as {valuesHeadline?: string}).valuesHeadline),
+		valuesHeadlineEmphasis: str((d as {valuesHeadlineEmphasis?: string}).valuesHeadlineEmphasis),
+		valuesDescription: str((d as {valuesDescription?: string}).valuesDescription),
+		valueCards,
+		teamEyebrow: str((d as {teamEyebrow?: string}).teamEyebrow),
+		teamHeadline: str((d as {teamHeadline?: string}).teamHeadline),
+		teamHeadlineEmphasis: str((d as {teamHeadlineEmphasis?: string}).teamHeadlineEmphasis),
+		teamDescription: str((d as {teamDescription?: string}).teamDescription),
+		teamMembers,
+		whyEyebrow: str((d as {whyEyebrow?: string}).whyEyebrow),
+		whyBannerHeadline: str((d as {whyBannerHeadline?: string}).whyBannerHeadline),
+		whyBannerHeadlineEmphasis: str((d as {whyBannerHeadlineEmphasis?: string}).whyBannerHeadlineEmphasis),
+		whyBannerDescription: str((d as {whyBannerDescription?: string}).whyBannerDescription),
+		whyRows,
+		certEyebrow: str((d as {certEyebrow?: string}).certEyebrow),
+		certHeadline: str((d as {certHeadline?: string}).certHeadline),
+		certHeadlineEmphasis: str((d as {certHeadlineEmphasis?: string}).certHeadlineEmphasis),
+		certDescription: str((d as {certDescription?: string}).certDescription),
+		certBadges,
+		guaranteeCards,
 	}
 }
 
@@ -851,7 +833,7 @@ export function mapReviewsPage(doc: Record<string, unknown> | null): ReviewsPage
 	if (!doc) return DEFAULT_REVIEWS_PAGE
 	const d = doc as ReviewsPageContent & {heroImage?: unknown}
 	return {
-		heroImageUrl: resolveBgUrl(urlForImage(d.heroImage as never), 'reviewsHero'),
+		heroImageUrl: urlForImage(d.heroImage as never) ?? '',
 	}
 }
 
@@ -859,15 +841,15 @@ export function mapContactsPage(doc: Record<string, unknown> | null): ContactsPa
 	if (!doc) return DEFAULT_CONTACTS_PAGE
 	const d = doc as ContactsPageContent & {heroImage?: unknown}
 	return {
-		eyebrow: str(d.eyebrow, DEFAULT_CONTACTS_PAGE.eyebrow),
-		titleBefore: str(d.titleBefore, DEFAULT_CONTACTS_PAGE.titleBefore),
-		titleEmphasis: str(d.titleEmphasis, DEFAULT_CONTACTS_PAGE.titleEmphasis),
-		description: str(d.description, DEFAULT_CONTACTS_PAGE.description),
-		heroImageUrl: resolveBgUrl(urlForImage(d.heroImage as never), 'contactsHero'),
-		formEyebrow: str(d.formEyebrow, DEFAULT_CONTACTS_PAGE.formEyebrow),
-		formTitleBefore: str(d.formTitleBefore, DEFAULT_CONTACTS_PAGE.formTitleBefore),
-		formTitleEmphasis: str(d.formTitleEmphasis, DEFAULT_CONTACTS_PAGE.formTitleEmphasis),
-		formSubtext: str(d.formSubtext, DEFAULT_CONTACTS_PAGE.formSubtext),
+		eyebrow: str(d.eyebrow),
+		titleBefore: str(d.titleBefore),
+		titleEmphasis: str(d.titleEmphasis),
+		description: str(d.description),
+		heroImageUrl: urlForImage(d.heroImage as never) ?? '',
+		formEyebrow: str(d.formEyebrow),
+		formTitleBefore: str(d.formTitleBefore),
+		formTitleEmphasis: str(d.formTitleEmphasis),
+		formSubtext: str(d.formSubtext),
 	}
 }
 
@@ -927,7 +909,7 @@ export function mapPageSeo(
 	return {
 		title: str(doc.title, fallback.title),
 		description: str(doc.description, fallback.description),
-		ogImageUrl: pageOgImageUrl ?? defaultOgImageUrl ?? fallback.ogImageUrl,
+		ogImageUrl: pageOgImageUrl ?? defaultOgImageUrl ?? null,
 		jsonLd: str(doc.jsonLd, fallback.jsonLd),
 	}
 }
@@ -998,8 +980,7 @@ export async function getTestimonialSlides() {
 
 export async function getBeforeAfterSlides() {
 	const docs = await safeFetch(BEFORE_AFTER_Q, [] as Record<string, unknown>[])
-	const mapped = mapBeforeAfter(docs)
-	return mapped.length ? mapped : DEFAULT_BEFORE_AFTER
+	return mapBeforeAfter(docs)
 }
 
 function bySortOrder(a: Record<string, unknown>, b: Record<string, unknown>) {
@@ -1040,8 +1021,7 @@ export async function getServicesPage() {
 
 export async function getServicesList(): Promise<ServiceDetail[]> {
 	const docs = await safeFetch(SERVICES_LIST_Q, [] as Record<string, unknown>[])
-	const mapped = mapServicesList(docs)
-	return mapped.length ? mapped : DEFAULT_SERVICES
+	return mapServicesList(docs)
 }
 
 export async function getPortfolioPage() {

@@ -16,54 +16,20 @@ interface Project {
   before: string
 }
 
-const DEFAULT_BANNER: HomeBeforeAfterBannerContent = {
-  eyebrow: 'Before & After',
-  headline: 'Real Results,',
-  headlineEmphasis: 'Real Spaces',
-  description:
-    'Every transformation starts with a vision. Drag the slider to see exactly how we turned each space from its original condition into a finished result our clients love.',
-  ctaLabel: 'View All Projects →',
-  heroBackgroundUrl:
-    'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1800&q=85',
-}
-
-const banner = computed(() => props.banner ?? DEFAULT_BANNER)
-const bannerBg = computed(() => `background-image: url(${banner.value.heroBackgroundUrl})`)
-
-const FALLBACK: Project[] = [
-  {
-    name: 'Kitchen Renovation',
-    loc: 'Fairfield, Victoria',
-    dur: '6 weeks',
-    year: '2024',
-    after:  'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1400&q=85',
-    before: 'https://images.unsplash.com/photo-1484101403633-562f891dc89a?w=1400&q=85',
-  },
-  {
-    name: 'Bathroom Remodel',
-    loc: 'Oak Bay, Victoria',
-    dur: '4 weeks',
-    year: '2024',
-    after:  'https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=1400&q=85',
-    before: 'https://images.unsplash.com/photo-1564540586988-aa4e53c3d799?w=1400&q=85',
-  },
-  {
-    name: 'Living Room',
-    loc: 'Saanich, BC',
-    dur: '3 weeks',
-    year: '2024',
-    after:  'https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=1400&q=85',
-    before: 'https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=1400&q=85',
-  },
-  {
-    name: 'Full Apartment',
-    loc: 'Langford, BC',
-    dur: '12 weeks',
-    year: '2025',
-    after:  'https://images.unsplash.com/photo-1615874959474-d609969a20ed?w=1400&q=85',
-    before: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1400&q=85',
-  },
-]
+const banner = computed(() => props.banner ?? {
+  isShowed: true,
+  eyebrow: '',
+  headline: '',
+  headlineEmphasis: '',
+  description: '',
+  ctaLabel: '',
+  heroBackgroundUrl: '',
+})
+const bannerBg = computed(() =>
+  banner.value.heroBackgroundUrl
+    ? `background-image: url(${banner.value.heroBackgroundUrl})`
+    : '',
+)
 
 const projects = computed<Project[]>(() => {
   const fromSanity = props.items?.filter((p) => p.name && p.after && p.before) ?? []
@@ -77,7 +43,7 @@ const projects = computed<Project[]>(() => {
       before: p.before,
     }))
   }
-  return FALLBACK
+  return []
 })
 
 const activeIdx  = ref(0)
@@ -126,11 +92,11 @@ function startDrag(e: MouseEvent | TouchEvent) {
 </script>
 
 <template>
-  <section id="beforeafter">
+  <section id="beforeafter" :style="bannerBg">
     <div class="ba-grid">
 
       <!-- LEFT col (2fr): Drag slider -->
-      <div class="ba-slider-col">
+      <div v-if="projects.length" class="ba-slider-col">
         <div
           class="ba-slider-wrap"
           @mousedown="startDrag"
@@ -180,34 +146,36 @@ function startDrag(e: MouseEvent | TouchEvent) {
           <p class="ba-desc">{{ banner.description }}</p>
         </div>
 
-        <div class="ba-tabs">
-          <button
-            v-for="(p, i) in projects"
-            :key="p.name"
-            class="ba-tab"
-            :class="{ active: activeIdx === i }"
-            @click="loadProject(i)"
-          >{{ p.name }}</button>
-        </div>
+        <template v-if="projects.length">
+          <div class="ba-tabs">
+            <button
+              v-for="(p, i) in projects"
+              :key="p.name"
+              class="ba-tab"
+              :class="{ active: activeIdx === i }"
+              @click="loadProject(i)"
+            >{{ p.name }}</button>
+          </div>
 
-        <div class="ba-info">
-          <div class="ba-info-cell">
-            <div class="ba-info-label">Project</div>
-            <div class="ba-info-value">{{ active().name }}</div>
+          <div class="ba-info">
+            <div class="ba-info-cell">
+              <div class="ba-info-label">Project</div>
+              <div class="ba-info-value">{{ active().name }}</div>
+            </div>
+            <div class="ba-info-cell">
+              <div class="ba-info-label">Location</div>
+              <div class="ba-info-value">{{ active().loc }}</div>
+            </div>
+            <div class="ba-info-cell">
+              <div class="ba-info-label">Duration</div>
+              <div class="ba-info-value">{{ active().dur }}</div>
+            </div>
+            <div class="ba-info-cell">
+              <div class="ba-info-label">Completed</div>
+              <div class="ba-info-value">{{ active().year }}</div>
+            </div>
           </div>
-          <div class="ba-info-cell">
-            <div class="ba-info-label">Location</div>
-            <div class="ba-info-value">{{ active().loc }}</div>
-          </div>
-          <div class="ba-info-cell">
-            <div class="ba-info-label">Duration</div>
-            <div class="ba-info-value">{{ active().dur }}</div>
-          </div>
-          <div class="ba-info-cell">
-            <div class="ba-info-label">Completed</div>
-            <div class="ba-info-value">{{ active().year }}</div>
-          </div>
-        </div>
+        </template>
 
         <a href="/portfolio/" class="btn-outline">{{ banner.ctaLabel }}</a>
       </div>

@@ -14,83 +14,21 @@ interface Testimonial {
   rating: number
 }
 
-const FALLBACK_TESTIMONIALS: Testimonial[] = [
-  {
-    name: 'Sarah M.',
-    meta: 'Oak Bay, Victoria · March 2025',
-    initial: 'S',
-    text: '"From the very first consultation, we felt heard and understood. The team delivered exactly what they promised — on time, within budget, and with quality that genuinely exceeded our expectations. Our kitchen feels like a completely different home."',
-    rating: 5,
-  },
-  {
-    name: 'James & Linda K.',
-    meta: 'Saanich, BC · January 2025',
-    initial: 'J',
-    text: '"We\'ve worked with renovators before who disappeared after signing the contract. Formo was completely different — constant updates, immediate responses, and a finished result we\'re incredibly proud of. Would recommend to anyone."',
-    rating: 5,
-  },
-  {
-    name: 'Rachel T.',
-    meta: 'Langford, BC · February 2025',
-    initial: 'R',
-    text: '"The quality of finishing work is on an entirely different level. I\'ve seen many renovated homes — none matched the level of detail and care that went into ours. The attention to small details made all the difference. Worth every penny."',
-    rating: 5,
-  },
-  {
-    name: 'David & Anna P.',
-    meta: 'Colwood, BC · November 2024',
-    initial: 'D',
-    text: '"Honest pricing, no hidden surprises, and they actually stuck to the timeline. I was skeptical at first — renovations are usually chaotic — but this team runs a tight, professional operation. The bathroom looks absolutely stunning."',
-    rating: 5,
-  },
-  {
-    name: 'Michael R.',
-    meta: 'Esquimalt, BC · December 2024',
-    initial: 'M',
-    text: '"We hired Formo for a full living room and hallway renovation. Communication was exceptional throughout — we always knew what stage the project was at. The result speaks for itself: clean, elegant, and exactly what we envisioned."',
-    rating: 5,
-  },
-  {
-    name: 'Catherine L.',
-    meta: 'Victoria, BC · October 2024',
-    initial: 'C',
-    text: '"Professional from start to finish. The estimate was detailed and accurate, the site was kept clean daily, and the project wrapped exactly on schedule. I\'ve already referred two neighbours. Absolutely the best renovation experience I\'ve had."',
-    rating: 5,
-  },
-  {
-    name: 'Natalie G.',
-    meta: 'James Bay, Victoria · September 2024',
-    initial: 'N',
-    text: '"I cannot say enough good things about Formo. They guided me through the entire process, helped me make material choices, and never once made me feel overwhelmed. The kitchen renovation exceeded every expectation I had."',
-    rating: 5,
-  },
-  {
-    name: 'Tom & Julie W.',
-    meta: 'Fairfield, Victoria · August 2024',
-    initial: 'T',
-    text: '"Formo transformed our dated main floor into something we\'re genuinely proud to show off. The crew was respectful, clean, and never once left us wondering what was happening. Transparent, skilled, and truly professional."',
-    rating: 5,
-  },
-]
-
 const testimonials = computed<Testimonial[]>(() => {
   const fromSanity = props.items?.filter((t) => t.name && t.text) ?? []
-  if (fromSanity.length > 0) {
-    return fromSanity.map((t) => ({
-      name: t.name,
-      meta: t.meta,
-      text: t.text,
-      initial: t.initial,
-      rating: t.rating,
-    }))
-  }
-  return FALLBACK_TESTIMONIALS
+  return fromSanity.map((t) => ({
+    name: t.name,
+    meta: t.meta,
+    text: t.text,
+    initial: t.initial,
+    rating: t.rating,
+  }))
 })
 
 const VISIBLE = 3
 const current = ref(0)
 
-const maxIndex = computed(() => testimonials.value.length - VISIBLE)
+const maxIndex = computed(() => Math.max(0, testimonials.value.length - VISIBLE))
 
 const trackStyle = computed(() => {
   const cardWidth  = `calc((100% - 32px) / ${VISIBLE})`
@@ -157,7 +95,7 @@ function goTo(i: number) {
       </div>
     </div>
 
-    <div class="testi-dots">
+    <div v-if="testimonials.length > VISIBLE" class="testi-dots">
       <span
         v-for="i in testimonials.length - VISIBLE + 1"
         :key="i"

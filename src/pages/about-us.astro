@@ -207,7 +207,9 @@ if (pageMeta.jsonLd) {
     <div class="team-grid">
       {page.teamMembers.map((member) => (
         <div class="team-card">
-          <img width="309" height="412" class="team-photo" src={member.photoUrl} alt={member.name} loading="lazy" />
+          {member.photoUrl && (
+            <img width="309" height="412" class="team-photo" src={member.photoUrl} alt={member.name} loading="lazy" />
+          )}
           <div class="team-card-body">
             <div class="team-card-name">{member.name}</div>
             <div class="team-card-role">{member.role}</div>
@@ -234,7 +236,9 @@ if (pageMeta.jsonLd) {
       {page.whyRows.map((row, i) => (
         <div class={`why-row${i % 2 !== 0 ? ' alt' : ''}`}>
           <div class="why-row-img">
-            <img width="720" height="426" src={row.imageUrl} alt={row.imageAlt} loading="lazy" />
+            {row.imageUrl && (
+              <img width="720" height="426" src={row.imageUrl} alt={row.imageAlt} loading="lazy" />
+            )}
           </div>
           <div class="why-row-text">
             <div class="why-row-num">{String(i + 1).padStart(2, '0')}</div>

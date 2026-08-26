@@ -9,8 +9,6 @@ export type HeroContent = {
 	isShowed: boolean
 	locationLabel: string
 	titleLine1: string
-	titleLine2: string
-	titleSub: string
 	description: string
 	primaryCtaLabel: string
 	secondaryCtaLabel: string

@@ -11,42 +11,45 @@ const bgStyleAttr = bgStyle(hero.backgroundImageUrl)
 ---
 
 <section id="hero">
-  <div
-    class="hero-bg-img"
-    style={bgStyleAttr}
-    role="img"
-    aria-label={hero.backgroundImageAlt ?? undefined}
-  ></div>
+  {bgStyleAttr && (
+    <div
+      class="hero-bg-img"
+      style={bgStyleAttr}
+      role="img"
+      aria-label={hero.backgroundImageAlt || undefined}
+    ></div>
+  )}
 
   <div class="hero-left">
-    <div class="hero-location">
-      <span class="hero-location-dot"></span>
-      {hero.locationLabel}
-    </div>
+    {hero.locationLabel && (
+      <div class="hero-location">
+        <span class="hero-location-dot"></span>
+        {hero.locationLabel}
+      </div>
+    )}
 
-    <h1 class="hero-h1">
-      {hero.titleLine1}<br />{hero.titleLine2}
-    </h1>
-    <div class="hero-h1-sub">{hero.titleSub}</div>
+    {hero.titleLine1 && <h1 class="hero-h1">{hero.titleLine1}</h1>}
 
-    <hr class="hero-line" />
+    {(hero.titleLine1 || hero.description) && <hr class="hero-line" />}
 
-    <p class="hero-desc">{hero.description}</p>
+    {hero.description && <p class="hero-desc">{hero.description}</p>}
 
-    <div class="hero-actions">
-      <button
-        class="btn-outline"
-        onclick="document.getElementById('portfolio').scrollIntoView({behavior:'smooth'})"
-      >
-        {hero.secondaryCtaLabel}
-      </button>
-    </div>
+    {hero.secondaryCtaLabel && (
+      <div class="hero-actions">
+        <button
+          class="btn-outline"
+          onclick="document.getElementById('portfolio').scrollIntoView({behavior:'smooth'})"
+        >
+          {hero.secondaryCtaLabel}
+        </button>
+      </div>
+    )}
   </div>
 
   <div class="hero-right">
     <div class="hero-form-overlay">
-      <div class="hfo-title">{hero.formTitle}</div>
-      <div class="hfo-sub">{hero.formSubtext}</div>
+      {hero.formTitle && <div class="hfo-title">{hero.formTitle}</div>}
+      {hero.formSubtext && <div class="hfo-sub">{hero.formSubtext}</div>}
       <form id="hero-form" class="hfo-fields" novalidate>
         <input type="hidden" name="formType" value="request-call" />
         <div class="hfo-fg" data-field="name">
@@ -63,7 +66,7 @@ const bgStyleAttr = bgStyle(hero.backgroundImageUrl)
       <div class="hfo-success" id="hf-success" style="display:none;text-align:center;padding:12px 0;color:#c8a96e;font-weight:600;">
         ✓ Sent! We'll be in touch soon.
       </div>
-      <div class="hfo-note">{hero.formNote}</div>
+      {hero.formNote && <div class="hfo-note">{hero.formNote}</div>}
     </div>
   </div>
 </section>

@@ -13,7 +13,9 @@ const waHref = `https://wa.me/${site.whatsapp.replace(/\D/g, '')}`
 <section id="contact">
   <div class="contact-top">
     <div class="contact-photo-side">
-      <img width="640" height="800" src={content.photoUrl} alt={content.photoAlt} loading="lazy" />
+      {content.photoUrl && (
+        <img width="640" height="800" src={content.photoUrl} alt={content.photoAlt} loading="lazy" />
+      )}
       <div class="contact-photo-overlay"></div>
       <div class="contact-photo-content">
         <div class="contact-eyebrow">{content.eyebrow}</div>
