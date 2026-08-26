@@ -64,7 +64,7 @@ export const DEFAULT_PAGE_SEO: Record<SiteMetadataPageKey, PageSeo> = {
 		jsonLd: '',
 	},
 	aboutUs: {
-		title: 'About Us — Formo Renovations',
+		title: 'About Formo Renovations — Our Story, Team & Values',
 		description:
 			'Learn the story behind Formo Renovations — our team, values, and commitment to quality craftsmanship across Victoria and Vancouver Island, BC since 2016.',
 		ogImageUrl: null,
@@ -78,7 +78,7 @@ export const DEFAULT_PAGE_SEO: Record<SiteMetadataPageKey, PageSeo> = {
 		jsonLd: '',
 	},
 	portfolio: {
-		title: 'Portfolio — Formo Renovations',
+		title: 'Renovation Portfolio — Formo Projects in Victoria, BC',
 		description:
 			'Browse our completed renovation projects across Victoria and Vancouver Island, BC — kitchens, bathrooms, living rooms, and full apartment transformations.',
 		ogImageUrl: null,

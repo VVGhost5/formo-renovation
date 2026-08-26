@@ -34,7 +34,7 @@ export default defineType({
     pageSeoField(
       'aboutUs',
       'About Us (/about-us)',
-      'About Us — Formo Renovations',
+      'About Formo Renovations — Our Story, Team & Values',
       'Learn the story behind Formo Renovations — our team, values, and commitment to quality craftsmanship across Victoria and Vancouver Island, BC since 2016.',
     ),
     pageSeoField(
@@ -46,7 +46,7 @@ export default defineType({
     pageSeoField(
       'portfolio',
       'Portfolio (/portfolio)',
-      'Portfolio — Formo Renovations',
+      'Renovation Portfolio — Formo Projects in Victoria, BC',
       'Browse our completed renovation projects across Victoria and Vancouver Island, BC — kitchens, bathrooms, living rooms, and full apartment transformations.',
     ),
     pageSeoField(
