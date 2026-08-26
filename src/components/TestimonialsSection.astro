@@ -5,15 +5,13 @@ import TestimonialsSlider from './vue/TestimonialsSlider.vue'
 interface Props {
 	testimonials: TestimonialSlide[]
 	backgroundUrl?: string
-	backgroundAlt?: string | null
 }
 
-const {testimonials, backgroundUrl = '', backgroundAlt = null} = Astro.props
+const {testimonials, backgroundUrl = ''} = Astro.props
 ---
 
 <TestimonialsSlider
   client:load
   items={testimonials}
   backgroundUrl={backgroundUrl}
-  backgroundAlt={backgroundAlt}
 />

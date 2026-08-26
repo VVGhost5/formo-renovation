@@ -1,12 +1,32 @@
 #testimonials {
+  position: relative;
+  overflow: hidden;
   background: var(--numbers-bg);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
   padding: 80px var(--px);
 
-  &.has-bg {
-    background-color: var(--numbers-bg);
+  > *:not(.testi-bg-img) {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+.testi-bg-img {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      105deg,
+      rgba(202, 186, 174, 0.92) 0%,
+      rgba(202, 186, 174, 0.88) 45%,
+      rgba(202, 186, 174, 0.82) 100%
+    );
   }
 }
 

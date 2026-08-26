@@ -5,7 +5,6 @@ import type { TestimonialSlide } from '../../utils/sanity'
 const props = defineProps<{
   items?: TestimonialSlide[]
   backgroundUrl?: string
-  backgroundAlt?: string | null
 }>()
 
 interface Testimonial {
@@ -27,7 +26,7 @@ const testimonials = computed<Testimonial[]>(() => {
   }))
 })
 
-const sectionStyle = computed(() =>
+const bgStyle = computed(() =>
   props.backgroundUrl?.trim()
     ? `background-image: url(${props.backgroundUrl.trim()})`
     : '',
@@ -58,12 +57,14 @@ function goTo(i: number) {
 </script>
 
 <template>
-  <section
-    id="testimonials"
-    :class="{ 'has-bg': Boolean(backgroundUrl) }"
-    :style="sectionStyle"
-    :aria-label="backgroundAlt || undefined"
-  >
+  <section id="testimonials">
+    <div
+      v-if="bgStyle"
+      class="testi-bg-img"
+      :style="bgStyle"
+      aria-hidden="true"
+    ></div>
+
     <div class="testi-head">
       <div class="testi-head-left">
         <div class="testi-eyebrow">Client Testimonials</div>
