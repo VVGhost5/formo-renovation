@@ -18,7 +18,6 @@ const getRobotsTxt = (sitemapURL: URL) => {
 	return `User-agent: *
 Content-Signal: search=yes,ai-input=yes,ai-train=no,use=reference
 Allow: /
-Disallow: /studio
 
 ${aiBotRules}
 
