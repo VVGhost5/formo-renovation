@@ -70,7 +70,7 @@ function goTo(i: number) {
         <div class="testi-eyebrow">Client Testimonials</div>
         <h2 class="testi-headline">What Our Clients <em>Say</em></h2>
       </div>
-      <div class="testi-head-right">
+      <div v-if="testimonials.length > VISIBLE" class="testi-head-right">
         <button
           class="testi-arrow"
           :class="{ disabled: current === 0 }"
@@ -86,9 +86,9 @@ function goTo(i: number) {
       </div>
     </div>
 
-    <div class="testi-slider-wrap">
+    <div v-if="testimonials.length" class="testi-slider-wrap">
       <div class="testi-track" :style="trackStyle">
-        <div v-for="t in testimonials" :key="`${t.name}-${t.meta}`" class="testi-card">
+        <div v-for="t in testimonials" :key="`${t.name}-${t.meta}-${t.text.slice(0, 24)}`" class="testi-card">
           <div class="testi-stars">
             <span
               v-for="i in 5"
@@ -102,7 +102,7 @@ function goTo(i: number) {
             <div class="testi-avatar">{{ t.initial }}</div>
             <div class="testi-author-info">
               <div class="testi-name">{{ t.name }}</div>
-              <div class="testi-meta">{{ t.meta }}</div>
+              <div v-if="t.meta" class="testi-meta">{{ t.meta }}</div>
             </div>
           </div>
         </div>
@@ -120,7 +120,7 @@ function goTo(i: number) {
     </div>
 
     <div class="testi-cta">
-      <a href="/reviews/" class="btn-dark">Read All Reviews →</a>
+      <a href="/reviews/" class="btn-outline-light">Read All Reviews →</a>
     </div>
   </section>
 </template>

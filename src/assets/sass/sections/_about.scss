@@ -4,26 +4,14 @@
 .ba-eyebrow,
 .about-eyebrow,
 .pricing-eyebrow,
-.contact-eyebrow {
+.contact-eyebrow,
+.testi-eyebrow {
   font-family: var(--font);
   width: max-content;
   font-size: 1rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
   color: #fff;
   background: rgba(255,255,255,0.13);
   border: 1px solid rgba(255,255,255,0.2);
-  padding: 7px 16px;
-  display: inline-block;
-  border-radius: var(--r-pill);
-  margin-bottom: 16px;
-}
-
-// Unified eyebrow — light-bg variant
-.testi-eyebrow {
-  font-family: var(--font);
-  font-size: 1rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
-  color: var(--gold);
-  background: rgba(87,53,16,0.1);
-  border: 1px solid rgba(87,53,16,0.22);
   padding: 7px 16px;
   display: inline-block;
   border-radius: var(--r-pill);

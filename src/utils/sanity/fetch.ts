@@ -537,6 +537,19 @@ export function mapTestimonial(doc: {
 	}
 }
 
+export function mapReviewToTestimonial(review: Review): TestimonialSlide | null {
+	if (!review.name || !review.comment) return null
+	const name = review.name.trim()
+	const meta = [review.location, review.service].map((v) => v?.trim()).filter(Boolean).join(' · ')
+	return {
+		name,
+		meta,
+		text: review.comment.trim(),
+		initial: name.charAt(0).toUpperCase(),
+		rating: Math.min(5, Math.max(1, Math.round(review.rating ?? 5))),
+	}
+}
+
 export function mapBeforeAfter(docs: Record<string, unknown>[]): BeforeAfterSlide[] {
 	return docs
 		.map((doc) => {
@@ -1090,7 +1103,9 @@ export async function getHomePageContent(): Promise<HomePageContent> {
 		getHomeProcess(),
 		getHomePricing(),
 		getHomeContact(),
-		getTestimonialSlides(),
+		getReviews().then((reviews) =>
+			reviews.map(mapReviewToTestimonial).filter((t): t is TestimonialSlide => Boolean(t)),
+		),
 		getBeforeAfterSlides(),
 		getHomeBeforeAfterBanner(),
 		getSiteSettings(),
