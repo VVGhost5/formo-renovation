@@ -70,7 +70,9 @@ if (pageMeta.jsonLd) {
         <p class="port-hero-desc">{page.description}</p>
 
         <div class="port-hero-actions">
-          <a href={page.secondaryCtaLink} class="btn-outline">{page.secondaryCtaLabel}</a>
+          {page.secondaryCtaLabel && (
+            <a href={page.secondaryCtaLink || '#'} class="btn-outline">{page.secondaryCtaLabel}</a>
+          )}
         </div>
       </div>
     </div>

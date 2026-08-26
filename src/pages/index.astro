@@ -199,7 +199,14 @@ if (pageMeta.jsonLd) {
   {home.process.isShowed && <SectionProcess content={home.process} />}
   {home.pricing.isShowed && <SectionPricing content={home.pricing} />}
   {home.beforeAfterBanner.isShowed && <BeforeAfterSlider client:visible items={home.beforeAfter} banner={home.beforeAfterBanner} />}
-  {home.site.testimonialsIsShowed && <TestimonialsSlider client:visible items={home.testimonials} />}
+  {home.site.testimonialsIsShowed && (
+    <TestimonialsSlider
+      client:visible
+      items={home.testimonials}
+      backgroundUrl={home.site.testimonialsBackgroundUrl}
+      backgroundAlt={home.site.testimonialsBackgroundAlt}
+    />
+  )}
   {home.contact.isShowed && <SectionContact content={home.contact} site={home.site} />}
   <TheFooter site={home.site} />
 </Layout>

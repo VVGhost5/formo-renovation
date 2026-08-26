@@ -29,6 +29,8 @@ export type TestimonialSlide = {
 
 export type SiteSettingsContent = {
 	testimonialsIsShowed: boolean
+	testimonialsBackgroundUrl: string
+	testimonialsBackgroundAlt: string | null
 	footerDescription: string
 	phone: string
 	phoneHours: string

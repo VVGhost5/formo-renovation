@@ -74,6 +74,7 @@ const HERO_Q = defineQuery(`coalesce(*[_id == "hero"][0], *[_type == "hero"][0])
 
 const SITE_Q = defineQuery(`*[_id == "siteSettings"][0]{
   "testimonialsIsShowed": coalesce(testimonialsIsShowed, true),
+  testimonialsBackground{ asset, alt },
   footerDescription, phone, phoneHours, officeWeekdayHours, email, emailNote, notificationEmail,
   whatsapp, whatsappNote, serviceArea, serviceAreaNote,
   instagramUrl, facebookUrl, houzzUrl, homestarsUrl
@@ -327,9 +328,12 @@ export function mapHero(doc: Record<string, unknown> | null): HeroContent {
 
 export function mapSiteSettings(doc: Record<string, unknown> | null): SiteSettingsContent {
 	if (!doc) return DEFAULT_SITE_SETTINGS
-	const d = doc as SiteSettingsContent
+	const d = doc as SiteSettingsContent & {testimonialsBackground?: {alt?: string}}
+	const testiAlt = str((d.testimonialsBackground as {alt?: string} | undefined)?.alt)
 	return {
 		testimonialsIsShowed: shown((d as {testimonialsIsShowed?: boolean}).testimonialsIsShowed, DEFAULT_SITE_SETTINGS.testimonialsIsShowed),
+		testimonialsBackgroundUrl: urlForImage(d.testimonialsBackground as never, 1920) ?? '',
+		testimonialsBackgroundAlt: testiAlt || null,
 		footerDescription: str(d.footerDescription),
 		phone: str(d.phone),
 		phoneHours: str(d.phoneHours),

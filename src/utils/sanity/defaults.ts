@@ -36,6 +36,8 @@ export const DEFAULT_HERO: HeroContent = {
 
 export const DEFAULT_SITE_SETTINGS: SiteSettingsContent = {
 	testimonialsIsShowed: true,
+	testimonialsBackgroundUrl: '',
+	testimonialsBackgroundAlt: null,
 	footerDescription: '',
 	phone: '',
 	phoneHours: '',

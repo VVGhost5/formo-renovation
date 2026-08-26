@@ -4,6 +4,8 @@ import type { TestimonialSlide } from '../../utils/sanity'
 
 const props = defineProps<{
   items?: TestimonialSlide[]
+  backgroundUrl?: string
+  backgroundAlt?: string | null
 }>()
 
 interface Testimonial {
@@ -24,6 +26,12 @@ const testimonials = computed<Testimonial[]>(() => {
     rating: t.rating,
   }))
 })
+
+const sectionStyle = computed(() =>
+  props.backgroundUrl?.trim()
+    ? `background-image: url(${props.backgroundUrl.trim()})`
+    : '',
+)
 
 const VISIBLE = 3
 const current = ref(0)
@@ -50,7 +58,12 @@ function goTo(i: number) {
 </script>
 
 <template>
-  <section id="testimonials">
+  <section
+    id="testimonials"
+    :class="{ 'has-bg': Boolean(backgroundUrl) }"
+    :style="sectionStyle"
+    :aria-label="backgroundAlt || undefined"
+  >
     <div class="testi-head">
       <div class="testi-head-left">
         <div class="testi-eyebrow">Client Testimonials</div>

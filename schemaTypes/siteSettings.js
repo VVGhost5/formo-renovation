@@ -55,6 +55,20 @@ export default defineType({
       title: 'Homepage testimonials — is showed',
       description: 'Show the testimonials slider on the homepage.',
     }),
+    defineField({
+      name: 'testimonialsBackground',
+      title: 'Homepage testimonials — background image',
+      type: 'image',
+      options: {hotspot: true},
+      description: 'Optional background for the homepage testimonials section.',
+      fields: [
+        defineField({
+          name: 'alt',
+          type: 'string',
+          title: 'Alternative text',
+        }),
+      ],
+    }),
   ],
   preview: {
     prepare() {

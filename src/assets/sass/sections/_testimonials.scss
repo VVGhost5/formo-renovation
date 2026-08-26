@@ -1,6 +1,13 @@
 #testimonials {
   background: var(--numbers-bg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   padding: 80px var(--px);
+
+  &.has-bg {
+    background-color: var(--numbers-bg);
+  }
 }
 
 .testi-head {
