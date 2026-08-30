@@ -2,11 +2,13 @@
 import Layout from '../layouts/Layout.astro'
 import TheNav from '../components/vue/TheNav.vue'
 import TheFooter from '../components/TheFooter.astro'
-import {DEFAULT_SITE_SETTINGS, getSiteSettings} from '../utils/sanity'
+import {DEFAULT_SITE_SETTINGS, DEFAULT_SERVICES, getSiteSettings, getServicesList} from '../utils/sanity'
 
 let site = DEFAULT_SITE_SETTINGS
+let services = DEFAULT_SERVICES
+
 try {
-	site = await getSiteSettings()
+	;[site, services] = await Promise.all([getSiteSettings(), getServicesList()])
 } catch (err) {
 	console.warn('[sanity] Sitemap site settings fallback.', err)
 }
@@ -24,15 +26,12 @@ const sections = [
 		],
 	},
 	{
-		title: 'Services (jump to)',
-		items: [
-			{href: '/services/#svc-bathroom',  name: 'Bathroom Renovation', desc: 'Full bathroom remodels and finishes'},
-			{href: '/services/#svc-kitchen',   name: 'Kitchen Renovation',  desc: 'Cabinets, counters and layout work'},
-			{href: '/services/#svc-living',    name: 'Living & Bedroom',    desc: 'Open plans, built-ins and finishes'},
-			{href: '/services/#svc-full',      name: 'Full Home Renovation', desc: 'Turnkey, end-to-end projects'},
-			{href: '/services/#svc-flooring',  name: 'Flooring',            desc: 'Hardwood, LVP and tile'},
-			{href: '/services/#svc-finishing', name: 'Interior Finishing',  desc: 'Painting, trim and moulding'},
-		],
+		title: 'Services',
+		items: services.map((svc) => ({
+			href: `/services/${svc.pageSlug}/`,
+			name: svc.quickName || svc.title,
+			desc: svc.quickSub || svc.lead,
+		})),
 	},
 ]
 ---

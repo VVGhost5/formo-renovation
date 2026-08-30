@@ -2,7 +2,8 @@
 import {sanityClient} from 'sanity:client'
 import {defineQuery} from 'groq'
 import {urlForImage} from './image'
-import {categoryLabel, normalizeCategories} from './categories'
+import {categoryLabel, normalizeCategories, projectMatchesCategory, isPortfolioCategory} from './categories'
+import {servicePageSlug, DEFAULT_SERVICE_PORTFOLIO_CATEGORIES} from './serviceSlug'
 import {
 	DEFAULT_ABOUT_PAGE,
 	DEFAULT_CONTACTS_PAGE,
@@ -17,6 +18,7 @@ import {
 	DEFAULT_HOME_PROCESS,
 	DEFAULT_HOME_SERVICES,
 	DEFAULT_PORTFOLIO_PAGE,
+	DEFAULT_SERVICES,
 	DEFAULT_SERVICES_PAGE,
 	DEFAULT_SITE_SETTINGS,
 	DEFAULT_PAGE_SEO,
@@ -48,6 +50,7 @@ import type {
 	Review,
 	ReviewsPageContent,
 	ServiceDetail,
+	ServicePageContent,
 	ServiceProcessStep,
 	ServicesPageContent,
 	SiteMetadataPageKey,
@@ -286,11 +289,44 @@ const REVIEWS_Q = defineQuery(`*[_type == "review" && approved == true] | order(
 }`)
 
 const SERVICES_LIST_Q = defineQuery(`*[_type == "service"] | order(${SORT_ORDER} asc, _createdAt asc){
-  "id": slug.current, num, icon, stripName, quickName, quickSub,
+  "id": slug.current,
+  "pageSlug": pageSlug.current,
+  num, icon, stripName, quickName, quickSub,
   eyebrow, title, lead,
   includes,
   meta[]{ key, val },
   image{ asset, alt }, imageAlt
+}`)
+
+const SERVICE_PAGE_FIELDS = `
+  "id": slug.current,
+  "pageSlug": pageSlug.current,
+  num, icon, stripName, quickName, quickSub,
+  eyebrow, title, lead,
+  includes,
+  meta[]{ key, val },
+  image{ asset, alt }, imageAlt,
+  "heroIsShowed": coalesce(heroIsShowed, true),
+  heroLocationLabel, heroTitleBefore, heroTitleEmphasis, heroDescription,
+  heroPrimaryCtaLabel, heroPrimaryCtaLink, heroSecondaryCtaLabel, heroSecondaryCtaLink,
+  heroImage{ asset, alt },
+  "detailIsShowed": coalesce(detailIsShowed, true),
+  "portfolioIsShowed": coalesce(portfolioIsShowed, true),
+  portfolioEyebrow, portfolioTitle, portfolioTitleEmphasis, portfolioDescription,
+  portfolioCategories,
+  "faqIsShowed": coalesce(faqIsShowed, false),
+  faqEyebrow, faqTitle, faqTitleEmphasis, faqSub,
+  faqItems[]{ question, answer },
+  pageSeo{ title, description, ogImage{ asset, alt }, jsonLd }
+`
+
+const SERVICE_BY_PAGE_SLUG_Q = defineQuery(`*[_type == "service" && (
+  pageSlug.current == $slug ||
+  (!defined(pageSlug.current) && slug.current == $fallbackId)
+)][0]{ ${SERVICE_PAGE_FIELDS} }`)
+
+const ALL_SERVICE_PAGES_Q = defineQuery(`*[_type == "service"] | order(${SORT_ORDER} asc, _createdAt asc){
+  ${SERVICE_PAGE_FIELDS}
 }`)
 
 const PAGE_SEO_FIELDS = `title, description, ogImage{ asset, alt }, jsonLd`
@@ -875,6 +911,7 @@ export function mapServicesList(docs: Record<string, unknown>[]): ServiceDetail[
 		.map((doc) => {
 			const d = doc as {
 				id?: string
+				pageSlug?: string
 				num?: string
 				icon?: string
 				stripName?: string
@@ -891,6 +928,7 @@ export function mapServicesList(docs: Record<string, unknown>[]): ServiceDetail[
 			if (!d.id || !d.title) return null
 			return {
 				id: str(d.id),
+				pageSlug: servicePageSlug(str(d.id), d.pageSlug),
 				num: str(d.num),
 				icon: str(d.icon),
 				stripName: str(d.stripName, d.eyebrow ?? d.title ?? ''),
@@ -908,6 +946,112 @@ export function mapServicesList(docs: Record<string, unknown>[]): ServiceDetail[
 			}
 		})
 		.filter((s): s is ServiceDetail => Boolean(s))
+}
+
+function mapServicePortfolioCategories(
+	serviceId: string,
+	raw: unknown,
+): ServicePageContent['portfolioCategories'] {
+	const fromCms = normalizeCategories(raw)
+	if (fromCms.length) return fromCms
+	const defaults = DEFAULT_SERVICE_PORTFOLIO_CATEGORIES[serviceId] ?? []
+	return defaults.filter(isPortfolioCategory)
+}
+
+export function mapServicePage(
+	doc: Record<string, unknown> | null,
+	fallbackSeo: PageSeo,
+	defaultOgImageUrl: string | null,
+): ServicePageContent | null {
+	if (!doc) return null
+	const base = mapServicesList([doc])[0]
+	if (!base) return null
+
+	const d = doc as {
+		heroIsShowed?: boolean
+		heroLocationLabel?: string
+		heroTitleBefore?: string
+		heroTitleEmphasis?: string
+		heroDescription?: string
+		heroPrimaryCtaLabel?: string
+		heroPrimaryCtaLink?: string
+		heroSecondaryCtaLabel?: string
+		heroSecondaryCtaLink?: string
+		heroImage?: unknown
+		detailIsShowed?: boolean
+		portfolioIsShowed?: boolean
+		portfolioEyebrow?: string
+		portfolioTitle?: string
+		portfolioTitleEmphasis?: string
+		portfolioDescription?: string
+		portfolioCategories?: unknown
+		faqIsShowed?: boolean
+		faqEyebrow?: string
+		faqTitle?: string
+		faqTitleEmphasis?: string
+		faqSub?: string
+		faqItems?: FaqItem[]
+		pageSeo?: RawPageSeo
+	}
+
+	const seoFallback: PageSeo = {
+		title: `${base.title} — Formo Renovations`,
+		description: base.lead || fallbackSeo.description,
+		ogImageUrl: base.imageUrl || fallbackSeo.ogImageUrl,
+		jsonLd: '',
+	}
+
+	const faqItems = (d.faqItems ?? [])
+		.filter((f) => f?.question)
+		.map((f) => ({question: str(f.question), answer: str(f.answer)}))
+
+	return {
+		...base,
+		heroIsShowed: shown(d.heroIsShowed, true),
+		heroLocationLabel: str(d.heroLocationLabel),
+		heroTitleBefore: str(d.heroTitleBefore, base.title),
+		heroTitleEmphasis: str(d.heroTitleEmphasis),
+		heroDescription: str(d.heroDescription, base.lead),
+		heroPrimaryCtaLabel: str(d.heroPrimaryCtaLabel),
+		heroPrimaryCtaLink: str(d.heroPrimaryCtaLink, '#contact'),
+		heroSecondaryCtaLabel: str(d.heroSecondaryCtaLabel),
+		heroSecondaryCtaLink: str(d.heroSecondaryCtaLink, '/services/'),
+		heroImageUrl: urlForImage(d.heroImage as never) ?? base.imageUrl,
+		detailIsShowed: shown(d.detailIsShowed, true),
+		portfolioIsShowed: shown(d.portfolioIsShowed, true),
+		portfolioEyebrow: str(d.portfolioEyebrow),
+		portfolioTitle: str(d.portfolioTitle),
+		portfolioTitleEmphasis: str(d.portfolioTitleEmphasis),
+		portfolioDescription: str(d.portfolioDescription),
+		portfolioCategories: mapServicePortfolioCategories(base.id, d.portfolioCategories),
+		faqIsShowed: shown(d.faqIsShowed, false),
+		faqEyebrow: str(d.faqEyebrow),
+		faqTitle: str(d.faqTitle),
+		faqTitleEmphasis: str(d.faqTitleEmphasis),
+		faqSub: str(d.faqSub),
+		faqItems,
+		seo: mapPageSeo(d.pageSeo, seoFallback, defaultOgImageUrl),
+	}
+}
+
+export function filterProjectsForService(
+	projects: PortfolioProject[],
+	service: Pick<ServicePageContent, 'id' | 'title' | 'portfolioCategories'>,
+): PortfolioProject[] {
+	const categories = service.portfolioCategories
+	if (categories.length) {
+		return projects.filter((project) =>
+			categories.some((cat) => projectMatchesCategory(project, cat)),
+		)
+	}
+
+	const needle = service.title.trim().toLowerCase()
+	if (!needle) return projects
+
+	return projects.filter((project) =>
+		project.tags.some((tag) => tag.trim().toLowerCase().includes(needle)) ||
+		project.name.trim().toLowerCase().includes(needle),
+	)
 }
 
 type RawPageSeo = {title?: string; description?: string; ogImage?: unknown; jsonLd?: string}
@@ -1039,6 +1183,29 @@ export async function getServicesPage() {
 export async function getServicesList(): Promise<ServiceDetail[]> {
 	const docs = await safeFetch(SERVICES_LIST_Q, [] as Record<string, unknown>[])
 	return mapServicesList(docs)
+}
+
+export async function getServiceByPageSlug(slug: string): Promise<ServicePageContent | null> {
+	const [doc, metadata] = await Promise.all([
+		sanityClient.fetch<Record<string, unknown> | null>(SERVICE_BY_PAGE_SLUG_Q, {
+			slug,
+			fallbackId: `svc-${slug}`,
+		}),
+		getSiteMetadata(),
+	])
+	const defaultOgImageUrl = metadata.services.ogImageUrl
+	return mapServicePage(doc, metadata.services, defaultOgImageUrl)
+}
+
+export async function getAllServicePages(): Promise<ServicePageContent[]> {
+	const [docs, metadata] = await Promise.all([
+		safeFetch(ALL_SERVICE_PAGES_Q, [] as Record<string, unknown>[]),
+		getSiteMetadata(),
+	])
+	const defaultOgImageUrl = metadata.services.ogImageUrl
+	return docs
+		.map((doc) => mapServicePage(doc, metadata.services, defaultOgImageUrl))
+		.filter((s): s is ServicePageContent => Boolean(s))
 }
 
 export async function getPortfolioPage() {

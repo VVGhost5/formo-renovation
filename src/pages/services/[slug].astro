@@ -1,0 +1,284 @@
+---
+import Layout from '../../layouts/Layout.astro'
+import TheNav from '../../components/vue/TheNav.vue'
+import PortfolioWorks from '../../components/vue/PortfolioWorks.vue'
+import SectionContact from '../../components/SectionContact.astro'
+import TheFooter from '../../components/TheFooter.astro'
+import {
+	getServiceByPageSlug,
+	getAllServicePages,
+	getServicesPage,
+	getPortfolioProjects,
+	getSiteSettings,
+	getHomeContact,
+	filterProjectsForService,
+	DEFAULT_SERVICES_PAGE,
+	DEFAULT_SITE_SETTINGS,
+	DEFAULT_HOME_CONTACT,
+} from '../../utils/sanity'
+import {bgStyle} from '../../utils/sanity/backgrounds'
+
+export async function getStaticPaths() {
+	const services = await getAllServicePages()
+	return services.map((service) => ({
+		params: {slug: service.pageSlug},
+		props: {service},
+	}))
+}
+
+const {slug} = Astro.params
+const serviceFromProps = Astro.props.service
+
+let service = serviceFromProps ?? null
+let page = DEFAULT_SERVICES_PAGE
+let projects: Awaited<ReturnType<typeof getPortfolioProjects>> = []
+let site = DEFAULT_SITE_SETTINGS
+let contact = DEFAULT_HOME_CONTACT
+
+if (!service && slug) {
+	try {
+		service = await getServiceByPageSlug(slug)
+	} catch (err) {
+		console.warn('[sanity] Service page fallback.', err)
+	}
+}
+
+if (!service) {
+	return Astro.redirect('/services/')
+}
+
+try {
+	;[page, projects, site, contact] = await Promise.all([
+		getServicesPage(),
+		getPortfolioProjects(),
+		getSiteSettings(),
+		getHomeContact(),
+	])
+} catch (err) {
+	console.warn('[sanity] Service page shared content fallback.', err)
+}
+
+const filteredProjects = filterProjectsForService(projects, service)
+
+const heroLocation = service.heroLocationLabel || page.locationLabel
+const heroTitleBefore = service.heroTitleBefore || service.title
+const heroTitleEmphasis = service.heroTitleEmphasis
+const heroDescription = service.heroDescription || service.lead
+const heroPrimaryCtaLabel = service.heroPrimaryCtaLabel || page.primaryCtaLabel
+const heroPrimaryCtaLink = service.heroPrimaryCtaLink || page.primaryCtaLink || '#contact'
+const heroSecondaryCtaLabel = service.heroSecondaryCtaLabel || page.secondaryCtaLabel
+const heroSecondaryCtaLink = service.heroSecondaryCtaLink || page.secondaryCtaLink || '/services/'
+const heroBg = bgStyle(service.heroImageUrl || page.heroImageUrl)
+const processBg = bgStyle(page.processHeroBackgroundUrl)
+
+const portfolioEyebrow = service.portfolioEyebrow || 'Our Works'
+const portfolioTitle = service.portfolioTitle || "Spaces we've"
+const portfolioTitleEmphasis = service.portfolioTitleEmphasis || 'transformed'
+const portfolioDescription = service.portfolioDescription ||
+	'Each project below represents our commitment to craftsmanship and detail. Click any project to see the full photo gallery, before/after comparison, and project specifications.'
+
+const faqEyebrow = service.faqEyebrow || page.faqEyebrow
+const faqTitle = service.faqTitle || page.faqTitle
+const faqTitleEmphasis = service.faqTitleEmphasis || page.faqTitleEmphasis
+const faqSub = service.faqSub || page.faqSub
+const faqItems = service.faqItems.length ? service.faqItems : page.faqItems
+
+let pageJsonLd: object | undefined
+if (service.seo.jsonLd) {
+	try { pageJsonLd = JSON.parse(service.seo.jsonLd) } catch {}
+}
+---
+
+<Layout
+  title={service.seo.title}
+  description={service.seo.description}
+  jsonLd={pageJsonLd}
+>
+  <TheNav client:load page="services" phone={site.phone} email={site.email} phoneHours={site.phoneHours} officeWeekdayHours={site.officeWeekdayHours} emailNote={site.emailNote} />
+
+  {service.heroIsShowed && (
+  <section id="hero" class="svc-page-hero">
+    <div class="hero-bg-img" style={heroBg} aria-hidden="true"></div>
+    <div class="hero-content">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="hero-dot"></span>
+          {heroLocation}
+        </div>
+        <h1 class="hero-h1">
+          {heroTitleBefore}
+          {heroTitleEmphasis && <em>{heroTitleEmphasis}</em>}
+        </h1>
+        <hr class="hero-line" />
+        <p class="hero-desc">{heroDescription}</p>
+        <div class="hero-actions">
+          {heroPrimaryCtaLabel && (
+            <a href={heroPrimaryCtaLink} class="btn-dark">{heroPrimaryCtaLabel}</a>
+          )}
+          {heroSecondaryCtaLabel && (
+            <a href={heroSecondaryCtaLink} class="btn-outline">{heroSecondaryCtaLabel}</a>
+          )}
+        </div>
+      </div>
+    </div>
+  </section>
+  )}
+
+  {service.detailIsShowed && (
+  <section id="service-detail">
+    <div class="svc-block">
+      <div class="svc-img-col">
+        {service.imageUrl && (
+          <img width="720" height="774" src={service.imageUrl} alt={service.imageAlt} loading="lazy" />
+        )}
+        <div class="svc-img-badge">
+          <span class="svc-img-badge-icon"><i class={service.icon}></i></span>
+          <span class="svc-img-badge-text">{service.eyebrow}</span>
+        </div>
+      </div>
+      <div class="svc-text-col">
+        {service.num && <div class="svc-num">{service.num}</div>}
+        <div class="svc-eyebrow">{service.eyebrow}</div>
+        <h2 class="svc-title">{service.title}</h2>
+        <p class="svc-lead">{service.lead}</p>
+        {service.includes.length > 0 && (
+          <>
+            <div class="svc-includes-label">What's included</div>
+            <ul class="svc-includes">
+              {service.includes.map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          </>
+        )}
+        {service.meta.length > 0 && (
+          <div class="svc-meta">
+            {service.meta.map((m) => (
+              <div class="svc-meta-item">
+                <span class="svc-meta-key">{m.key}</span>
+                <span class="svc-meta-val">{m.val}</span>
+              </div>
+            ))}
+          </div>
+        )}
+        <a href="#contact" class="svc-cta">Get a Quote for This Service →</a>
+      </div>
+    </div>
+  </section>
+  )}
+
+  {page.processIsShowed && (
+  <section id="our-process">
+    <div class="svc-process-hero">
+      <div class="svc-process-hero-img" style={processBg}></div>
+      <div class="svc-process-hero-content">
+        <span class="svc-process-eyebrow">{page.processEyebrow}</span>
+        <h2 class="svc-process-headline">{page.processHeadline} <em>{page.processHeadlineEmphasis}</em></h2>
+        <p class="svc-process-sub">{page.processDescription}</p>
+      </div>
+    </div>
+
+    <div class="process-steps">
+      {page.processSteps.map((step, i) => (
+        <div class="pstep">
+          <div class="pstep-num">{String(i + 1).padStart(2, '0')}</div>
+          <div class="pstep-icon"><i class={step.icon}></i></div>
+          <div class="pstep-title">{step.title}</div>
+          <p class="pstep-body">{step.body}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+  )}
+
+  {page.pricingIsShowed && (
+  <section id="pricing-hint">
+    <div class="ph-inner">
+      <div class="ph-left">
+        <div class="ph-eyebrow">{page.pricingEyebrow}</div>
+        <h2 class="ph-headline">
+          {page.pricingHeadline}<br />
+          <em>{page.pricingHeadlineEmphasis}</em>
+        </h2>
+        <p class="ph-body">{page.pricingBody}</p>
+      </div>
+    </div>
+    <div class="ph-cards">
+      {page.pricingCards.map((card) => (
+        <div class="ph-card">
+          <div class="ph-card-icon"><i class={card.icon}></i></div>
+          <div class="ph-card-title">{card.title}</div>
+          <p class="ph-card-body">{card.body}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+  )}
+
+  {service.portfolioIsShowed && filteredProjects.length > 0 && (
+    <PortfolioWorks
+      client:load
+      projects={filteredProjects}
+      hideFilters={true}
+      introEyebrow={portfolioEyebrow}
+      introTitle={portfolioTitle}
+      introTitleEmphasis={portfolioTitleEmphasis}
+      introDescription={portfolioDescription}
+    />
+  )}
+
+  {service.faqIsShowed && faqItems.length > 0 && (
+  <section id="faq">
+    <div class="faq-grid">
+      <div class="faq-left">
+        <span class="faq-eyebrow">{faqEyebrow}</span>
+        <h2 class="faq-title">{faqTitle} <em>{faqTitleEmphasis}</em></h2>
+        <p class="faq-sub">{faqSub}</p>
+      </div>
+
+      <div class="faq-list">
+        {faqItems.map((item) => (
+          <div class="faq-item">
+            <button class="faq-q">
+              <span class="fq-text">{item.question}</span>
+              <div class="fq-icon">+</div>
+            </button>
+            <div class="faq-a">
+              <div class="faq-a-inner">{item.answer}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+  )}
+
+  <SectionContact content={contact} site={site} />
+  <TheFooter site={site} />
+</Layout>
+
+<script>
+  document.querySelectorAll('.faq-q').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.closest('.faq-item') as HTMLElement;
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    });
+  });
+</script>
+
+<style lang="scss">
+  #service-detail {
+    .svc-block {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (max-width: 1023px) {
+    #service-detail .svc-block {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

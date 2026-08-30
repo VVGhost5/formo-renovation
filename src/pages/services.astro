@@ -76,7 +76,7 @@ if (pageMeta.jsonLd) {
       <div class="hero-quick">
         <div class="hero-quick-label">Jump to a service</div>
         {services.map((svc) => (
-          <a href={`#${svc.id}`} class="hero-quick-item">
+          <a href={`/services/${svc.pageSlug}/`} class="hero-quick-item">
             <div class="hqi-icon"><i class={svc.icon}></i></div>
             <div class="hqi-body">
               <div class="hqi-name">{svc.quickName}</div>
@@ -96,7 +96,7 @@ if (pageMeta.jsonLd) {
   <section id="services-strip">
     <div class="strip-inner">
       {services.map((svc, i) => (
-        <a href={`#${svc.id}`} class="strip-cell">
+        <a href={`/services/${svc.pageSlug}/`} class="strip-cell">
           <div class="sc-icon"><i class={svc.icon}></i></div>
           <div class="sc-name">{svc.stripName}</div>
           <div class="sc-count">Service {String(i + 1).padStart(2, '0')}</div>
@@ -143,7 +143,7 @@ if (pageMeta.jsonLd) {
               ))}
             </div>
           )}
-          <a href="#contact" class="svc-cta">Get a Quote for This Service →</a>
+          <a href={`/services/${svc.pageSlug}/`} class="svc-cta">Learn More About This Service →</a>
         </div>
       </div>
     ))}

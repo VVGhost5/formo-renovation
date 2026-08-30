@@ -363,6 +363,7 @@ export type Review = {
 
 export type ServiceDetail = {
 	id: string
+	pageSlug: string
 	num: string
 	icon: string
 	stripName: string
@@ -375,6 +376,33 @@ export type ServiceDetail = {
 	meta: {key: string; val: string}[]
 	imageUrl: string
 	imageAlt: string
+}
+
+export type ServicePageContent = ServiceDetail & {
+	heroIsShowed: boolean
+	heroLocationLabel: string
+	heroTitleBefore: string
+	heroTitleEmphasis: string
+	heroDescription: string
+	heroPrimaryCtaLabel: string
+	heroPrimaryCtaLink: string
+	heroSecondaryCtaLabel: string
+	heroSecondaryCtaLink: string
+	heroImageUrl: string
+	detailIsShowed: boolean
+	portfolioIsShowed: boolean
+	portfolioEyebrow: string
+	portfolioTitle: string
+	portfolioTitleEmphasis: string
+	portfolioDescription: string
+	portfolioCategories: PortfolioCategory[]
+	faqIsShowed: boolean
+	faqEyebrow: string
+	faqTitle: string
+	faqTitleEmphasis: string
+	faqSub: string
+	faqItems: FaqItem[]
+	seo: PageSeo
 }
 
 export type PortfolioPageContent = PageHeroContent & {stats: Stat[]}
