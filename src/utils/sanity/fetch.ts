@@ -316,7 +316,7 @@ const SERVICE_PAGE_FIELDS = `
   meta[]{ key, val },
   image{ asset, alt }, imageAlt,
   "heroIsShowed": coalesce(heroIsShowed, true),
-  heroTitleBefore, heroTitleEmphasis, heroDescription,
+  heroEyebrow, heroTitleBefore, heroTitleEmphasis, heroDescription,
   heroImage{ asset, alt },
   "detailIsShowed": coalesce(detailIsShowed, true),
   "portfolioIsShowed": coalesce(portfolioIsShowed, true),
@@ -990,6 +990,7 @@ export function mapServicePage(
 
 	const d = doc as {
 		heroIsShowed?: boolean
+		heroEyebrow?: string
 		heroTitleBefore?: string
 		heroTitleEmphasis?: string
 		heroDescription?: string
@@ -1024,6 +1025,7 @@ export function mapServicePage(
 	return {
 		...base,
 		heroIsShowed: shown(d.heroIsShowed, true),
+		heroEyebrow: str(d.heroEyebrow),
 		heroTitleBefore: str(d.heroTitleBefore, base.title),
 		heroTitleEmphasis: str(d.heroTitleEmphasis),
 		heroDescription: str(d.heroDescription, base.lead),

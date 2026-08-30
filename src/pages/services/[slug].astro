@@ -65,7 +65,7 @@ try {
 const filteredProjects = filterProjectsForService(projects, service)
 
 const showHero = service.heroIsShowed && heroDefaults.isShowed
-const heroLocation = heroDefaults.locationLabel
+const heroEyebrow = service.heroEyebrow || heroDefaults.locationLabel || service.eyebrow
 const heroTitleBefore = service.heroTitleBefore || service.title
 const heroTitleEmphasis = service.heroTitleEmphasis
 const heroDescription = service.heroDescription || service.lead
@@ -106,10 +106,12 @@ if (service.seo.jsonLd) {
     <div class="hero-bg-img" style={heroBg} aria-hidden="true"></div>
     <div class="hero-content">
       <div class="hero-left">
+        {heroEyebrow && (
         <div class="hero-eyebrow">
           <span class="hero-dot"></span>
-          {heroLocation}
+          {heroEyebrow}
         </div>
+        )}
         <h1 class="hero-h1">
           {heroTitleBefore}
           {heroTitleEmphasis && <em>{heroTitleEmphasis}</em>}

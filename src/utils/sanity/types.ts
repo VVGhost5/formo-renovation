@@ -389,6 +389,7 @@ export type ServicePageHeroContent = {
 
 export type ServicePageContent = ServiceDetail & {
 	heroIsShowed: boolean
+	heroEyebrow: string
 	heroTitleBefore: string
 	heroTitleEmphasis: string
 	heroDescription: string

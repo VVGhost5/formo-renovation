@@ -12,9 +12,9 @@ export default defineType({
     }),
     defineField({
       name: 'locationLabel',
-      title: 'Location label',
+      title: 'Eyebrow (shared default)',
       type: 'string',
-      description: 'Eyebrow text shown above the title on every service page.',
+      description: 'Small label above the title (.hero-eyebrow) on service pages. Used when a service has no own eyebrow set.',
     }),
     defineField({name: 'primaryCtaLabel', title: 'Primary CTA label', type: 'string'}),
     defineField({name: 'primaryCtaLink', title: 'Primary CTA link', type: 'string'}),

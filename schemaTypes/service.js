@@ -100,6 +100,13 @@ export default defineType({
       description: 'Show the hero section on this service page. Shared location label and CTAs are in Services → Service Pages — Hero.',
     }),
     defineField({
+      name: 'heroEyebrow',
+      title: 'Eyebrow',
+      type: 'string',
+      fieldset: 'hero',
+      description: 'Small label above the title (.hero-eyebrow). Falls back to Services → Service Pages — Hero → Eyebrow, then to Overview → Eyebrow.',
+    }),
+    defineField({
       name: 'heroTitleBefore',
       title: 'Title — before emphasis',
       type: 'string',
