@@ -7,12 +7,14 @@ import TheFooter from '../../components/TheFooter.astro'
 import {
 	getServiceByPageSlug,
 	getAllServicePages,
+	getServicePageHero,
 	getServicesPage,
 	getPortfolioProjects,
 	getSiteSettings,
 	getHomeContact,
 	filterProjectsForService,
 	DEFAULT_SERVICES_PAGE,
+	DEFAULT_SERVICE_PAGE_HERO,
 	DEFAULT_SITE_SETTINGS,
 	DEFAULT_HOME_CONTACT,
 } from '../../utils/sanity'
@@ -31,6 +33,7 @@ const serviceFromProps = Astro.props.service
 
 let service = serviceFromProps ?? null
 let page = DEFAULT_SERVICES_PAGE
+let heroDefaults = DEFAULT_SERVICE_PAGE_HERO
 let projects: Awaited<ReturnType<typeof getPortfolioProjects>> = []
 let site = DEFAULT_SITE_SETTINGS
 let contact = DEFAULT_HOME_CONTACT
@@ -48,8 +51,9 @@ if (!service) {
 }
 
 try {
-	;[page, projects, site, contact] = await Promise.all([
+	;[page, heroDefaults, projects, site, contact] = await Promise.all([
 		getServicesPage(),
+		getServicePageHero(),
 		getPortfolioProjects(),
 		getSiteSettings(),
 		getHomeContact(),
@@ -60,15 +64,16 @@ try {
 
 const filteredProjects = filterProjectsForService(projects, service)
 
-const heroLocation = service.heroLocationLabel || page.locationLabel
+const showHero = service.heroIsShowed && heroDefaults.isShowed
+const heroLocation = heroDefaults.locationLabel
 const heroTitleBefore = service.heroTitleBefore || service.title
 const heroTitleEmphasis = service.heroTitleEmphasis
 const heroDescription = service.heroDescription || service.lead
-const heroPrimaryCtaLabel = service.heroPrimaryCtaLabel || page.primaryCtaLabel
-const heroPrimaryCtaLink = service.heroPrimaryCtaLink || page.primaryCtaLink || '#contact'
-const heroSecondaryCtaLabel = service.heroSecondaryCtaLabel || page.secondaryCtaLabel
-const heroSecondaryCtaLink = service.heroSecondaryCtaLink || page.secondaryCtaLink || '/services/'
-const heroBg = bgStyle(service.heroImageUrl || page.heroImageUrl)
+const heroPrimaryCtaLabel = heroDefaults.primaryCtaLabel
+const heroPrimaryCtaLink = heroDefaults.primaryCtaLink
+const heroSecondaryCtaLabel = heroDefaults.secondaryCtaLabel
+const heroSecondaryCtaLink = heroDefaults.secondaryCtaLink
+const heroBg = bgStyle(service.heroImageUrl)
 const processBg = bgStyle(page.processHeroBackgroundUrl)
 
 const portfolioEyebrow = service.portfolioEyebrow || 'Our Works'
@@ -96,7 +101,7 @@ if (service.seo.jsonLd) {
 >
   <TheNav client:load page="services" phone={site.phone} email={site.email} phoneHours={site.phoneHours} officeWeekdayHours={site.officeWeekdayHours} emailNote={site.emailNote} />
 
-  {service.heroIsShowed && (
+  {showHero && (
   <section id="hero" class="svc-page-hero">
     <div class="hero-bg-img" style={heroBg} aria-hidden="true"></div>
     <div class="hero-content">

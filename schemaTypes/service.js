@@ -97,14 +97,7 @@ export default defineType({
       title: 'Hero — visibility',
       initialValue: true,
       fieldset: 'hero',
-      description: 'Show the hero section on this service page.',
-    }),
-    defineField({
-      name: 'heroLocationLabel',
-      title: 'Location label',
-      type: 'string',
-      fieldset: 'hero',
-      description: 'Falls back to the Services page hero label when empty.',
+      description: 'Show the hero section on this service page. Shared location label and CTAs are in Services → Service Pages — Hero.',
     }),
     defineField({
       name: 'heroTitleBefore',
@@ -127,17 +120,14 @@ export default defineType({
       fieldset: 'hero',
       description: 'Falls back to service lead when empty.',
     }),
-    defineField({name: 'heroPrimaryCtaLabel', title: 'Primary CTA label', type: 'string', fieldset: 'hero'}),
-    defineField({name: 'heroPrimaryCtaLink', title: 'Primary CTA link', type: 'string', fieldset: 'hero'}),
-    defineField({name: 'heroSecondaryCtaLabel', title: 'Secondary CTA label', type: 'string', fieldset: 'hero'}),
-    defineField({name: 'heroSecondaryCtaLink', title: 'Secondary CTA link', type: 'string', fieldset: 'hero'}),
     defineField({
       name: 'heroImage',
       title: 'Hero background',
       type: 'image',
       options: {hotspot: true},
       fieldset: 'hero',
-      description: 'Falls back to the service detail image when empty.',
+      description: 'Background image for this service page hero. Separate from the detail block image and the main /services/ page hero.',
+      validation: (R) => R.required(),
     }),
 
     // ── Service page — Detail block ──────────────────────────────────────────

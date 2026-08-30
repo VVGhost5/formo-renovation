@@ -20,6 +20,7 @@ import {
 	DEFAULT_PORTFOLIO_PAGE,
 	DEFAULT_SERVICES,
 	DEFAULT_SERVICES_PAGE,
+	DEFAULT_SERVICE_PAGE_HERO,
 	DEFAULT_SITE_SETTINGS,
 	DEFAULT_PAGE_SEO,
 } from './defaults'
@@ -51,6 +52,7 @@ import type {
 	ReviewsPageContent,
 	ServiceDetail,
 	ServicePageContent,
+	ServicePageHeroContent,
 	ServiceProcessStep,
 	ServicesPageContent,
 	SiteMetadataPageKey,
@@ -193,6 +195,13 @@ const SVC_FAQ_Q = defineQuery(`*[_id == "servicesFaq"][0]{
   "faqItems": items[]{ question, answer }
 }`)
 
+const SERVICE_PAGE_HERO_Q = defineQuery(`*[_id == "servicePageHero"][0]{
+  "isShowed": coalesce(isShowed, true),
+  locationLabel,
+  primaryCtaLabel, primaryCtaLink,
+  secondaryCtaLabel, secondaryCtaLink
+}`)
+
 const PORTFOLIO_PAGE_Q = defineQuery(`*[_id == "portfolioPage"][0]{
   locationLabel, titleBefore, titleEmphasis, description,
   primaryCtaLabel, primaryCtaLink, secondaryCtaLabel, secondaryCtaLink,
@@ -307,8 +316,7 @@ const SERVICE_PAGE_FIELDS = `
   meta[]{ key, val },
   image{ asset, alt }, imageAlt,
   "heroIsShowed": coalesce(heroIsShowed, true),
-  heroLocationLabel, heroTitleBefore, heroTitleEmphasis, heroDescription,
-  heroPrimaryCtaLabel, heroPrimaryCtaLink, heroSecondaryCtaLabel, heroSecondaryCtaLink,
+  heroTitleBefore, heroTitleEmphasis, heroDescription,
   heroImage{ asset, alt },
   "detailIsShowed": coalesce(detailIsShowed, true),
   "portfolioIsShowed": coalesce(portfolioIsShowed, true),
@@ -958,6 +966,19 @@ function mapServicePortfolioCategories(
 	return defaults.filter(isPortfolioCategory)
 }
 
+export function mapServicePageHero(doc: Record<string, unknown> | null): ServicePageHeroContent {
+	if (!doc) return DEFAULT_SERVICE_PAGE_HERO
+	const d = doc as ServicePageHeroContent
+	return {
+		isShowed: shown((d as {isShowed?: boolean}).isShowed, DEFAULT_SERVICE_PAGE_HERO.isShowed),
+		locationLabel: str(d.locationLabel),
+		primaryCtaLabel: str(d.primaryCtaLabel),
+		primaryCtaLink: str(d.primaryCtaLink, '#contact'),
+		secondaryCtaLabel: str(d.secondaryCtaLabel),
+		secondaryCtaLink: str(d.secondaryCtaLink, '/services/'),
+	}
+}
+
 export function mapServicePage(
 	doc: Record<string, unknown> | null,
 	fallbackSeo: PageSeo,
@@ -969,14 +990,9 @@ export function mapServicePage(
 
 	const d = doc as {
 		heroIsShowed?: boolean
-		heroLocationLabel?: string
 		heroTitleBefore?: string
 		heroTitleEmphasis?: string
 		heroDescription?: string
-		heroPrimaryCtaLabel?: string
-		heroPrimaryCtaLink?: string
-		heroSecondaryCtaLabel?: string
-		heroSecondaryCtaLink?: string
 		heroImage?: unknown
 		detailIsShowed?: boolean
 		portfolioIsShowed?: boolean
@@ -1008,15 +1024,10 @@ export function mapServicePage(
 	return {
 		...base,
 		heroIsShowed: shown(d.heroIsShowed, true),
-		heroLocationLabel: str(d.heroLocationLabel),
 		heroTitleBefore: str(d.heroTitleBefore, base.title),
 		heroTitleEmphasis: str(d.heroTitleEmphasis),
 		heroDescription: str(d.heroDescription, base.lead),
-		heroPrimaryCtaLabel: str(d.heroPrimaryCtaLabel),
-		heroPrimaryCtaLink: str(d.heroPrimaryCtaLink, '#contact'),
-		heroSecondaryCtaLabel: str(d.heroSecondaryCtaLabel),
-		heroSecondaryCtaLink: str(d.heroSecondaryCtaLink, '/services/'),
-		heroImageUrl: urlForImage(d.heroImage as never) ?? base.imageUrl,
+		heroImageUrl: urlForImage(d.heroImage as never) ?? '',
 		detailIsShowed: shown(d.detailIsShowed, true),
 		portfolioIsShowed: shown(d.portfolioIsShowed, true),
 		portfolioEyebrow: str(d.portfolioEyebrow),
@@ -1183,6 +1194,10 @@ export async function getServicesPage() {
 export async function getServicesList(): Promise<ServiceDetail[]> {
 	const docs = await safeFetch(SERVICES_LIST_Q, [] as Record<string, unknown>[])
 	return mapServicesList(docs)
+}
+
+export async function getServicePageHero() {
+	return mapServicePageHero(await safeFetch(SERVICE_PAGE_HERO_Q, null))
 }
 
 export async function getServiceByPageSlug(slug: string): Promise<ServicePageContent | null> {

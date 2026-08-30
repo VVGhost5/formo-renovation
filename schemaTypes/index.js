@@ -15,6 +15,7 @@ import beforeAfterProject from './beforeAfterProject'
 import service from './service'
 import servicesPage from './servicesPage'
 import servicesHero from './servicesHero'
+import servicePageHero from './servicePageHero'
 import servicesProcess from './servicesProcess'
 import servicesPricing from './servicesPricing'
 import servicesFaq from './servicesFaq'
@@ -70,6 +71,7 @@ export const schemaTypes = [
   beforeAfterProject,
   service,
   servicesHero,
+  servicePageHero,
   servicesProcess,
   servicesPricing,
   servicesFaq,

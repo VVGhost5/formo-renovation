@@ -378,16 +378,20 @@ export type ServiceDetail = {
 	imageAlt: string
 }
 
+export type ServicePageHeroContent = {
+	isShowed: boolean
+	locationLabel: string
+	primaryCtaLabel: string
+	primaryCtaLink: string
+	secondaryCtaLabel: string
+	secondaryCtaLink: string
+}
+
 export type ServicePageContent = ServiceDetail & {
 	heroIsShowed: boolean
-	heroLocationLabel: string
 	heroTitleBefore: string
 	heroTitleEmphasis: string
 	heroDescription: string
-	heroPrimaryCtaLabel: string
-	heroPrimaryCtaLink: string
-	heroSecondaryCtaLabel: string
-	heroSecondaryCtaLink: string
 	heroImageUrl: string
 	detailIsShowed: boolean
 	portfolioIsShowed: boolean

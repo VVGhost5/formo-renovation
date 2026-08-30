@@ -18,6 +18,7 @@ import type {
 	SiteSettingsContent,
 	PageSeo,
 	SiteMetadataPageKey,
+	ServicePageHeroContent,
 } from './types'
 
 export const DEFAULT_HERO: HeroContent = {
@@ -314,6 +315,15 @@ export const DEFAULT_CONTACTS_PAGE: ContactsPageContent = {
 	formTitleBefore: '',
 	formTitleEmphasis: '',
 	formSubtext: '',
+}
+
+export const DEFAULT_SERVICE_PAGE_HERO: ServicePageHeroContent = {
+	isShowed: true,
+	locationLabel: '',
+	primaryCtaLabel: '',
+	primaryCtaLink: '#contact',
+	secondaryCtaLabel: '',
+	secondaryCtaLink: '/services/',
 }
 
 export const DEFAULT_SERVICES: ServiceDetail[] = []
