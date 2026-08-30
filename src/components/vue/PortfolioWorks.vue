@@ -10,7 +10,14 @@ import {
 
 const props = defineProps<{
   projects?: PortfolioProject[]
+  hideFilters?: boolean
+  introEyebrow?: string
+  introTitle?: string
+  introTitleEmphasis?: string
+  introDescription?: string
 }>()
+
+const hideFilters = computed(() => props.hideFilters ?? false)
 
 // ── Types ────────────────────────────────────────────────────────────────────
 interface Spec  { key: string; val: string }
@@ -32,6 +39,13 @@ interface Project {
   baBefore: string
 }
 
+const introEyebrow = computed(() => props.introEyebrow || 'Our Works')
+const introTitle = computed(() => props.introTitle || "Spaces we've")
+const introTitleEmphasis = computed(() => props.introTitleEmphasis || 'transformed')
+const introDescription = computed(() =>
+  props.introDescription ||
+  'Each project below represents our commitment to craftsmanship and detail. Click any project to see the full photo gallery, before/after comparison, and project specifications.',
+)
 const allProjects = computed<Project[]>(() =>
   (props.projects as Project[]) ?? [],
 )
@@ -180,14 +194,14 @@ function displayTags(project: Project): string[] {
   <section id="our-works">
     <div class="works-intro">
       <div class="works-intro-left">
-        <span class="eyebrow-light">Our Works</span>
-        <h2 class="works-title">Spaces we've <em>transformed</em></h2>
+        <span class="eyebrow-light">{{ introEyebrow }}</span>
+        <h2 class="works-title">{{ introTitle }} <em>{{ introTitleEmphasis }}</em></h2>
       </div>
       <div class="works-intro-right">
         <p class="works-desc">
-          Each project below represents our commitment to craftsmanship and detail. Click any project to see the full photo gallery, before/after comparison, and project specifications.
+          {{ introDescription }}
         </p>
-        <div class="works-filter-row">
+        <div v-if="!hideFilters" class="works-filter-row">
           <button
             v-for="f in filterButtons"
             :key="f.id"
