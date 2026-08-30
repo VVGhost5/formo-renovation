@@ -15,4 +15,5 @@ export const DEFAULT_SERVICE_PORTFOLIO_CATEGORIES: Record<string, string[]> = {
 	'svc-full': [],
 	'svc-flooring': ['hallway'],
 	'svc-finishing': ['wardrobe', 'hallway'],
+	'svc-finish-carpentry': ['wardrobe', 'hallway', 'living', 'bedroom'],
 }
