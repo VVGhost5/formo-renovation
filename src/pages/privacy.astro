@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro'
 import TheNav from '../components/vue/TheNav.vue'
 import TheFooter from '../components/TheFooter.astro'
 import {DEFAULT_SITE_SETTINGS, getSiteSettings} from '../utils/sanity'
+import {buildPrivacyPageJsonLd} from '../utils/structuredData'
 
 let site = DEFAULT_SITE_SETTINGS
 try {
@@ -12,11 +13,13 @@ try {
 }
 
 const updated = 'August 19, 2026'
+const pageJsonLd = buildPrivacyPageJsonLd()
 ---
 
 <Layout
   title="Privacy Policy — Formo Renovations"
   description="How Formo Renovations collects, uses, and protects personal information from homeowners across Victoria and Vancouver Island, BC."
+  jsonLd={pageJsonLd}
 >
   <TheNav client:load phone={site.phone} email={site.email} phoneHours={site.phoneHours} officeWeekdayHours={site.officeWeekdayHours} emailNote={site.emailNote} />
 

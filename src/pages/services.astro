@@ -16,6 +16,7 @@ import {
 	DEFAULT_PAGE_SEO,
 } from '../utils/sanity'
 import {bgStyle} from '../utils/sanity/backgrounds'
+import {buildServicesCollectionJsonLd} from '../utils/structuredData'
 
 let page = DEFAULT_SERVICES_PAGE
 let services = DEFAULT_SERVICES
@@ -41,6 +42,11 @@ const processBg = bgStyle(page.processHeroBackgroundUrl)
 let pageJsonLd: object | undefined
 if (pageMeta.jsonLd) {
 	try { pageJsonLd = JSON.parse(pageMeta.jsonLd) } catch {}
+}
+if (!pageJsonLd) {
+	pageJsonLd = buildServicesCollectionJsonLd(
+		services.map((s) => ({ pageSlug: s.pageSlug, quickName: s.quickName, lead: s.lead })),
+	)
 }
 ---
 

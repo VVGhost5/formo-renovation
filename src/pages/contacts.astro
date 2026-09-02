@@ -11,6 +11,7 @@ import {
 	DEFAULT_PAGE_SEO,
 } from '../utils/sanity'
 import {bgStyle} from '../utils/sanity/backgrounds'
+import {buildContactPageJsonLd} from '../utils/structuredData'
 
 let page = DEFAULT_CONTACTS_PAGE
 let site = DEFAULT_SITE_SETTINGS
@@ -25,6 +26,9 @@ try {
 let pageJsonLd: object | undefined
 if (pageMeta.jsonLd) {
 	try { pageJsonLd = JSON.parse(pageMeta.jsonLd) } catch {}
+}
+if (!pageJsonLd) {
+	pageJsonLd = buildContactPageJsonLd({ telephone: site.phone, email: site.email })
 }
 
 const heroBg = bgStyle(page.heroImageUrl)

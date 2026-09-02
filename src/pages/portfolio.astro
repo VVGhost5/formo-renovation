@@ -16,6 +16,7 @@ import {
 	DEFAULT_PAGE_SEO,
 } from '../utils/sanity'
 import {bgStyle} from '../utils/sanity/backgrounds'
+import {buildPortfolioJsonLd} from '../utils/structuredData'
 
 let page = DEFAULT_PORTFOLIO_PAGE
 let projects: Awaited<ReturnType<typeof getPortfolioProjects>> = []
@@ -40,6 +41,11 @@ const heroBg = bgStyle(page.heroImageUrl)
 let pageJsonLd: object | undefined
 if (pageMeta.jsonLd) {
 	try { pageJsonLd = JSON.parse(pageMeta.jsonLd) } catch {}
+}
+if (!pageJsonLd) {
+	pageJsonLd = buildPortfolioJsonLd(
+		projects.map((p) => ({ id: p.id, name: p.name, description: p.description, location: p.location })),
+	)
 }
 ---
 

@@ -5,6 +5,7 @@ import TheFooter  from '../components/TheFooter.astro'
 import ReviewsSection from '../components/vue/ReviewsSection.vue'
 import {getReviews, getReviewsPage, getSiteSettings, getPageMetadata, DEFAULT_REVIEWS_PAGE, DEFAULT_SITE_SETTINGS, DEFAULT_PAGE_SEO} from '../utils/sanity'
 import {bgStyle} from '../utils/sanity/backgrounds'
+import {buildReviewsPageJsonLd} from '../utils/structuredData'
 
 let reviews = [] as Awaited<ReturnType<typeof getReviews>>
 let page = DEFAULT_REVIEWS_PAGE
@@ -22,6 +23,9 @@ const heroBg = bgStyle(page.heroImageUrl)
 let pageJsonLd: object | undefined
 if (pageMeta.jsonLd) {
   try { pageJsonLd = JSON.parse(pageMeta.jsonLd) } catch {}
+}
+if (!pageJsonLd) {
+  pageJsonLd = buildReviewsPageJsonLd({ reviewCount: reviews.length })
 }
 ---
 

@@ -19,6 +19,7 @@ import {
 	DEFAULT_HOME_CONTACT,
 } from '../../utils/sanity'
 import {bgStyle} from '../../utils/sanity/backgrounds'
+import {buildServiceJsonLd} from '../../utils/structuredData'
 
 export async function getStaticPaths() {
 	const services = await getAllServicePages()
@@ -88,7 +89,12 @@ const faqTitleEmphasis = service.faqTitleEmphasis || page.faqTitleEmphasis
 const faqSub = service.faqSub || page.faqSub
 const faqItems = service.faqItems.length ? service.faqItems : page.faqItems
 
-let pageJsonLd: object | undefined
+let pageJsonLd: object = buildServiceJsonLd({
+	serviceType: service.quickName || service.eyebrow || service.title,
+	pageSlug: service.pageSlug,
+	description: service.seo.description || service.lead || service.heroDescription,
+	name: service.quickName || service.eyebrow || service.title,
+})
 if (service.seo.jsonLd) {
 	try { pageJsonLd = JSON.parse(service.seo.jsonLd) } catch {}
 }
