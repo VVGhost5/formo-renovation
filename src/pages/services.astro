@@ -3,6 +3,7 @@ import Layout        from '../layouts/Layout.astro'
 import TheNav        from '../components/vue/TheNav.vue'
 import SectionContact from '../components/SectionContact.astro'
 import TheFooter     from '../components/TheFooter.astro'
+import BreadcrumbNav from '../components/BreadcrumbNav.astro'
 import {
 	getServicesPage,
 	getServicesList,
@@ -63,6 +64,7 @@ if (!pageJsonLd) {
     <div class="hero-content">
 
       <div class="hero-left">
+        <BreadcrumbNav items={[{ label: 'Services' }]} />
         <div class="hero-eyebrow">
           <span class="hero-dot"></span>
           {page.locationLabel}

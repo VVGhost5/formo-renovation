@@ -16,6 +16,7 @@ import {
 	getHomePageContent,
 	getServicesPage,
 	getPageMetadata,
+	getApprovedReviewsCount,
 	DEFAULT_HERO,
 	DEFAULT_HOME_NUMBERS,
 	DEFAULT_HOME_SERVICES,
@@ -61,6 +62,13 @@ try {
 	// use defaults
 }
 
+let reviewsCount = 0
+try {
+	reviewsCount = await getApprovedReviewsCount()
+} catch {
+	// non-critical
+}
+
 const SITE_URL = 'https://formorenovations.com'
 
 const sameAsUrls = [
@@ -69,6 +77,27 @@ const sameAsUrls = [
 	home.site.houzzUrl,
 	home.site.homestarsUrl,
 ].filter((url) => url && url !== '#')
+
+const baImageObjects = home.beforeAfter.flatMap((slide) => {
+	if (!slide.before || !slide.after) return []
+	const label = slide.name ?? slide.location ?? 'Renovation'
+	return [
+		{
+			'@type': 'ImageObject',
+			contentUrl: slide.before,
+			caption: `${label} — before renovation`,
+			creditText: BRAND_NAME,
+			creator: {'@id': ORG_ID},
+		},
+		{
+			'@type': 'ImageObject',
+			contentUrl: slide.after,
+			caption: `${label} — after renovation`,
+			creditText: BRAND_NAME,
+			creator: {'@id': ORG_ID},
+		},
+	]
+})
 
 const autoJsonLd = {
 	'@context': 'https://schema.org',
@@ -96,6 +125,7 @@ const autoJsonLd = {
 			telephone: home.site.phone,
 			email: home.site.email,
 			sameAs: sameAsUrls,
+			reviewCount: reviewsCount,
 		}),
 		{
 			'@type': 'FAQPage',
@@ -108,6 +138,7 @@ const autoJsonLd = {
 				},
 			})),
 		},
+		...baImageObjects,
 	],
 }
 

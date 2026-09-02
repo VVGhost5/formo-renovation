@@ -4,6 +4,7 @@ import TheNav from '../components/vue/TheNav.vue'
 import TheFooter from '../components/TheFooter.astro'
 import {DEFAULT_SITE_SETTINGS, getSiteSettings} from '../utils/sanity'
 import {buildPrivacyPageJsonLd} from '../utils/structuredData'
+import BreadcrumbNav from '../components/BreadcrumbNav.astro'
 
 let site = DEFAULT_SITE_SETTINGS
 try {
@@ -26,6 +27,7 @@ const pageJsonLd = buildPrivacyPageJsonLd()
   <main class="pp-page">
     <header class="pp-hero">
       <div class="pp-hero-inner">
+        <BreadcrumbNav items={[{ label: 'Privacy Policy' }]} />
         <span class="pp-eyebrow">Legal</span>
         <h1 class="pp-title">Privacy Policy</h1>
         <p class="pp-sub">Last updated {updated}</p>

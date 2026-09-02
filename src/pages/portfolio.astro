@@ -4,6 +4,7 @@ import TheNav          from '../components/vue/TheNav.vue'
 import PortfolioWorks  from '../components/vue/PortfolioWorks.vue'
 import SectionContact  from '../components/SectionContact.astro'
 import TheFooter       from '../components/TheFooter.astro'
+import BreadcrumbNav   from '../components/BreadcrumbNav.astro'
 import {
 	getPortfolioPage,
 	getPortfolioProjects,
@@ -44,7 +45,16 @@ if (pageMeta.jsonLd) {
 }
 if (!pageJsonLd) {
 	pageJsonLd = buildPortfolioJsonLd(
-		projects.map((p) => ({ id: p.id, name: p.name, description: p.description, location: p.location })),
+		projects.map((p) => ({
+			id: p.id,
+			name: p.name,
+			description: p.description,
+			location: p.location,
+			imageUrl: p.gallery[0]?.src ?? null,
+			imageAlt: p.gallery[0]?.alt ?? null,
+			beforeUrl: p.baBefore || null,
+			afterUrl: p.baAfter || null,
+		})),
 	)
 }
 ---
@@ -61,6 +71,7 @@ if (!pageJsonLd) {
 
     <div class="port-hero-content">
       <div>
+        <BreadcrumbNav items={[{ label: 'Portfolio' }]} />
         <div class="port-hero-eyebrow">
           <span class="port-hero-eyebrow-dot"></span>
           {page.locationLabel}

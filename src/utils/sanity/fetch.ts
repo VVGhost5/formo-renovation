@@ -1255,6 +1255,11 @@ export async function getReviews(): Promise<Review[]> {
 	return safeFetch(REVIEWS_Q, [] as Review[])
 }
 
+const REVIEWS_COUNT_Q = defineQuery(`count(*[_type == "review" && approved == true])`)
+export async function getApprovedReviewsCount(): Promise<number> {
+	return safeFetch(REVIEWS_COUNT_Q, 0)
+}
+
 export async function getSiteMetadata(): Promise<Record<SiteMetadataPageKey, PageSeo>> {
 	return mapSiteMetadata(await safeFetch(METADATA_Q, null))
 }

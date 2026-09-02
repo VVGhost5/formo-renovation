@@ -6,6 +6,7 @@ import ReviewsSection from '../components/vue/ReviewsSection.vue'
 import {getReviews, getReviewsPage, getSiteSettings, getPageMetadata, DEFAULT_REVIEWS_PAGE, DEFAULT_SITE_SETTINGS, DEFAULT_PAGE_SEO} from '../utils/sanity'
 import {bgStyle} from '../utils/sanity/backgrounds'
 import {buildReviewsPageJsonLd} from '../utils/structuredData'
+import BreadcrumbNav from '../components/BreadcrumbNav.astro'
 
 let reviews = [] as Awaited<ReturnType<typeof getReviews>>
 let page = DEFAULT_REVIEWS_PAGE
@@ -42,6 +43,7 @@ if (!pageJsonLd) {
     <div class="hero-content">
 
       <div class="hero-left">
+        <BreadcrumbNav items={[{ label: 'Reviews' }]} />
         <div class="hero-eyebrow">
           <span class="hero-dot"></span>
           Victoria &amp; Vancouver Island, BC

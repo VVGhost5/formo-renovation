@@ -23,6 +23,7 @@ export type OrganizationJsonLd = {
 	foundingDate: string
 	contactPoint: Record<string, unknown>
 	sameAs?: string[]
+	aggregateRating?: Record<string, unknown>
 }
 
 /** Canonical GeneralContractor entity — defined fully on the homepage, referenced by @id elsewhere. */
@@ -31,6 +32,8 @@ export function buildOrganizationJsonLd(opts?: {
 	telephone?: string
 	email?: string
 	sameAs?: string[]
+	reviewCount?: number
+	ratingValue?: number
 }): OrganizationJsonLd {
 	const telephone = (opts?.telephone ?? '+16729958850').replace(/\s+/g, '')
 	const email = opts?.email ?? 'info@formorenovations.com'
@@ -103,6 +106,17 @@ export function buildOrganizationJsonLd(opts?: {
 			},
 		},
 		...(opts?.sameAs?.length ? {sameAs: opts.sameAs} : {}),
+		...(opts?.reviewCount && opts.reviewCount > 0
+			? {
+					aggregateRating: {
+						'@type': 'AggregateRating',
+						ratingValue: String(opts.ratingValue ?? 5.0),
+						reviewCount: String(opts.reviewCount),
+						bestRating: '5',
+						worstRating: '1',
+					},
+				}
+			: {}),
 	}
 }
 
@@ -227,10 +241,65 @@ export function buildServicesCollectionJsonLd(
 	}
 }
 
-/** CollectionPage + ItemList — used on /portfolio/ */
-export function buildPortfolioJsonLd(
-	projects: Array<{ id?: string; name?: string | null; description?: string | null; location?: string | null }>,
-): object {
+export type PortfolioProjectLd = {
+	id?: string
+	name?: string | null
+	description?: string | null
+	location?: string | null
+	/** Primary display image — used as CreativeWork.image */
+	imageUrl?: string | null
+	imageAlt?: string | null
+	/** Before photo URL — used for ImageObject pair */
+	beforeUrl?: string | null
+	/** After photo URL — used for ImageObject pair */
+	afterUrl?: string | null
+}
+
+/** CollectionPage + ItemList of CreativeWork — used on /portfolio/ */
+export function buildPortfolioJsonLd(projects: PortfolioProjectLd[]): object {
+	const workItems = projects.map((p, i) => {
+		const displayName = p.name ?? p.location ?? `Project ${i + 1}`
+		const item: Record<string, unknown> = {
+			'@type': 'CreativeWork',
+			name: displayName,
+			provider: { '@id': ORG_ID, '@type': 'GeneralContractor', name: BRAND_NAME },
+			...(p.description ? { description: p.description.slice(0, 300) } : {}),
+			...(p.location ? { locationCreated: { '@type': 'Place', name: p.location } } : {}),
+		}
+		if (p.imageUrl) {
+			item.image = {
+				'@type': 'ImageObject',
+				contentUrl: p.imageUrl,
+				caption: `${displayName} — renovation by ${BRAND_NAME}`,
+				creditText: BRAND_NAME,
+				creator: { '@id': ORG_ID },
+				...(p.imageAlt ? { name: p.imageAlt } : {}),
+			}
+		}
+		return { '@type': 'ListItem', position: i + 1, item }
+	})
+
+	const baImageObjects = projects.flatMap((p) => {
+		if (!p.beforeUrl || !p.afterUrl) return []
+		const label = p.name ?? p.location ?? 'Renovation project'
+		return [
+			{
+				'@type': 'ImageObject',
+				contentUrl: p.beforeUrl,
+				caption: `${label} — before renovation`,
+				creditText: BRAND_NAME,
+				creator: { '@id': ORG_ID },
+			},
+			{
+				'@type': 'ImageObject',
+				contentUrl: p.afterUrl,
+				caption: `${label} — after renovation`,
+				creditText: BRAND_NAME,
+				creator: { '@id': ORG_ID },
+			},
+		]
+	})
+
 	return {
 		'@context': 'https://schema.org',
 		'@graph': [
@@ -250,13 +319,9 @@ export function buildPortfolioJsonLd(
 				'@id': `${SITE_URL}/portfolio/#project-list`,
 				name: 'Completed Renovation Projects — Formo Renovations',
 				numberOfItems: projects.length,
-				itemListElement: projects.map((p, i) => ({
-					'@type': 'ListItem',
-					position: i + 1,
-					name: p.name ?? p.location ?? `Project ${i + 1}`,
-					...(p.description ? { description: p.description.slice(0, 200) } : {}),
-				})),
+				itemListElement: workItems,
 			},
+			...baImageObjects,
 		],
 	}
 }

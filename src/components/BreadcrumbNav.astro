@@ -1,0 +1,101 @@
+---
+interface BreadcrumbItem {
+	label: string
+	href?: string
+}
+
+interface Props {
+	items: BreadcrumbItem[]
+	/** Use 'dark' (default) for light text on dark hero, 'light' for dark text */
+	theme?: 'dark' | 'light'
+}
+
+const { items, theme = 'dark' } = Astro.props
+---
+
+<nav class:list={['bc-nav', `bc-nav--${theme}`]} aria-label="Breadcrumb">
+  <ol class="bc-list">
+    <li class="bc-item">
+      <a href="/" class="bc-link">Home</a>
+      <span class="bc-sep" aria-hidden="true">/</span>
+    </li>
+    {items.map((item, i) => (
+      <li class="bc-item">
+        {item.href ? (
+          <a href={item.href} class="bc-link">{item.label}</a>
+        ) : (
+          <span class="bc-current" aria-current="page">{item.label}</span>
+        )}
+        {i < items.length - 1 && <span class="bc-sep" aria-hidden="true">/</span>}
+      </li>
+    ))}
+  </ol>
+</nav>
+
+<style lang="scss">
+  .bc-nav {
+    display: inline-flex;
+    align-items: center;
+    margin-bottom: 18px;
+  }
+
+  .bc-list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-mono, monospace);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .bc-item {
+    display: flex;
+    align-items: center;
+    gap: 0;
+  }
+
+  .bc-sep {
+    margin: 0 7px;
+    opacity: 0.4;
+  }
+
+  /* Dark theme — for use on dark / gradient hero sections */
+  .bc-nav--dark {
+    .bc-link {
+      color: rgba(255, 255, 255, 0.55);
+      text-decoration: none;
+      transition: color 0.2s;
+
+      &:hover { color: rgba(255, 255, 255, 0.9); }
+    }
+
+    .bc-sep { color: rgba(255, 255, 255, 0.35); }
+
+    .bc-current { color: rgba(255, 255, 255, 0.85); }
+  }
+
+  /* Light theme — for non-hero contexts */
+  .bc-nav--light {
+    .bc-link {
+      color: var(--text-mid, #666);
+      text-decoration: none;
+      transition: color 0.2s;
+
+      &:hover { color: var(--text-dark, #1a1a1a); }
+    }
+
+    .bc-sep { color: #bbb; }
+
+    .bc-current { color: var(--text-dark, #1a1a1a); }
+  }
+
+  @media (max-width: 480px) {
+    .bc-list { font-size: 10px; }
+  }
+</style>

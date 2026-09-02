@@ -2,6 +2,7 @@
 import Layout    from '../layouts/Layout.astro'
 import TheNav    from '../components/vue/TheNav.vue'
 import TheFooter from '../components/TheFooter.astro'
+import BreadcrumbNav from '../components/BreadcrumbNav.astro'
 import {
 	getContactsPage,
 	getSiteSettings,
@@ -49,6 +50,7 @@ const waHref = `https://wa.me/${site.whatsapp.replace(/\D/g, '')}`
     <div class="hero-content">
 
       <div class="hero-left">
+        <BreadcrumbNav items={[{ label: 'Contact' }]} />
         <div class="hero-eyebrow">
           <span class="hero-dot"></span>
           {page.eyebrow}
