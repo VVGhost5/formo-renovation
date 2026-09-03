@@ -64,10 +64,10 @@ if (!pageJsonLd) {
   {page.heroIsShowed && (
   <section id="hero" class:list={['about-page-hero', !page.founderCardIsShowed && 'no-side-card']}>
     <div class="hero-bg-img" style={heroBg} aria-hidden="true"></div>
+    <BreadcrumbNav items={[{ label: 'About Us' }]} />
 
     <div class="hero-content">
       <div class="hero-left">
-        <BreadcrumbNav items={[{ label: 'About Us' }]} />
         <div class="hero-eyebrow">
           <span class="hero-eyebrow-dot"></span>
           {page.locationLabel}

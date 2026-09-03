@@ -6,14 +6,12 @@ interface BreadcrumbItem {
 
 interface Props {
 	items: BreadcrumbItem[]
-	/** Use 'dark' (default) for light text on dark hero, 'light' for dark text */
-	theme?: 'dark' | 'light'
 }
 
-const { items, theme = 'dark' } = Astro.props
+const { items } = Astro.props
 ---
 
-<nav class:list={['bc-nav', `bc-nav--${theme}`]} aria-label="Breadcrumb">
+<nav class="bc-nav" aria-label="Breadcrumb">
   <ol class="bc-list">
     <li class="bc-item">
       <a href="/" class="bc-link">Home</a>
@@ -34,16 +32,19 @@ const { items, theme = 'dark' } = Astro.props
 
 <style lang="scss">
   .bc-nav {
-    display: inline-flex;
-    align-items: center;
-    margin-bottom: 18px;
+    /* Absolute positioning — sits 20px below the fixed 60px nav */
+    position: absolute;
+    top: 80px; /* 60px nav + 20px gap */
+    left: var(--px);
+    z-index: 3;
+    background: transparent;
+    pointer-events: auto;
   }
 
   .bc-list {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 0;
     list-style: none;
     margin: 0;
     padding: 0;
@@ -57,45 +58,35 @@ const { items, theme = 'dark' } = Astro.props
   .bc-item {
     display: flex;
     align-items: center;
-    gap: 0;
   }
 
   .bc-sep {
     margin: 0 7px;
-    opacity: 0.4;
+    color: rgba(255, 255, 255, 0.3);
   }
 
-  /* Dark theme — for use on dark / gradient hero sections */
-  .bc-nav--dark {
-    .bc-link {
-      color: rgba(255, 255, 255, 0.55);
-      text-decoration: none;
-      transition: color 0.2s;
+  .bc-link {
+    color: rgba(255, 255, 255, 0.5);
+    text-decoration: none;
+    transition: color 0.2s;
 
-      &:hover { color: rgba(255, 255, 255, 0.9); }
+    &:hover {
+      color: rgba(255, 255, 255, 0.88);
+    }
+  }
+
+  .bc-current {
+    color: rgba(255, 255, 255, 0.82);
+  }
+
+  /* Mobile: nav shrinks to 54px */
+  @media (max-width: 767px) {
+    .bc-nav {
+      top: 74px; /* 54px nav + 20px gap */
     }
 
-    .bc-sep { color: rgba(255, 255, 255, 0.35); }
-
-    .bc-current { color: rgba(255, 255, 255, 0.85); }
-  }
-
-  /* Light theme — for non-hero contexts */
-  .bc-nav--light {
-    .bc-link {
-      color: var(--text-mid, #666);
-      text-decoration: none;
-      transition: color 0.2s;
-
-      &:hover { color: var(--text-dark, #1a1a1a); }
+    .bc-list {
+      font-size: 10px;
     }
-
-    .bc-sep { color: #bbb; }
-
-    .bc-current { color: var(--text-dark, #1a1a1a); }
-  }
-
-  @media (max-width: 480px) {
-    .bc-list { font-size: 10px; }
   }
 </style>

@@ -47,10 +47,10 @@ const waHref = `https://wa.me/${site.whatsapp.replace(/\D/g, '')}`
   <!-- ══ HERO ══ -->
   <section id="hero" class="contact-page-hero">
     <div class="hero-bg-img" style={heroBg} aria-hidden="true"></div>
+    <BreadcrumbNav items={[{ label: 'Contact' }]} />
     <div class="hero-content">
 
       <div class="hero-left">
-        <BreadcrumbNav items={[{ label: 'Contact' }]} />
         <div class="hero-eyebrow">
           <span class="hero-dot"></span>
           {page.eyebrow}

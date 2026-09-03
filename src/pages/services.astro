@@ -61,10 +61,10 @@ if (!pageJsonLd) {
   {page.heroIsShowed && (
   <section id="hero" class="svc-page-hero">
     <div class="hero-bg-img" style={heroBg} aria-hidden="true"></div>
+    <BreadcrumbNav items={[{ label: 'Services' }]} />
     <div class="hero-content">
 
       <div class="hero-left">
-        <BreadcrumbNav items={[{ label: 'Services' }]} />
         <div class="hero-eyebrow">
           <span class="hero-dot"></span>
           {page.locationLabel}
