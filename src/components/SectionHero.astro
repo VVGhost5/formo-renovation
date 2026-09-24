@@ -36,8 +36,9 @@ const bgStyleAttr = bgStyle(hero.backgroundImageUrl)
     {hero.secondaryCtaLabel && (
       <div class="hero-actions">
         <button
+          type="button"
           class="btn-outline"
-          onclick="document.getElementById('portfolio').scrollIntoView({behavior:'smooth'})"
+          data-scroll-target="portfolio"
         >
           {hero.secondaryCtaLabel}
         </button>

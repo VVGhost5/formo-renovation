@@ -165,14 +165,14 @@ if (service.seo.jsonLd) {
           </>
         )}
         {service.meta.length > 0 && (
-          <div class="svc-meta">
+          <ul class="svc-meta">
             {service.meta.map((m) => (
-              <div class="svc-meta-item">
+              <li class="svc-meta-item">
                 <span class="svc-meta-key">{m.key}</span>
                 <span class="svc-meta-val">{m.val}</span>
-              </div>
+              </li>
             ))}
-          </div>
+          </ul>
         )}
         <a href="#contact" class="svc-cta">Get a Quote for This Service →</a>
       </div>
@@ -191,16 +191,16 @@ if (service.seo.jsonLd) {
       </div>
     </div>
 
-    <div class="process-steps">
+    <ul class="process-steps">
       {page.processSteps.map((step, i) => (
-        <div class="pstep">
+        <li class="pstep">
           <div class="pstep-num">{String(i + 1).padStart(2, '0')}</div>
           <div class="pstep-icon"><i class={step.icon}></i></div>
           <div class="pstep-title">{step.title}</div>
           <p class="pstep-body">{step.body}</p>
-        </div>
+        </li>
       ))}
-    </div>
+    </ul>
   </section>
   )}
 
@@ -216,15 +216,15 @@ if (service.seo.jsonLd) {
         <p class="ph-body">{page.pricingBody}</p>
       </div>
     </div>
-    <div class="ph-cards">
+    <ul class="ph-cards">
       {page.pricingCards.map((card) => (
-        <div class="ph-card">
+        <li class="ph-card">
           <div class="ph-card-icon"><i class={card.icon}></i></div>
           <div class="ph-card-title">{card.title}</div>
           <p class="ph-card-body">{card.body}</p>
-        </div>
+        </li>
       ))}
-    </div>
+    </ul>
   </section>
   )}
 
@@ -249,9 +249,9 @@ if (service.seo.jsonLd) {
         <p class="faq-sub">{faqSub}</p>
       </div>
 
-      <div class="faq-list">
+      <ul class="faq-list">
         {faqItems.map((item) => (
-          <div class="faq-item">
+          <li class="faq-item">
             <button class="faq-q">
               <span class="fq-text">{item.question}</span>
               <div class="fq-icon">+</div>
@@ -259,9 +259,9 @@ if (service.seo.jsonLd) {
             <div class="faq-a">
               <div class="faq-a-inner">{item.answer}</div>
             </div>
-          </div>
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   </section>
   )}

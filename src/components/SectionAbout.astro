@@ -23,23 +23,23 @@ const heroBg = bgStyle(content.heroImageUrl)
     </div>
   </div>
 
-  <div class="about-rows">
+  <ul class="about-rows">
     {content.rows.map((row) => (
-      <div class={`about-row${row.reverse ? ' reverse' : ''}`}>
+      <li class={`about-row${row.reverse ? ' reverse' : ''}`}>
         <div class="about-row-text">
           <div class="about-row-label">{row.label}</div>
           <h3 class="about-row-h3">{row.headingBefore}<em>{row.headingEmphasis}</em></h3>
           {row.paragraphs.map((p) => <p class="about-row-p">{p}</p>)}
-          <div class="about-pills">
-            {row.pills.map((pill) => <span class="about-pill">{pill}</span>)}
-          </div>
+          <ul class="about-pills">
+            {row.pills.map((pill) => <li class="about-pill">{pill}</li>)}
+          </ul>
         </div>
         <div class="about-row-img">
           {row.imageUrl && (
             <img width="720" height="437" src={row.imageUrl} alt={row.imageAlt} loading="lazy" />
           )}
         </div>
-      </div>
+      </li>
     ))}
-  </div>
+  </ul>
 </section>

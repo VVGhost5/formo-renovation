@@ -19,7 +19,7 @@ const heroBg = bgStyle(content.heroImageUrl)
         <em>{content.headlineEmphasis}</em>
       </h2>
       <p class="pricing-hero-desc">{content.heroDescription}</p>
-      <button class="btn-outline-light" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
+      <button type="button" class="btn-outline-light" data-scroll-target="contact">
         {content.heroCtaLabel}
       </button>
     </div>
@@ -31,17 +31,17 @@ const heroBg = bgStyle(content.heroImageUrl)
       <p>{content.introText}</p>
     </div>
 
-    <div class="pricing-grid">
+    <ul class="pricing-grid">
       {content.factors.map((f, i) => (
-        <div class="pfactor-card">
+        <li class="pfactor-card">
           <div class="pfactor-num">{String(i + 1).padStart(2, '0')}</div>
           <div class="pfactor-body">
             <div class="pfactor-title">{f.title}</div>
             <div class="pfactor-desc">{f.description}</div>
           </div>
-        </div>
+        </li>
       ))}
-    </div>
+    </ul>
 
     <div class="pricing-cta-band">
       <div class="pricing-cta-left">
@@ -50,10 +50,10 @@ const heroBg = bgStyle(content.heroImageUrl)
         <p class="pricing-cta-sub">{content.ctaSubtext}</p>
       </div>
       <div class="pricing-cta-right">
-        <button class="btn-dark" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
+        <button type="button" class="btn-dark" data-scroll-target="contact">
           {content.ctaPrimaryLabel}
         </button>
-        <button class="btn-outline" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
+        <button type="button" class="btn-outline" data-scroll-target="contact">
           {content.ctaSecondaryLabel}
         </button>
       </div>

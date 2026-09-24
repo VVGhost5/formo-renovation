@@ -225,9 +225,9 @@ function displayTags(project: Project): string[] {
         <div class="project-num">{{ String(idx + 1).padStart(2, '0') }}</div>
         <div class="project-meta">
           <span class="project-name">{{ p.name }}</span>
-          <div class="project-tags">
-            <span v-for="tag in displayTags(p)" :key="tag" class="project-tag">{{ tag }}</span>
-          </div>
+          <ul class="project-tags">
+            <li v-for="tag in displayTags(p)" :key="tag" class="project-tag">{{ tag }}</li>
+          </ul>
         </div>
         <div class="project-info">
           <div class="project-info-item">
@@ -252,18 +252,18 @@ function displayTags(project: Project): string[] {
               <div class="project-desc-label">About This Project</div>
               <p class="project-desc-text">{{ p.description }}</p>
             </div>
-            <div class="project-specs">
-              <div v-for="s in p.specs" :key="s.key" class="project-spec-row">
+            <ul class="project-specs">
+              <li v-for="s in p.specs" :key="s.key" class="project-spec-row">
                 <span class="project-spec-key">{{ s.key }}</span>
                 <span class="project-spec-val">{{ s.val }}</span>
-              </div>
-            </div>
+              </li>
+            </ul>
           </div>
 
           <!-- Gallery -->
           <div class="project-gallery-label">Photo Gallery</div>
-          <div class="project-gallery has-feature">
-            <div
+          <ul class="project-gallery has-feature">
+            <li
               v-for="(img, i) in p.gallery"
               :key="img.src"
               class="gallery-item"
@@ -279,8 +279,8 @@ function displayTags(project: Project): string[] {
               <div class="gallery-item-overlay">
                 <div class="gallery-zoom-icon">⤢</div>
               </div>
-            </div>
-          </div>
+            </li>
+          </ul>
 
           <!-- Before / After slider — only when both images exist -->
           <template v-if="p.baBefore && p.baAfter">

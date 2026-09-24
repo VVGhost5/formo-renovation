@@ -83,7 +83,9 @@ if (!pageJsonLd) {
 
       <div class="hero-quick">
         <div class="hero-quick-label">Jump to a service</div>
+        <ul>
         {services.map((svc) => (
+          <li>
           <a href={`/services/${svc.pageSlug}/`} class="hero-quick-item">
             <div class="hqi-icon"><i class={svc.icon}></i></div>
             <div class="hqi-body">
@@ -92,7 +94,9 @@ if (!pageJsonLd) {
             </div>
             <span class="hqi-arr">→</span>
           </a>
+          </li>
         ))}
+        </ul>
       </div>
 
     </div>
@@ -102,15 +106,17 @@ if (!pageJsonLd) {
   {page.listIsShowed && (
   <>
   <section id="services-strip">
-    <div class="strip-inner">
+    <ul class="strip-inner">
       {services.map((svc, i) => (
-        <a href={`/services/${svc.pageSlug}/`} class="strip-cell">
+        <li class="strip-cell">
+        <a href={`/services/${svc.pageSlug}/`}>
           <div class="sc-icon"><i class={svc.icon}></i></div>
           <div class="sc-name">{svc.stripName}</div>
           <div class="sc-count">Service {String(i + 1).padStart(2, '0')}</div>
         </a>
+        </li>
       ))}
-    </div>
+    </ul>
   </section>
 
   <!-- ══ SERVICES LIST ══ -->
@@ -142,14 +148,14 @@ if (!pageJsonLd) {
             </>
           )}
           {svc.meta.length > 0 && (
-            <div class="svc-meta">
+            <ul class="svc-meta">
               {svc.meta.map((m) => (
-                <div class="svc-meta-item">
+                <li class="svc-meta-item">
                   <span class="svc-meta-key">{m.key}</span>
                   <span class="svc-meta-val">{m.val}</span>
-                </div>
+                </li>
               ))}
-            </div>
+            </ul>
           )}
           <a href={`/services/${svc.pageSlug}/`} class="svc-cta">Learn More About This Service →</a>
         </div>
@@ -170,16 +176,16 @@ if (!pageJsonLd) {
       </div>
     </div>
 
-    <div class="process-steps">
+    <ul class="process-steps">
       {page.processSteps.map((step, i) => (
-        <div class="pstep">
+        <li class="pstep">
           <div class="pstep-num">{String(i + 1).padStart(2, '0')}</div>
           <div class="pstep-icon"><i class={step.icon}></i></div>
           <div class="pstep-title">{step.title}</div>
           <p class="pstep-body">{step.body}</p>
-        </div>
+        </li>
       ))}
-    </div>
+    </ul>
   </section>
   )}
 
@@ -195,15 +201,15 @@ if (!pageJsonLd) {
         <p class="ph-body">{page.pricingBody}</p>
       </div>
     </div>
-    <div class="ph-cards">
+    <ul class="ph-cards">
       {page.pricingCards.map((card) => (
-        <div class="ph-card">
+        <li class="ph-card">
           <div class="ph-card-icon"><i class={card.icon}></i></div>
           <div class="ph-card-title">{card.title}</div>
           <p class="ph-card-body">{card.body}</p>
-        </div>
+        </li>
       ))}
-    </div>
+    </ul>
   </section>
   )}
 
@@ -216,9 +222,9 @@ if (!pageJsonLd) {
         <p class="faq-sub">{page.faqSub}</p>
       </div>
 
-      <div class="faq-list">
+      <ul class="faq-list">
         {page.faqItems.map((item) => (
-          <div class="faq-item">
+          <li class="faq-item">
             <button class="faq-q">
               <span class="fq-text">{item.question}</span>
               <div class="fq-icon">+</div>
@@ -226,9 +232,9 @@ if (!pageJsonLd) {
             <div class="faq-a">
               <div class="faq-a-inner">{item.answer}</div>
             </div>
-          </div>
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   </section>
   )}

@@ -31,6 +31,16 @@
   grid-template-columns: repeat(6, 1fr);
   gap: 10px;
   margin-top: 28px;
+
+  > li {
+    display: flex;
+    min-width: 0;
+  }
+
+  > li > .svc-card {
+    width: 100%;
+    flex: 1;
+  }
 }
 
 .svc-card {

@@ -166,8 +166,9 @@ function setRating(n: number) {
         <p class="rvs-empty-sub">Be the first to share your experience with Formo Renovations.</p>
       </div>
 
-      <div v-else class="rvs-grid">
-        <article v-for="review in reviews" :key="review._id" class="rv-card">
+      <ul v-else class="rvs-grid">
+        <li v-for="review in reviews" :key="review._id">
+        <article class="rv-card">
           <div class="rv-card-top">
             <div class="rv-avatar">{{ review.name?.charAt(0)?.toUpperCase() || '?' }}</div>
             <div class="rv-meta">
@@ -192,7 +193,8 @@ function setRating(n: number) {
           </div>
           <p class="rv-comment">"{{ review.comment }}"</p>
         </article>
-      </div>
+        </li>
+      </ul>
 
     </div>
   </section>

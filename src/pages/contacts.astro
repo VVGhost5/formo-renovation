@@ -65,6 +65,8 @@ const waHref = `https://wa.me/${site.whatsapp.replace(/\D/g, '')}`
 
       <div class="hero-channels">
         <div class="hc-label">Reach us directly</div>
+        <ul>
+        <li>
         <a href={phoneHref} class="hc-card">
           <div class="hc-icon-wrap"><i class="fa-solid fa-phone"></i></div>
           <div class="hc-body">
@@ -73,6 +75,8 @@ const waHref = `https://wa.me/${site.whatsapp.replace(/\D/g, '')}`
           </div>
           <span class="hc-arrow">→</span>
         </a>
+        </li>
+        <li>
         <a href={`mailto:${site.email}`} class="hc-card">
           <div class="hc-icon-wrap"><i class="fa-solid fa-envelope"></i></div>
           <div class="hc-body">
@@ -81,6 +85,8 @@ const waHref = `https://wa.me/${site.whatsapp.replace(/\D/g, '')}`
           </div>
           <span class="hc-arrow">→</span>
         </a>
+        </li>
+        <li>
         <a href={waHref} class="hc-card">
           <div class="hc-icon-wrap"><i class="fa-brands fa-whatsapp"></i></div>
           <div class="hc-body">
@@ -89,6 +95,8 @@ const waHref = `https://wa.me/${site.whatsapp.replace(/\D/g, '')}`
           </div>
           <span class="hc-arrow">→</span>
         </a>
+        </li>
+        <li>
         <a href="#contact-main" class="hc-card">
           <div class="hc-icon-wrap"><i class="fa-solid fa-clipboard-list"></i></div>
           <div class="hc-body">
@@ -97,6 +105,8 @@ const waHref = `https://wa.me/${site.whatsapp.replace(/\D/g, '')}`
           </div>
           <span class="hc-arrow">→</span>
         </a>
+        </li>
+        </ul>
       </div>
 
     </div>
@@ -133,15 +143,15 @@ const waHref = `https://wa.me/${site.whatsapp.replace(/\D/g, '')}`
           </div>
           <div class="fg">
             <label>Services You're Interested In</label>
-            <div class="service-checks" id="service-checks">
-              <label class="sc-item"><input type="checkbox" value="bathroom" /><div class="sc-check">✓</div><span class="sc-emoji"><i class="fa-solid fa-shower"></i></span><span class="sc-label">Bathroom</span></label>
-              <label class="sc-item"><input type="checkbox" value="kitchen" /><div class="sc-check">✓</div><span class="sc-emoji"><i class="fa-solid fa-kitchen-set"></i></span><span class="sc-label">Kitchen</span></label>
-              <label class="sc-item"><input type="checkbox" value="living" /><div class="sc-check">✓</div><span class="sc-emoji"><i class="fa-solid fa-couch"></i></span><span class="sc-label">Living / Bedroom</span></label>
-              <label class="sc-item"><input type="checkbox" value="full" /><div class="sc-check">✓</div><span class="sc-emoji"><i class="fa-solid fa-house"></i></span><span class="sc-label">Full Home</span></label>
-              <label class="sc-item"><input type="checkbox" value="flooring" /><div class="sc-check">✓</div><span class="sc-emoji"><i class="fa-solid fa-layer-group"></i></span><span class="sc-label">Flooring</span></label>
-              <label class="sc-item"><input type="checkbox" value="finishing" /><div class="sc-check">✓</div><span class="sc-emoji"><i class="fa-solid fa-paint-roller"></i></span><span class="sc-label">Interior Finishing</span></label>
-              <label class="sc-item"><input type="checkbox" value="finish-carpentry" /><div class="sc-check">✓</div><span class="sc-emoji"><i class="fa-solid fa-hammer"></i></span><span class="sc-label">Finish Carpentry</span></label>
-            </div>
+            <ul class="service-checks" id="service-checks">
+              <li><label class="sc-item"><input type="checkbox" value="bathroom" /><div class="sc-check">✓</div><span class="sc-emoji"><i class="fa-solid fa-shower"></i></span><span class="sc-label">Bathroom</span></label></li>
+              <li><label class="sc-item"><input type="checkbox" value="kitchen" /><div class="sc-check">✓</div><span class="sc-emoji"><i class="fa-solid fa-kitchen-set"></i></span><span class="sc-label">Kitchen</span></label></li>
+              <li><label class="sc-item"><input type="checkbox" value="living" /><div class="sc-check">✓</div><span class="sc-emoji"><i class="fa-solid fa-couch"></i></span><span class="sc-label">Living / Bedroom</span></label></li>
+              <li><label class="sc-item"><input type="checkbox" value="full" /><div class="sc-check">✓</div><span class="sc-emoji"><i class="fa-solid fa-house"></i></span><span class="sc-label">Full Home</span></label></li>
+              <li><label class="sc-item"><input type="checkbox" value="flooring" /><div class="sc-check">✓</div><span class="sc-emoji"><i class="fa-solid fa-layer-group"></i></span><span class="sc-label">Flooring</span></label></li>
+              <li><label class="sc-item"><input type="checkbox" value="finishing" /><div class="sc-check">✓</div><span class="sc-emoji"><i class="fa-solid fa-paint-roller"></i></span><span class="sc-label">Interior Finishing</span></label></li>
+              <li><label class="sc-item"><input type="checkbox" value="finish-carpentry" /><div class="sc-check">✓</div><span class="sc-emoji"><i class="fa-solid fa-hammer"></i></span><span class="sc-label">Finish Carpentry</span></label></li>
+            </ul>
           </div>
           <div class="fg">
             <label>Approximate Budget</label>
@@ -182,6 +192,8 @@ const waHref = `https://wa.me/${site.whatsapp.replace(/\D/g, '')}`
 
       <!-- INFO SIDEBAR -->
       <div class="info-side">
+        <ul class="info-channels">
+        <li>
         <a href={phoneHref} class="info-channel">
           <div class="ic-icon"><i class="fa-solid fa-phone"></i></div>
           <div class="ic-body">
@@ -191,7 +203,8 @@ const waHref = `https://wa.me/${site.whatsapp.replace(/\D/g, '')}`
           </div>
           <span class="ic-arrow">→</span>
         </a>
-
+        </li>
+        <li>
         <a href={`mailto:${site.email}`} class="info-channel">
           <div class="ic-icon"><i class="fa-solid fa-envelope"></i></div>
           <div class="ic-body">
@@ -201,7 +214,8 @@ const waHref = `https://wa.me/${site.whatsapp.replace(/\D/g, '')}`
           </div>
           <span class="ic-arrow">→</span>
         </a>
-
+        </li>
+        <li>
         <a href={waHref} class="info-channel">
           <div class="ic-icon"><i class="fa-brands fa-whatsapp"></i></div>
           <div class="ic-body">
@@ -211,17 +225,19 @@ const waHref = `https://wa.me/${site.whatsapp.replace(/\D/g, '')}`
           </div>
           <span class="ic-arrow">→</span>
         </a>
+        </li>
+        </ul>
 
         <div class="info-hours">
           <div class="ih-header">
             <div class="ih-icon"><i class="fa-regular fa-clock"></i></div>
             <div class="ih-title">Office Hours</div>
           </div>
-          <div class="ih-rows">
-            <div class="ih-row"><span class="ih-day">Monday – Friday</span><span class="ih-time">{site.officeWeekdayHours}</span></div>
-            <div class="ih-row"><span class="ih-day">Saturday</span><span class="ih-closed">Closed</span></div>
-            <div class="ih-row"><span class="ih-day">Sunday</span><span class="ih-closed">Closed</span></div>
-          </div>
+          <ul class="ih-rows">
+            <li class="ih-row"><span class="ih-day">Monday – Friday</span><span class="ih-time">{site.officeWeekdayHours}</span></li>
+            <li class="ih-row"><span class="ih-day">Saturday</span><span class="ih-closed">Closed</span></li>
+            <li class="ih-row"><span class="ih-day">Sunday</span><span class="ih-closed">Closed</span></li>
+          </ul>
         </div>
       </div>
 
@@ -250,20 +266,20 @@ const waHref = `https://wa.me/${site.whatsapp.replace(/\D/g, '')}`
         <p class="map-info-desc">
           Based in Victoria, BC, our team travels across Vancouver Island for the right project. Free on-site consultations are available throughout our full service area — no travel charge for locations within 60 km of Victoria.
         </p>
-        <div class="map-areas">
-          <div class="map-area-tag">Fairfield</div>
-          <div class="map-area-tag">Oak Bay</div>
-          <div class="map-area-tag">Saanich</div>
-          <div class="map-area-tag">James Bay</div>
-          <div class="map-area-tag">Esquimalt</div>
-          <div class="map-area-tag">Langford</div>
-          <div class="map-area-tag">Colwood</div>
-          <div class="map-area-tag">Sidney</div>
-          <div class="map-area-tag">Nanaimo</div>
-          <div class="map-area-tag">Parksville</div>
-          <div class="map-area-tag">Comox</div>
-          <div class="map-area-tag">+ surrounding areas</div>
-        </div>
+        <ul class="map-areas">
+          <li class="map-area-tag">Fairfield</li>
+          <li class="map-area-tag">Oak Bay</li>
+          <li class="map-area-tag">Saanich</li>
+          <li class="map-area-tag">James Bay</li>
+          <li class="map-area-tag">Esquimalt</li>
+          <li class="map-area-tag">Langford</li>
+          <li class="map-area-tag">Colwood</li>
+          <li class="map-area-tag">Sidney</li>
+          <li class="map-area-tag">Nanaimo</li>
+          <li class="map-area-tag">Parksville</li>
+          <li class="map-area-tag">Comox</li>
+          <li class="map-area-tag">+ surrounding areas</li>
+        </ul>
         <a href="#contact-main" class="map-consult-btn">Book a Free Consultation →</a>
       </div>
     </div>

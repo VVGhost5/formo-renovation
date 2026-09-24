@@ -53,5 +53,14 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site)
   </head>
   <body>
     <slot />
+    <script>
+      document.querySelectorAll<HTMLElement>('[data-scroll-target]').forEach((el) => {
+        el.addEventListener('click', () => {
+          const id = el.dataset.scrollTarget
+          if (!id) return
+          document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+        })
+      })
+    </script>
   </body>
 </html>

@@ -147,34 +147,34 @@ function startDrag(e: MouseEvent | TouchEvent) {
         </div>
 
         <template v-if="projects.length">
-          <div class="ba-tabs">
+          <ul class="ba-tabs">
+            <li v-for="(p, i) in projects" :key="p.name">
             <button
-              v-for="(p, i) in projects"
-              :key="p.name"
               class="ba-tab"
               :class="{ active: activeIdx === i }"
               @click="loadProject(i)"
             >{{ p.name }}</button>
-          </div>
+            </li>
+          </ul>
 
-          <div class="ba-info">
-            <div class="ba-info-cell">
+          <ul class="ba-info">
+            <li class="ba-info-cell">
               <div class="ba-info-label">Project</div>
               <div class="ba-info-value">{{ active().name }}</div>
-            </div>
-            <div class="ba-info-cell">
+            </li>
+            <li class="ba-info-cell">
               <div class="ba-info-label">Location</div>
               <div class="ba-info-value">{{ active().loc }}</div>
-            </div>
-            <div class="ba-info-cell">
+            </li>
+            <li class="ba-info-cell">
               <div class="ba-info-label">Duration</div>
               <div class="ba-info-value">{{ active().dur }}</div>
-            </div>
-            <div class="ba-info-cell">
+            </li>
+            <li class="ba-info-cell">
               <div class="ba-info-label">Completed</div>
               <div class="ba-info-value">{{ active().year }}</div>
-            </div>
-          </div>
+            </li>
+          </ul>
         </template>
 
         <a href="/portfolio/" class="btn-outline">{{ banner.ctaLabel }}</a>

@@ -19,20 +19,20 @@ const heroBg = bgStyle(content.heroImageUrl)
         <em>{content.headlineEmphasis}</em>
       </h2>
       <p class="process-desc">{content.description}</p>
-      <button class="btn-outline-light" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
+      <button type="button" class="btn-outline-light" data-scroll-target="contact">
         {content.ctaLabel}
       </button>
     </div>
   </div>
 
-  <div class="process-grid">
+  <ul class="process-grid">
     {content.steps.map((s, i) => (
-      <div class="pstep-card">
+      <li class="pstep-card">
         <div class="pstep-big-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</div>
         <div class="pstep-title">{s.title}</div>
         <div class="pstep-desc">{s.description}</div>
         <div class="pstep-arrow" aria-hidden="true">{i === content.steps.length - 1 ? '✓' : '→'}</div>
-      </div>
+      </li>
     ))}
-  </div>
+  </ul>
 </section>

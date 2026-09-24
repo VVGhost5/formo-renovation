@@ -105,7 +105,8 @@ onUnmounted(() => document.removeEventListener('keydown', onKey))
 
         <div class="cd-body">
           <!-- Contact channels -->
-          <div class="cd-channels">
+          <ul class="cd-channels">
+            <li>
             <a :href="`tel:${(phone ?? '+12500000000').replace(/\D/g,'')}`" class="cd-channel">
               <span class="cd-ch-icon"><i class="fa-solid fa-phone"></i></span>
               <div class="cd-ch-body">
@@ -115,7 +116,8 @@ onUnmounted(() => document.removeEventListener('keydown', onKey))
               </div>
               <span class="cd-ch-arrow">→</span>
             </a>
-
+            </li>
+            <li>
             <a :href="`mailto:${email ?? 'hello@formorenovations.ca'}`" class="cd-channel">
               <span class="cd-ch-icon"><i class="fa-solid fa-envelope"></i></span>
               <div class="cd-ch-body">
@@ -125,7 +127,8 @@ onUnmounted(() => document.removeEventListener('keydown', onKey))
               </div>
               <span class="cd-ch-arrow">→</span>
             </a>
-          </div>
+            </li>
+          </ul>
 
           <!-- Working hours -->
           <div class="cd-hours">
@@ -133,20 +136,20 @@ onUnmounted(() => document.removeEventListener('keydown', onKey))
               <span class="cd-hours-icon"><i class="fa-regular fa-clock"></i></span>
               <span class="cd-hours-title">Working Hours</span>
             </div>
-            <div class="cd-hours-rows">
-              <div class="cd-hours-row">
+            <ul class="cd-hours-rows">
+              <li class="cd-hours-row">
                 <span class="cd-hours-day">Monday – Friday</span>
                 <span class="cd-hours-time">{{ officeWeekdayHours ?? '8:00 AM – 5:00 PM' }}</span>
-              </div>
-              <div class="cd-hours-row">
+              </li>
+              <li class="cd-hours-row">
                 <span class="cd-hours-day">Saturday</span>
                 <span class="cd-hours-closed">Closed</span>
-              </div>
-              <div class="cd-hours-row">
+              </li>
+              <li class="cd-hours-row">
                 <span class="cd-hours-day">Sunday</span>
                 <span class="cd-hours-closed">Closed</span>
-              </div>
-            </div>
+              </li>
+            </ul>
           </div>
 
           <!-- Quick form -->

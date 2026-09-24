@@ -87,8 +87,8 @@ function goTo(i: number) {
     </div>
 
     <div v-if="testimonials.length" class="testi-slider-wrap">
-      <div class="testi-track" :style="trackStyle">
-        <div v-for="t in testimonials" :key="`${t.name}-${t.meta}-${t.text.slice(0, 24)}`" class="testi-card">
+      <ul class="testi-track" :style="trackStyle">
+        <li v-for="t in testimonials" :key="`${t.name}-${t.meta}-${t.text.slice(0, 24)}`" class="testi-card">
           <div class="testi-stars">
             <span
               v-for="i in 5"
@@ -105,8 +105,8 @@ function goTo(i: number) {
               <div v-if="t.meta" class="testi-meta">{{ t.meta }}</div>
             </div>
           </div>
-        </div>
-      </div>
+        </li>
+      </ul>
     </div>
 
     <div v-if="testimonials.length > VISIBLE" class="testi-dots">

@@ -115,6 +115,8 @@
 // ── Project tabs ──────────────────────────────────────────────────────────────
 .ba-tabs {
   display: flex; flex-direction: column; gap: 6px;
+
+  > li > .ba-tab { width: 100%; }
 }
 
 .ba-tab {

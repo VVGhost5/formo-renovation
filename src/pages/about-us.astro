@@ -98,16 +98,16 @@ if (!pageJsonLd) {
             <div class="hero-founder-role">{page.founderRole}</div>
           </div>
           <p class="hero-founder-quote">{page.founderQuote}</p>
-          <div class="hero-founder-stats">
+          <ul class="hero-founder-stats">
             {page.founderStats.map((stat) => (
-              <div class="hfs-cell">
+              <li class="hfs-cell">
                 <div class="hfs-val">
                   {stat.value}{stat.suffix ? <sup>{stat.suffix}</sup> : null}
                 </div>
                 <div class="hfs-label">{stat.label}</div>
-              </div>
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
       )}
     </div>
@@ -129,11 +129,11 @@ if (!pageJsonLd) {
         {page.whoBody.map((para) => (
           <p class="who-body">{para}</p>
         ))}
-        <div class="who-pills">
+        <ul class="who-pills">
           {page.whoPills.map((pill) => (
-            <span class="who-pill">{pill}</span>
+            <li class="who-pill">{pill}</li>
           ))}
-        </div>
+        </ul>
         <a href={page.whoCtaLink} class="btn-dark" style="width:fit-content;">{page.whoCtaLabel}</a>
       </div>
     </div>
@@ -155,18 +155,18 @@ if (!pageJsonLd) {
       <p class="story-lead">{page.storyLead}</p>
     </div>
 
-    <div class="timeline">
+    <ul class="timeline">
       {page.timeline.map((item) => (
-        <div class={`tl-item${item.highlight ? ' highlight' : ''}`}>
+        <li class={`tl-item${item.highlight ? ' highlight' : ''}`}>
           <div class="tl-dot"></div>
           <div class="tl-year">{item.year}</div>
           <div class="tl-body">
             <div class="tl-title">{item.title}</div>
             <p class="tl-text">{item.text}</p>
           </div>
-        </div>
+        </li>
       ))}
-    </div>
+    </ul>
   </section>
   )}
 
@@ -184,16 +184,16 @@ if (!pageJsonLd) {
       </div>
     </div>
 
-    <div class="values-grid">
+    <ul class="values-grid">
       {page.valueCards.map((card, i) => (
-        <div class="val-card">
+        <li class="val-card">
           <div class="val-icon"><i class={card.icon}></i></div>
           <div class="val-num">{String(i + 1).padStart(2, '0')}</div>
           <div class="val-title">{card.title}</div>
           <p class="val-body">{card.body}</p>
-        </div>
+        </li>
       ))}
-    </div>
+    </ul>
   </section>
   )}
 
@@ -210,9 +210,9 @@ if (!pageJsonLd) {
       <p class="team-desc">{page.teamDescription}</p>
     </div>
 
-    <div class="team-grid">
+    <ul class="team-grid">
       {page.teamMembers.map((member) => (
-        <div class="team-card">
+        <li class="team-card">
           {member.photoUrl && (
             <img width="309" height="412" class="team-photo" src={member.photoUrl} alt={member.name} loading="lazy" />
           )}
@@ -221,9 +221,9 @@ if (!pageJsonLd) {
             <div class="team-card-role">{member.role}</div>
             <p class="team-card-bio">{member.bio}</p>
           </div>
-        </div>
+        </li>
       ))}
-    </div>
+    </ul>
   </section>
   )}
 
@@ -238,9 +238,9 @@ if (!pageJsonLd) {
       </div>
     </div>
 
-    <div class="why-rows">
+    <ul class="why-rows">
       {page.whyRows.map((row, i) => (
-        <div class={`why-row${i % 2 !== 0 ? ' alt' : ''}`}>
+        <li class={`why-row${i % 2 !== 0 ? ' alt' : ''}`}>
           <div class="why-row-img">
             {row.imageUrl && (
               <img width="720" height="426" src={row.imageUrl} alt={row.imageAlt} loading="lazy" />
@@ -251,15 +251,15 @@ if (!pageJsonLd) {
             <div class="mono-label">{row.label}</div>
             <h3 class="why-row-title">{row.title}</h3>
             <p class="why-row-body">{row.body}</p>
-            <div class="why-row-pills">
+            <ul class="why-row-pills">
               {row.pills.map((pill) => (
-                <span class="why-pill">{pill}</span>
+                <li class="why-pill">{pill}</li>
               ))}
-            </div>
+            </ul>
           </div>
-        </div>
+        </li>
       ))}
-    </div>
+    </ul>
   </section>
   )}
 
@@ -271,27 +271,27 @@ if (!pageJsonLd) {
         <h2 class="cert-headline">{page.certHeadline} <em>{page.certHeadlineEmphasis}</em></h2>
         <p class="cert-desc">{page.certDescription}</p>
       </div>
-      <div class="cert-badges">
+      <ul class="cert-badges">
         {page.certBadges.map((badge) => (
-          <div class="cert-badge">
+          <li class="cert-badge">
             <div class="cert-badge-icon"><i class={badge.icon}></i></div>
             <div class="cert-badge-name">{badge.name}</div>
-          </div>
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
 
-    <div class="guarantee-grid">
+    <ul class="guarantee-grid">
       {page.guaranteeCards.map((card) => (
-        <div class="guar-card">
+        <li class="guar-card">
           <div class="guar-icon"><i class={card.icon}></i></div>
           <div class="guar-body">
             <div class="guar-title">{card.title}</div>
             <p class="guar-text">{card.text}</p>
           </div>
-        </div>
+        </li>
       ))}
-    </div>
+    </ul>
   </section>
   )}
 

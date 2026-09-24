@@ -14,15 +14,15 @@ const {content} = Astro.props
       <h2 class="numbers-headline">{content.headline}</h2>
     </div>
 
-    <div class="numbers-stats">
+    <ul class="numbers-stats">
       {content.stats.map((stat) => (
-        <div class="stat-item">
+        <li class="stat-item">
           <div class="stat-val">
             {stat.value}{stat.suffix ? <sup>{stat.suffix}</sup> : null}
           </div>
           <div class="stat-label">{stat.label}</div>
-        </div>
+        </li>
       ))}
-    </div>
+    </ul>
   </div>
 </section>

@@ -23,8 +23,9 @@ const heroBg = bgStyle(content.heroImageUrl)
     </div>
   </div>
 
-  <div class="portfolio-grid">
+  <ul class="portfolio-grid">
     {content.projects.map((p) => (
+      <li>
       <a class="port-card" href="/portfolio/" aria-label={`View portfolio: ${p.title}`}>
         <span class="port-tag">{p.tag}</span>
         {p.imageUrl && (
@@ -36,6 +37,7 @@ const heroBg = bgStyle(content.heroImageUrl)
         </div>
         <div class="port-card-arr">→</div>
       </a>
+      </li>
     ))}
-  </div>
+  </ul>
 </section>

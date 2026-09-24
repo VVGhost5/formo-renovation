@@ -173,7 +173,11 @@ nav {
 }
 
 /* Contact channels */
-.cd-channels { display: flex; flex-direction: column; gap: 10px; }
+.cd-channels {
+  display: flex; flex-direction: column; gap: 10px;
+
+  > li > .cd-channel { width: 100%; }
+}
 
 .cd-channel {
   display: flex; align-items: flex-start; gap: 14px;

@@ -80,32 +80,32 @@ const waHref = `https://wa.me/${site.whatsapp.replace(/\D/g, '')}`
     </div>
   </div>
 
-  <div class="contact-info-bar">
-    <div class="cinfo-card">
+  <ul class="contact-info-bar">
+    <li class="cinfo-card">
       <div class="cinfo-icon"><i class="fa-solid fa-phone"></i></div>
       <div class="cinfo-label">Phone</div>
       <div class="cinfo-value"><a href={phoneHref}>{site.phone}</a></div>
       <div class="cinfo-note">{site.phoneHours}</div>
-    </div>
-    <div class="cinfo-card">
+    </li>
+    <li class="cinfo-card">
       <div class="cinfo-icon"><i class="fa-solid fa-envelope"></i></div>
       <div class="cinfo-label">Email</div>
       <div class="cinfo-value"><a href={`mailto:${site.email}`}>{site.email}</a></div>
       <div class="cinfo-note">{site.emailNote}</div>
-    </div>
-    <div class="cinfo-card">
+    </li>
+    <li class="cinfo-card">
       <div class="cinfo-icon"><i class="fa-brands fa-whatsapp"></i></div>
       <div class="cinfo-label">WhatsApp</div>
       <div class="cinfo-value"><a href={waHref}>{site.whatsapp}</a></div>
       <div class="cinfo-note">{site.whatsappNote}</div>
-    </div>
-    <div class="cinfo-card">
+    </li>
+    <li class="cinfo-card">
       <div class="cinfo-icon"><i class="fa-solid fa-location-dot"></i></div>
       <div class="cinfo-label">Service Area</div>
       <div class="cinfo-value">{site.serviceArea}</div>
       <div class="cinfo-note">{site.serviceAreaNote}</div>
-    </div>
-  </div>
+    </li>
+  </ul>
 </section>
 
 <script>

@@ -52,6 +52,19 @@
   grid-template-rows: 300px 300px;
   gap: 10px;
   margin: 0 var(--px);
+
+  > li {
+    display: flex;
+    min-width: 0;
+  }
+
+  > li:first-child { grid-row: span 2; }
+
+  > li > .port-card {
+    width: 100%;
+    height: 100%;
+    flex: 1;
+  }
 }
 
 .port-card {
@@ -62,8 +75,6 @@
   display: block;
   text-decoration: none;
   color: inherit;
-
-  &:first-child { grid-row: span 2; }
 
   img {
     width: 100%; height: 100%; object-fit: cover; display: block;
@@ -118,8 +129,8 @@
 
 @media (max-width: 1023px) {
   .portfolio-grid { display: flex; flex-direction: column; gap: 10px; }
+  .portfolio-grid > li:first-child { grid-row: unset; }
   .port-card { flex: none; width: 100%; aspect-ratio: 16/9; }
-  .port-card:first-child { grid-row: unset; aspect-ratio: 16/9; }
   .port-card-body { opacity: 1; }
   .portfolio-hero { min-height: 320px; }
   .portfolio-hero-content { padding: 44px var(--px) 40px; }
