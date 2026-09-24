@@ -1,0 +1,7 @@
+{
+  "assets": {
+    // API routes are on-demand. Without this, 404-page handling
+    // answers POST /api/* with 405 before the Worker runs.
+    "run_worker_first": ["/api/*"]
+  }
+}
