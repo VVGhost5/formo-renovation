@@ -1,7 +1,12 @@
 {
+  "name": "formo-renovation",
+  "main": "@astrojs/cloudflare/entrypoints/server",
+  "compatibility_date": "2026-04-15",
+  "compatibility_flags": ["nodejs_compat"],
   "assets": {
-    // API routes are on-demand. Without this, 404-page handling
-    // answers POST /api/* with 405 before the Worker runs.
+    // Unknown URLs stay on the static 404 page, but /api/* must hit the Worker.
+    // Otherwise POST is rejected with 405 before contact.ts runs.
+    "not_found_handling": "404-page",
     "run_worker_first": ["/api/*"]
   }
 }
