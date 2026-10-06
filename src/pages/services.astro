@@ -18,6 +18,7 @@ import {
 } from '../utils/sanity'
 import {bgStyle} from '../utils/sanity/backgrounds'
 import {buildServicesCollectionJsonLd} from '../utils/structuredData'
+import {doorCardImage} from '../utils/doorsImages'
 
 let page = DEFAULT_SERVICES_PAGE
 let services = DEFAULT_SERVICES
@@ -37,6 +38,9 @@ try {
 	console.warn('[sanity] Services page fallback.', err)
 }
 
+services = services.filter((svc) => svc.pageSlug !== 'doors')
+const doorsTeaser = doorCardImage('front-entry')
+
 const heroBg = bgStyle(page.heroImageUrl)
 const processBg = bgStyle(page.processHeroBackgroundUrl)
 
@@ -45,9 +49,10 @@ if (pageMeta.jsonLd) {
 	try { pageJsonLd = JSON.parse(pageMeta.jsonLd) } catch {}
 }
 if (!pageJsonLd) {
-	pageJsonLd = buildServicesCollectionJsonLd(
-		services.map((s) => ({ pageSlug: s.pageSlug, quickName: s.quickName, lead: s.lead })),
-	)
+	pageJsonLd = buildServicesCollectionJsonLd([
+		...services.map((s) => ({ pageSlug: s.pageSlug, quickName: s.quickName, lead: s.lead })),
+		{ pageSlug: 'doors', quickName: 'Doors', lead: 'Door installation and repair for homes and businesses in Victoria, BC.' },
+	])
 }
 ---
 
@@ -96,6 +101,16 @@ if (!pageJsonLd) {
           </a>
           </li>
         ))}
+          <li>
+          <a href="/services/doors/" class="hero-quick-item">
+            <div class="hqi-icon"><i class="fa-solid fa-door-open"></i></div>
+            <div class="hqi-body">
+              <div class="hqi-name">Doors</div>
+              <div class="hqi-sub">Installation & repair</div>
+            </div>
+            <span class="hqi-arr">→</span>
+          </a>
+          </li>
         </ul>
       </div>
 
@@ -116,6 +131,13 @@ if (!pageJsonLd) {
         </a>
         </li>
       ))}
+        <li class="strip-cell">
+        <a href="/services/doors/">
+          <div class="sc-icon"><i class="fa-solid fa-door-open"></i></div>
+          <div class="sc-name">Doors</div>
+          <div class="sc-count">Service {String(services.length + 1).padStart(2, '0')}</div>
+        </a>
+        </li>
     </ul>
   </section>
 
@@ -161,6 +183,30 @@ if (!pageJsonLd) {
         </div>
       </div>
     ))}
+    <div class={`svc-block${services.length % 2 !== 0 ? ' flip' : ''}`} id="svc-doors">
+      <div class="svc-img-col">
+        {doorsTeaser && (
+          <img width="720" height="540" src={doorsTeaser.src} alt={doorsTeaser.alt} loading="lazy" />
+        )}
+        <div class="svc-img-badge">
+          <span class="svc-img-badge-icon"><i class="fa-solid fa-door-open"></i></span>
+          <span class="svc-img-badge-text">Door installation & repair</span>
+        </div>
+      </div>
+      <div class="svc-text-col">
+        <div class="svc-num">{String(services.length + 1).padStart(2, '0')}</div>
+        <div class="svc-eyebrow">Victoria, BC</div>
+        <h2 class="svc-title">Doors</h2>
+        <p class="svc-lead">New installations, replacements, and repairs for homes and businesses — from the front entry to commercial and industrial doors.</p>
+        <div class="svc-includes-label">What's included</div>
+        <ul class="svc-includes">
+          <li>Front entry, patio, and interior doors</li>
+          <li>Garage and commercial entrances</li>
+          <li>Door repairs</li>
+        </ul>
+        <a href="/services/doors/" class="svc-cta">Explore Door Services →</a>
+      </div>
+    </div>
   </section>
   </>
   )}

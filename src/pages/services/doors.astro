@@ -1,0 +1,386 @@
+---
+import Layout from '../../layouts/Layout.astro'
+import TheNav from '../../components/vue/TheNav.vue'
+import TheFooter from '../../components/TheFooter.astro'
+import SectionContact from '../../components/SectionContact.astro'
+import DoorsServiceCard from '../../components/DoorsServiceCard.astro'
+import {
+	getDoorsPage,
+	getSiteSettings,
+	getHomeContact,
+	DEFAULT_DOORS_PAGE,
+	DEFAULT_SITE_SETTINGS,
+	DEFAULT_HOME_CONTACT,
+} from '../../utils/sanity'
+import {doorsCommercialSrc, doorsHeroSrc, doorsPatioSrc} from '../../utils/doorsImages'
+
+let page = DEFAULT_DOORS_PAGE
+let site = DEFAULT_SITE_SETTINGS
+let contact = DEFAULT_HOME_CONTACT
+
+try {
+	;[page, site, contact] = await Promise.all([
+		getDoorsPage(),
+		getSiteSettings(),
+		getHomeContact(),
+	])
+} catch (err) {
+	console.warn('[sanity] Doors page fallback.', err)
+}
+
+const installServices = [...page.residentialCards, ...page.commercialCards].map((card) => card.title)
+const repairServices = [...page.repairCards.map((card) => card.title), page.emergencyService].filter(
+	(name, index, all) => name && all.indexOf(name) === index,
+)
+
+let pageJsonLd: object | undefined
+if (page.seo.jsonLd) {
+	try { pageJsonLd = JSON.parse(page.seo.jsonLd) } catch {}
+}
+
+const lines = (value: string) => value.split(/\r?\n/).map((line) => line.trim()).filter((line) => line.length > 0)
+---
+
+<Layout title={page.seo.title} description={page.seo.description} jsonLd={pageJsonLd}>
+  <TheNav client:load page="services" phone={site.phone} email={site.email} phoneHours={site.phoneHours} officeWeekdayHours={site.officeWeekdayHours} emailNote={site.emailNote} />
+
+  <main class="doors-page" id="main">
+    <section class="doors-hero" aria-labelledby="doors-hero-title">
+      <div class="doors-hero-copy doors-wrap">
+        <p class="doors-eyebrow">{page.heroEyebrow}</p>
+        <h1 id="doors-hero-title">
+          {page.heroTitleBefore}<br />
+          <span>{page.heroTitleEmphasis}</span>
+        </h1>
+        <p class="doors-hero-subtitle">{page.heroSubtitle}</p>
+        <div class="doors-hero-actions">
+          <a class="btn-dark" href="#estimate">{page.heroPrimaryCtaLabel} <span aria-hidden="true">↗</span></a>
+          <a class="doors-text-link" href="#services">{page.heroSecondaryCtaLabel} <span aria-hidden="true">↓</span></a>
+        </div>
+      </div>
+      <figure class="doors-hero-visual doors-wrap">
+        <img src={doorsHeroSrc} alt={page.heroImageAlt} width="1536" height="1024" fetchpriority="high" />
+        <figcaption>{page.heroCaption}</figcaption>
+      </figure>
+    </section>
+
+    <div class="doors-strip">
+      <ul class="doors-wrap">
+        {page.stripItems.map((item, i) => (
+          <>
+            {i > 0 && <li class="doors-strip-divider" aria-hidden="true">·</li>}
+            <li>{item}</li>
+          </>
+        ))}
+        <li class="doors-strip-location">{page.stripLocation}</li>
+      </ul>
+    </div>
+
+    <section class="doors-intro doors-section doors-wrap">
+      <div class="doors-intro-copy">
+        <p class="doors-eyebrow">{page.introEyebrow}</p>
+        <h2>
+          {page.introTitleBefore}<br />
+          <span class="doors-em">{page.introTitleEmphasis}</span>
+        </h2>
+        <p>{page.introBody}</p>
+        <a class="doors-text-link" href={page.introLinkHref}>{page.introLinkLabel} <span aria-hidden="true">↗</span></a>
+        <div class="doors-availability">
+          <span class="doors-availability-label">{page.availabilityLabel}</span>
+          <strong>{page.availabilityHeadline}</strong>
+          <span>{page.availabilityHours}</span>
+        </div>
+      </div>
+
+      <aside class="doors-estimate" id="estimate" aria-labelledby="doors-estimate-title">
+        <p class="doors-eyebrow">{page.estimateEyebrow}</p>
+        <h2 id="doors-estimate-title">{page.estimateTitle}</h2>
+        <p>{page.estimateLead}</p>
+
+        <div class="doors-success" id="doors-success" hidden>
+          <strong>Message sent</strong>
+          <p>We'll be in touch within one business day.</p>
+        </div>
+
+        <form class="doors-form" id="doors-estimate-form" novalidate>
+          <div class="doors-field" data-field="name">
+            <label for="doors-name">Your name <span aria-hidden="true">*</span></label>
+            <input id="doors-name" name="name" autocomplete="name" maxlength="100" placeholder="Full name" />
+          </div>
+          <div class="doors-field-pair">
+            <div class="doors-field" data-field="email">
+              <label for="doors-email">Email <span aria-hidden="true">*</span></label>
+              <input id="doors-email" name="email" type="email" autocomplete="email" maxlength="254" placeholder="you@example.com" />
+            </div>
+            <div class="doors-field" data-field="phone">
+              <label for="doors-phone">Phone <span aria-hidden="true">*</span></label>
+              <input id="doors-phone" name="phone" type="tel" data-phone-mask autocomplete="tel" maxlength="17" placeholder={site.phone || '+1 (250) 555-0123'} />
+            </div>
+          </div>
+          <div class="doors-field" data-field="service">
+            <label for="doors-service">Service <span aria-hidden="true">*</span></label>
+            <select id="doors-service" name="service">
+              <option value="">Select a service</option>
+              {installServices.length > 0 && (
+                <optgroup label="Installation">
+                  {installServices.map((name) => <option value={name}>{name}</option>)}
+                </optgroup>
+              )}
+              {repairServices.length > 0 && (
+                <optgroup label="Repair">
+                  {repairServices.map((name) => <option value={name}>{name}</option>)}
+                </optgroup>
+              )}
+            </select>
+          </div>
+          <div class="doors-field" data-field="message">
+            <label for="doors-message">Project details <span class="doors-optional">(optional)</span></label>
+            <textarea id="doors-message" name="message" rows="3" maxlength="4000" placeholder="What would you like us to help with?"></textarea>
+          </div>
+          <button class="btn-dark doors-submit" id="doors-submit" type="submit">
+            {page.estimateSubmitLabel} <span aria-hidden="true">↗</span>
+          </button>
+          <p class="doors-privacy">{page.estimatePrivacy} <a href="/privacy/">Privacy notice</a></p>
+          <p class="doors-status" id="doors-status" aria-live="polite" role="status"></p>
+        </form>
+      </aside>
+    </section>
+
+    <section class="doors-install doors-section doors-wrap" id="services" aria-labelledby="doors-residential-title">
+      <div class="doors-section-top">
+        <div>
+          <p class="doors-eyebrow">{page.residentialEyebrow}</p>
+          <h2 id="doors-residential-title">
+            {page.residentialTitleBefore}<br />
+            <span class="doors-em">{page.residentialTitleEmphasis}</span>
+          </h2>
+        </div>
+        <p>
+          {lines(page.residentialLead).map((line) => <span class="doors-line">{line}</span>)}
+        </p>
+      </div>
+      <nav aria-label="Explore door services">
+        <ul class="doors-catalog-nav">
+          <li><a href="#residential-services">{page.catalogResidentialLabel} <span>{String(page.residentialCards.length).padStart(2, '0')}</span></a></li>
+          <li><a href="#commercial">{page.catalogCommercialLabel} <span>{String(page.commercialCards.length).padStart(2, '0')}</span></a></li>
+          <li><a href="#repairs">{page.catalogRepairsLabel} <span>{String(page.repairCards.length).padStart(2, '0')}</span></a></li>
+        </ul>
+      </nav>
+      <figure class="doors-wide-photo">
+        <img src={doorsPatioSrc} alt={page.residentialWideAlt} width="1536" height="1024" loading="lazy" />
+        <div class="doors-photo-caption" aria-hidden="true">
+          {lines(page.residentialWideCaption).map((line) => <span class="doors-line">{line}</span>)}
+        </div>
+      </figure>
+      <ul class="doors-grid" id="residential-services">
+        {page.residentialCards.map((card, index) => (
+          <li>
+            <DoorsServiceCard
+              title={card.title}
+              description={card.description}
+              imageKey={card.imageKey}
+              index={index}
+              category="Installation"
+            />
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="doors-commercial doors-section" id="commercial" aria-labelledby="doors-commercial-title">
+      <div class="doors-wrap">
+        <div class="doors-commercial-intro">
+          <div>
+            <p class="doors-eyebrow">{page.commercialEyebrow}</p>
+            <h2 id="doors-commercial-title">
+              {page.commercialTitleBefore}<br />
+              <span>{page.commercialTitleEmphasis}</span>
+            </h2>
+            <p>{page.commercialLead}</p>
+            <a class="btn-outline-light" href="#estimate" data-door-service={page.commercialCtaService}>
+              {page.commercialCtaLabel} <span aria-hidden="true">↗</span>
+            </a>
+          </div>
+          <figure>
+            <img src={doorsCommercialSrc} alt={page.commercialImageAlt} width="1536" height="1024" loading="lazy" />
+          </figure>
+        </div>
+        <ul class="doors-grid doors-commercial-grid" id="commercial-services">
+          {page.commercialCards.map((card, index) => (
+            <li>
+              <DoorsServiceCard
+                title={card.title}
+                description={card.description}
+                imageKey={card.imageKey}
+                index={index}
+                category="Installation"
+              />
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <section class="doors-repairs doors-section doors-wrap" id="repairs" aria-labelledby="doors-repairs-title">
+      <div class="doors-section-top">
+        <div>
+          <p class="doors-eyebrow">{page.repairsEyebrow}</p>
+          <h2 id="doors-repairs-title">
+            {page.repairsTitleBefore}<br />
+            <span class="doors-em">{page.repairsTitleEmphasis}</span>
+          </h2>
+        </div>
+        <p>
+          {lines(page.repairsLead).map((line) => <span class="doors-line">{line}</span>)}
+        </p>
+      </div>
+      <ul class="doors-grid doors-repair-grid" id="repair-services">
+        {page.repairCards.map((card, index) => (
+          <li>
+            <DoorsServiceCard
+              title={card.title}
+              description={card.description}
+              imageKey={card.imageKey}
+              index={index}
+              category="Repair"
+            />
+          </li>
+        ))}
+      </ul>
+      <div class="doors-emergency">
+        <div>
+          <p class="doors-eyebrow">{page.emergencyEyebrow}</p>
+          <h3>{page.emergencyTitle}</h3>
+          <p>{page.emergencyLead}</p>
+        </div>
+        <a class="btn-dark" href="#estimate" data-door-service={page.emergencyService}>
+          {page.emergencyCtaLabel} <span aria-hidden="true">↗</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="doors-process doors-section">
+      <div class="doors-wrap">
+        <div class="doors-section-top">
+          <div>
+            <p class="doors-eyebrow">{page.processEyebrow}</p>
+            <h2>
+              {page.processTitleBefore}<br />
+              <span class="doors-em">{page.processTitleEmphasis}</span>
+            </h2>
+          </div>
+          <p>
+            {lines(page.processLead).map((line) => <span class="doors-line">{line}</span>)}
+          </p>
+        </div>
+        <ul class="doors-process-grid">
+          {page.processSteps.map((step, index) => (
+            <li>
+              <span>{String(index + 1).padStart(2, '0')}</span>
+              <h3>{step.title}</h3>
+              <p>{step.description}</p>
+            </li>
+          ))}
+        </ul>
+        <ul class="doors-proof">
+          {page.proofStats.map((stat) => (
+            <li>
+              <strong>{lines(stat.value).map((line) => <span class="doors-line">{line}</span>)}</strong>
+              <span>{stat.label}</span>
+            </li>
+          ))}
+          <li>
+            <a class="doors-text-link" href={page.proofLinkHref}>{page.proofLinkLabel} <span aria-hidden="true">↗</span></a>
+          </li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <SectionContact content={contact} site={site} />
+  <TheFooter site={site} />
+</Layout>
+
+<script>
+  import { applyFieldErrors, validateDoorsEstimateFields } from '../../utils/formValidation'
+  import { initPhoneMasks } from '../../utils/phoneMask'
+
+  const form = document.getElementById('doors-estimate-form') as HTMLFormElement | null
+  const submit = document.getElementById('doors-submit') as HTMLButtonElement | null
+  const success = document.getElementById('doors-success') as HTMLElement | null
+  const status = document.getElementById('doors-status') as HTMLElement | null
+  const serviceSelect = document.getElementById('doors-service') as HTMLSelectElement | null
+  const submitHtml = submit?.innerHTML ?? 'Request a free estimate'
+
+  if (form) initPhoneMasks(form)
+
+  document.querySelectorAll<HTMLAnchorElement>('[data-door-service]').forEach((link) => {
+    link.addEventListener('click', (event) => {
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
+      const service = link.dataset.doorService ?? ''
+      if (!serviceSelect || ![...serviceSelect.options].some((option) => option.value === service)) return
+      event.preventDefault()
+      serviceSelect.value = service
+      document.getElementById('estimate')?.scrollIntoView({behavior: 'smooth', block: 'start'})
+      document.getElementById('doors-name')?.focus({preventScroll: true})
+    })
+  })
+
+  form?.addEventListener('submit', async (event) => {
+    event.preventDefault()
+    if (!form || !submit) return
+
+    const name = (document.getElementById('doors-name') as HTMLInputElement)?.value ?? ''
+    const email = (document.getElementById('doors-email') as HTMLInputElement)?.value ?? ''
+    const phone = (document.getElementById('doors-phone') as HTMLInputElement)?.value ?? ''
+    const service = serviceSelect?.value ?? ''
+    const message = (document.getElementById('doors-message') as HTMLTextAreaElement)?.value ?? ''
+
+    const errors = validateDoorsEstimateFields({name, email, phone, service})
+    const valid = applyFieldErrors(
+      {
+        name: form.querySelector('[data-field="name"]') as HTMLElement,
+        email: form.querySelector('[data-field="email"]') as HTMLElement,
+        phone: form.querySelector('[data-field="phone"]') as HTMLElement,
+        service: form.querySelector('[data-field="service"]') as HTMLElement,
+      },
+      errors,
+    )
+    if (!valid) {
+      if (status) status.textContent = 'Please check the highlighted contact details.'
+      return
+    }
+
+    if (status) status.textContent = ''
+    submit.disabled = true
+    submit.textContent = 'Sending…'
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          formType: 'request-doors-estimate',
+          Name: name.trim(),
+          Email: email.trim(),
+          Phone: phone.trim(),
+          Service: service,
+          Message: message.trim(),
+        }),
+      })
+      const data = await res.json()
+      if (data.ok) {
+        form.hidden = true
+        if (success) success.hidden = false
+      } else {
+        submit.disabled = false
+        submit.innerHTML = submitHtml
+        if (status) status.textContent = 'Something went wrong. Please try again.'
+      }
+    } catch {
+      submit.disabled = false
+      submit.innerHTML = submitHtml
+      if (status) status.textContent = 'Something went wrong. Please try again.'
+    }
+  })
+</script>

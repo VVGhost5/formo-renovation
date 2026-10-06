@@ -7,6 +7,7 @@ import {servicePageSlug, DEFAULT_SERVICE_PORTFOLIO_CATEGORIES} from './serviceSl
 import {
 	DEFAULT_ABOUT_PAGE,
 	DEFAULT_CONTACTS_PAGE,
+	DEFAULT_DOORS_PAGE,
 	DEFAULT_REVIEWS_PAGE,
 	DEFAULT_HERO,
 	DEFAULT_HOME_ABOUT,
@@ -30,6 +31,10 @@ import type {
 	BeforeAfterSlide,
 	CertBadge,
 	ContactsPageContent,
+	DoorsCard,
+	DoorsPageContent,
+	DoorsProofStat,
+	DoorsStep,
 	FaqItem,
 	GuaranteeCard,
 	HomeAboutContent,
@@ -287,6 +292,31 @@ const ABT_CERT_Q = defineQuery(`*[_id == "aboutCert"][0]{
 const CONTACTS_PAGE_Q = defineQuery(`*[_id == "contactsPage"][0]{
   eyebrow, titleBefore, titleEmphasis, description, heroImage{ asset, alt },
   formEyebrow, formTitleBefore, formTitleEmphasis, formSubtext
+}`)
+
+const DOORS_CARD_FIELDS = `title, description, imageKey`
+const DOORS_PAGE_Q = defineQuery(`*[_id == "doorsPage"][0]{
+  pageSeo{ title, description, ogImage{ asset, alt }, jsonLd },
+  heroEyebrow, heroTitleBefore, heroTitleEmphasis, heroSubtitle,
+  heroPrimaryCtaLabel, heroSecondaryCtaLabel, heroImageAlt, heroCaption,
+  stripItems, stripLocation,
+  introEyebrow, introTitleBefore, introTitleEmphasis, introBody,
+  introLinkLabel, introLinkHref, availabilityLabel, availabilityHeadline, availabilityHours,
+  estimateEyebrow, estimateTitle, estimateLead, estimateSubmitLabel, estimatePrivacy,
+  residentialEyebrow, residentialTitleBefore, residentialTitleEmphasis, residentialLead,
+  catalogResidentialLabel, catalogCommercialLabel, catalogRepairsLabel,
+  residentialWideAlt, residentialWideCaption,
+  residentialCards[]{ ${DOORS_CARD_FIELDS} },
+  commercialEyebrow, commercialTitleBefore, commercialTitleEmphasis, commercialLead,
+  commercialCtaLabel, commercialCtaService, commercialImageAlt,
+  commercialCards[]{ ${DOORS_CARD_FIELDS} },
+  repairsEyebrow, repairsTitleBefore, repairsTitleEmphasis, repairsLead,
+  repairCards[]{ ${DOORS_CARD_FIELDS} },
+  emergencyEyebrow, emergencyTitle, emergencyLead, emergencyCtaLabel, emergencyService,
+  processEyebrow, processTitleBefore, processTitleEmphasis, processLead,
+  processSteps[]{ title, description },
+  proofStats[]{ value, label },
+  proofLinkLabel, proofLinkHref
 }`)
 
 const REVIEWS_PAGE_Q = defineQuery(`*[_id == "reviewsPage"][0]{
@@ -898,6 +928,113 @@ export function mapReviewsPage(doc: Record<string, unknown> | null): ReviewsPage
 	}
 }
 
+function mapDoorsCards(raw: unknown, fallback: DoorsCard[]): DoorsCard[] {
+	if (!Array.isArray(raw) || raw.length === 0) return fallback
+	const cards = raw
+		.map((item) => {
+			const card = item as Partial<DoorsCard>
+			return {
+				title: str(card.title),
+				description: str(card.description),
+				imageKey: str(card.imageKey),
+			}
+		})
+		.filter((card) => card.title)
+	return cards.length ? cards : fallback
+}
+
+function mapDoorsSteps(raw: unknown, fallback: DoorsStep[]): DoorsStep[] {
+	if (!Array.isArray(raw) || raw.length === 0) return fallback
+	const steps = raw
+		.map((item) => {
+			const step = item as Partial<DoorsStep>
+			return {title: str(step.title), description: str(step.description)}
+		})
+		.filter((step) => step.title)
+	return steps.length ? steps : fallback
+}
+
+function mapDoorsStats(raw: unknown, fallback: DoorsProofStat[]): DoorsProofStat[] {
+	if (!Array.isArray(raw) || raw.length === 0) return fallback
+	const stats = raw
+		.map((item) => {
+			const stat = item as Partial<DoorsProofStat>
+			return {value: str(stat.value), label: str(stat.label)}
+		})
+		.filter((stat) => stat.value || stat.label)
+	return stats.length ? stats : fallback
+}
+
+export function mapDoorsPage(doc: Record<string, unknown> | null): DoorsPageContent {
+	if (!doc) return DEFAULT_DOORS_PAGE
+	const d = doc as DoorsPageContent & {pageSeo?: RawPageSeo; stripItems?: string[]}
+	const fallback = DEFAULT_DOORS_PAGE
+	const stripItems = (d.stripItems ?? []).map((item) => str(item)).filter(Boolean)
+	return {
+		seo: mapPageSeo(d.pageSeo, fallback.seo, null),
+		heroEyebrow: str(d.heroEyebrow, fallback.heroEyebrow),
+		heroTitleBefore: str(d.heroTitleBefore, fallback.heroTitleBefore),
+		heroTitleEmphasis: str(d.heroTitleEmphasis, fallback.heroTitleEmphasis),
+		heroSubtitle: str(d.heroSubtitle, fallback.heroSubtitle),
+		heroPrimaryCtaLabel: str(d.heroPrimaryCtaLabel, fallback.heroPrimaryCtaLabel),
+		heroSecondaryCtaLabel: str(d.heroSecondaryCtaLabel, fallback.heroSecondaryCtaLabel),
+		heroImageAlt: str(d.heroImageAlt, fallback.heroImageAlt),
+		heroCaption: str(d.heroCaption, fallback.heroCaption),
+		stripItems: stripItems.length ? stripItems : fallback.stripItems,
+		stripLocation: str(d.stripLocation, fallback.stripLocation),
+		introEyebrow: str(d.introEyebrow, fallback.introEyebrow),
+		introTitleBefore: str(d.introTitleBefore, fallback.introTitleBefore),
+		introTitleEmphasis: str(d.introTitleEmphasis, fallback.introTitleEmphasis),
+		introBody: str(d.introBody, fallback.introBody),
+		introLinkLabel: str(d.introLinkLabel, fallback.introLinkLabel),
+		introLinkHref: str(d.introLinkHref, fallback.introLinkHref),
+		availabilityLabel: str(d.availabilityLabel, fallback.availabilityLabel),
+		availabilityHeadline: str(d.availabilityHeadline, fallback.availabilityHeadline),
+		availabilityHours: str(d.availabilityHours, fallback.availabilityHours),
+		estimateEyebrow: str(d.estimateEyebrow, fallback.estimateEyebrow),
+		estimateTitle: str(d.estimateTitle, fallback.estimateTitle),
+		estimateLead: str(d.estimateLead, fallback.estimateLead),
+		estimateSubmitLabel: str(d.estimateSubmitLabel, fallback.estimateSubmitLabel),
+		estimatePrivacy: str(d.estimatePrivacy, fallback.estimatePrivacy),
+		residentialEyebrow: str(d.residentialEyebrow, fallback.residentialEyebrow),
+		residentialTitleBefore: str(d.residentialTitleBefore, fallback.residentialTitleBefore),
+		residentialTitleEmphasis: str(d.residentialTitleEmphasis, fallback.residentialTitleEmphasis),
+		residentialLead: str(d.residentialLead, fallback.residentialLead),
+		catalogResidentialLabel: str(d.catalogResidentialLabel, fallback.catalogResidentialLabel),
+		catalogCommercialLabel: str(d.catalogCommercialLabel, fallback.catalogCommercialLabel),
+		catalogRepairsLabel: str(d.catalogRepairsLabel, fallback.catalogRepairsLabel),
+		residentialWideAlt: str(d.residentialWideAlt, fallback.residentialWideAlt),
+		residentialWideCaption: str(d.residentialWideCaption, fallback.residentialWideCaption),
+		residentialCards: mapDoorsCards(d.residentialCards, fallback.residentialCards),
+		commercialEyebrow: str(d.commercialEyebrow, fallback.commercialEyebrow),
+		commercialTitleBefore: str(d.commercialTitleBefore, fallback.commercialTitleBefore),
+		commercialTitleEmphasis: str(d.commercialTitleEmphasis, fallback.commercialTitleEmphasis),
+		commercialLead: str(d.commercialLead, fallback.commercialLead),
+		commercialCtaLabel: str(d.commercialCtaLabel, fallback.commercialCtaLabel),
+		commercialCtaService: str(d.commercialCtaService, fallback.commercialCtaService),
+		commercialImageAlt: str(d.commercialImageAlt, fallback.commercialImageAlt),
+		commercialCards: mapDoorsCards(d.commercialCards, fallback.commercialCards),
+		repairsEyebrow: str(d.repairsEyebrow, fallback.repairsEyebrow),
+		repairsTitleBefore: str(d.repairsTitleBefore, fallback.repairsTitleBefore),
+		repairsTitleEmphasis: str(d.repairsTitleEmphasis, fallback.repairsTitleEmphasis),
+		repairsLead: str(d.repairsLead, fallback.repairsLead),
+		repairCards: mapDoorsCards(d.repairCards, fallback.repairCards),
+		emergencyEyebrow: str(d.emergencyEyebrow, fallback.emergencyEyebrow),
+		emergencyTitle: str(d.emergencyTitle, fallback.emergencyTitle),
+		emergencyLead: str(d.emergencyLead, fallback.emergencyLead),
+		emergencyCtaLabel: str(d.emergencyCtaLabel, fallback.emergencyCtaLabel),
+		emergencyService: str(d.emergencyService, fallback.emergencyService),
+		processEyebrow: str(d.processEyebrow, fallback.processEyebrow),
+		processTitleBefore: str(d.processTitleBefore, fallback.processTitleBefore),
+		processTitleEmphasis: str(d.processTitleEmphasis, fallback.processTitleEmphasis),
+		processLead: str(d.processLead, fallback.processLead),
+		processSteps: mapDoorsSteps(d.processSteps, fallback.processSteps),
+		proofStats: mapDoorsStats(d.proofStats, fallback.proofStats),
+		proofLinkLabel: str(d.proofLinkLabel, fallback.proofLinkLabel),
+		proofLinkHref: str(d.proofLinkHref, fallback.proofLinkHref),
+	}
+}
+
 export function mapContactsPage(doc: Record<string, unknown> | null): ContactsPageContent {
 	if (!doc) return DEFAULT_CONTACTS_PAGE
 	const d = doc as ContactsPageContent & {heroImage?: unknown}
@@ -1245,6 +1382,10 @@ export async function getAboutPage() {
 
 export async function getContactsPage() {
 	return mapContactsPage(await safeFetch(CONTACTS_PAGE_Q, null))
+}
+
+export async function getDoorsPage() {
+	return mapDoorsPage(await safeFetch(DOORS_PAGE_Q, null))
 }
 
 export async function getReviewsPage() {

@@ -86,6 +86,10 @@ export const structure = (S) =>
 
       S.divider(),
 
+      singleton(S, 'doorsPage', 'Doors', 'doorsPage'),
+
+      S.divider(),
+
       S.listItem()
         .title('Portfolio')
         .child(

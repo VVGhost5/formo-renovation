@@ -13,6 +13,7 @@ const FORM_TYPE_LABELS: Record<string, string> = {
   'request-call': '01 · Request a Free Estimate',
   'request-consultation': '02 · Send Us a Message',
   'request-message-response': '03 · Quick Contact (Sidebar)',
+  'request-doors-estimate': '04 · Door Estimate',
 }
 
 function generateRequestId(): string {
@@ -127,6 +128,15 @@ function validateSubmission(formType: string, fields: Record<string, string>): s
     const phoneError = validatePhoneField(phone)
     if (phoneError) return phoneError
     if (!isRequired(message)) return 'Project description is required'
+    return null
+  }
+
+  if (formType === 'request-doors-estimate') {
+    if (!isRequired(name)) return 'Name is required'
+    if (!isRequired(email) || !isValidEmail(email)) return 'Valid email is required'
+    const phoneError = validatePhoneField(phone)
+    if (phoneError) return phoneError
+    if (!isRequired(fields.Service ?? '')) return 'Service is required'
     return null
   }
 

@@ -8,6 +8,7 @@ export const MESSAGES = {
   phone: 'Enter phone as +1 (XXX) XXX-XXXX.',
   phoneOrEmail: 'Enter a valid phone (+1 (XXX) XXX-XXXX) or email address.',
   project: 'Please tell us about your project.',
+  service: 'Please select a service.',
 } as const
 
 export function isRequired(value: string): boolean {
@@ -55,6 +56,27 @@ export function validateEstimateFields(values: {
 
   const emailError = validateEmailField(values.email)
   if (emailError) errors.email = emailError
+
+  return errors
+}
+
+export function validateDoorsEstimateFields(values: {
+  name: string
+  email: string
+  phone: string
+  service: string
+}): FieldErrors {
+  const errors: FieldErrors = {}
+
+  if (!isRequired(values.name)) errors.name = MESSAGES.name
+
+  const emailError = validateEmailField(values.email)
+  if (emailError) errors.email = emailError
+
+  const phoneError = validatePhoneField(values.phone)
+  if (phoneError) errors.phone = phoneError
+
+  if (!isRequired(values.service)) errors.service = MESSAGES.service
 
   return errors
 }
@@ -129,7 +151,7 @@ export function setFieldError(
 }
 
 export function applyFieldErrors(
-  fieldMap: Record<string, string>,
+  fieldMap: Record<string, HTMLElement | null>,
   errors: FieldErrors,
   errorClass = 'fg--error',
 ): boolean {

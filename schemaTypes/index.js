@@ -30,6 +30,7 @@ import aboutTeam from './aboutTeam'
 import aboutWhy from './aboutWhy'
 import aboutCert from './aboutCert'
 import contactsPage from './contactsPage'
+import doorsPage from './doorsPage'
 import reviewsPage from './reviewsPage'
 import metaData from './metadata'
 
@@ -39,6 +40,7 @@ import processStep from './objects/processStep'
 import pricingFactor from './objects/pricingFactor'
 import keyValue from './objects/keyValue'
 import serviceCard from './objects/serviceCard'
+import doorsCard from './objects/doorsCard'
 import pageSeo from './objects/pageSeo'
 
 export const schemaTypes = [
@@ -49,6 +51,7 @@ export const schemaTypes = [
   pricingFactor,
   keyValue,
   serviceCard,
+  doorsCard,
   pageSeo,
   // Documents — legacy (kept so existing Sanity data is not orphaned)
   servicesPage,
@@ -85,5 +88,6 @@ export const schemaTypes = [
   aboutWhy,
   aboutCert,
   contactsPage,
+  doorsPage,
   reviewsPage,
 ]

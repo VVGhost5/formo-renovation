@@ -428,6 +428,86 @@ export type ContactsPageContent = {
 	formSubtext: string
 }
 
+export type DoorsCard = {
+	title: string
+	description: string
+	imageKey: string
+}
+
+export type DoorsStep = {
+	title: string
+	description: string
+}
+
+export type DoorsProofStat = {
+	value: string
+	label: string
+}
+
+export type DoorsPageContent = {
+	seo: PageSeo
+	heroEyebrow: string
+	heroTitleBefore: string
+	heroTitleEmphasis: string
+	heroSubtitle: string
+	heroPrimaryCtaLabel: string
+	heroSecondaryCtaLabel: string
+	heroImageAlt: string
+	heroCaption: string
+	stripItems: string[]
+	stripLocation: string
+	introEyebrow: string
+	introTitleBefore: string
+	introTitleEmphasis: string
+	introBody: string
+	introLinkLabel: string
+	introLinkHref: string
+	availabilityLabel: string
+	availabilityHeadline: string
+	availabilityHours: string
+	estimateEyebrow: string
+	estimateTitle: string
+	estimateLead: string
+	estimateSubmitLabel: string
+	estimatePrivacy: string
+	residentialEyebrow: string
+	residentialTitleBefore: string
+	residentialTitleEmphasis: string
+	residentialLead: string
+	catalogResidentialLabel: string
+	catalogCommercialLabel: string
+	catalogRepairsLabel: string
+	residentialWideAlt: string
+	residentialWideCaption: string
+	residentialCards: DoorsCard[]
+	commercialEyebrow: string
+	commercialTitleBefore: string
+	commercialTitleEmphasis: string
+	commercialLead: string
+	commercialCtaLabel: string
+	commercialCtaService: string
+	commercialImageAlt: string
+	commercialCards: DoorsCard[]
+	repairsEyebrow: string
+	repairsTitleBefore: string
+	repairsTitleEmphasis: string
+	repairsLead: string
+	repairCards: DoorsCard[]
+	emergencyEyebrow: string
+	emergencyTitle: string
+	emergencyLead: string
+	emergencyCtaLabel: string
+	emergencyService: string
+	processEyebrow: string
+	processTitleBefore: string
+	processTitleEmphasis: string
+	processLead: string
+	processSteps: DoorsStep[]
+	proofStats: DoorsProofStat[]
+	proofLinkLabel: string
+	proofLinkHref: string
+}
+
 export type PortfolioProject = {
 	id: string
 	num: string

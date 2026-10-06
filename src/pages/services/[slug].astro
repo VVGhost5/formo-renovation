@@ -23,10 +23,12 @@ import {buildServiceJsonLd} from '../../utils/structuredData'
 
 export async function getStaticPaths() {
 	const services = await getAllServicePages()
-	return services.map((service) => ({
-		params: {slug: service.pageSlug},
-		props: {service},
-	}))
+	return services
+		.filter((service) => service.pageSlug !== 'doors')
+		.map((service) => ({
+			params: {slug: service.pageSlug},
+			props: {service},
+		}))
 }
 
 const {slug} = Astro.params

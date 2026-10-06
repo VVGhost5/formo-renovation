@@ -27,11 +27,20 @@ const sections = [
 	},
 	{
 		title: 'Services',
-		items: services.map((svc) => ({
-			href: `/services/${svc.pageSlug}/`,
-			name: svc.quickName || svc.title,
-			desc: svc.quickSub || svc.lead,
-		})),
+		items: [
+			...services
+				.filter((svc) => svc.pageSlug !== 'doors')
+				.map((svc) => ({
+					href: `/services/${svc.pageSlug}/`,
+					name: svc.quickName || svc.title,
+					desc: svc.quickSub || svc.lead,
+				})),
+			{
+				href: '/services/doors/',
+				name: 'Doors',
+				desc: 'Door installation and repair for homes and businesses in Victoria, BC',
+			},
+		],
 	},
 ]
 ---
