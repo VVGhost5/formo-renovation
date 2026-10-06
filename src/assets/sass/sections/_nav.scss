@@ -1,4 +1,4 @@
-nav {
+.site-nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 200;
   display: flex; align-items: center; justify-content: space-between;
   padding: 0 var(--px); height: 60px;
@@ -104,7 +104,7 @@ nav {
 }
 
 @media (max-width: 767px) {
-  nav { padding: 0 var(--px); height: 54px; }
+  .site-nav { padding: 0 var(--px); height: 54px; }
   .nav-logo-img { height: 40px; }
 }
 
