@@ -37,8 +37,9 @@
   }
 
   textarea {
-    resize: vertical;
-    min-height: 110px;
+    height: 160px;
+    min-height: 160px;
+    resize: none;
   }
 
   &--error input,

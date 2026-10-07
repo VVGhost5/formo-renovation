@@ -1,6 +1,8 @@
 export const PHONE_REGEX = /^\+1 \(\d{3}\) \d{3}-\d{4}$/
 export const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
 
+export const MESSAGE_LIMIT = 1200
+
 export const MESSAGES = {
   required: 'This field is required.',
   name: 'Please enter your name.',
@@ -9,6 +11,7 @@ export const MESSAGES = {
   phoneOrEmail: 'Enter a valid phone (+1 (XXX) XXX-XXXX) or email address.',
   project: 'Please tell us about your project.',
   service: 'Please select a service.',
+  messageLimit: 'You have reached the 1,200 character limit.',
 } as const
 
 export function isRequired(value: string): boolean {
@@ -26,6 +29,13 @@ export function isValidPhone(value: string): boolean {
 export function isValidPhoneOrEmail(value: string): boolean {
   const trimmed = value.trim()
   return isValidPhone(trimmed) || isValidEmail(trimmed)
+}
+
+export function validateOptionalMessage(value: string): string | null {
+  const text = value.trim()
+  if (!text) return null
+  if (text.length > MESSAGE_LIMIT) return MESSAGES.messageLimit
+  return null
 }
 
 export function validatePhoneField(value: string): string | null {
@@ -65,6 +75,7 @@ export function validateDoorsEstimateFields(values: {
   email: string
   phone: string
   service: string
+  message?: string
 }): FieldErrors {
   const errors: FieldErrors = {}
 
@@ -77,6 +88,9 @@ export function validateDoorsEstimateFields(values: {
   if (phoneError) errors.phone = phoneError
 
   if (!isRequired(values.service)) errors.service = MESSAGES.service
+
+  const messageError = validateOptionalMessage(values.message ?? '')
+  if (messageError) errors.message = messageError
 
   return errors
 }
@@ -97,7 +111,8 @@ export function validateContactFields(values: {
   const phoneError = validatePhoneField(values.phone)
   if (phoneError) errors.phone = phoneError
 
-  if (!isRequired(values.message)) errors.message = MESSAGES.project
+  const messageError = validateOptionalMessage(values.message)
+  if (messageError) errors.message = messageError
 
   return errors
 }
@@ -115,7 +130,8 @@ export function validateQuickContactFields(values: {
   } else if (!isValidPhoneOrEmail(values.contact)) {
     errors.contact = MESSAGES.phoneOrEmail
   }
-  if (!isRequired(values.message)) errors.message = MESSAGES.project
+  const messageError = validateOptionalMessage(values.message)
+  if (messageError) errors.message = messageError
 
   return errors
 }
@@ -124,6 +140,7 @@ export function setFieldError(
   container: HTMLElement | null,
   message: string | null,
   errorClass = 'fg--error',
+  clearOnInput = true,
 ): void {
   if (!container) return
 
@@ -142,12 +159,25 @@ export function setFieldError(
     errEl.remove()
   }
 
-  if (message) {
+  if (message && clearOnInput) {
     container.querySelectorAll('input, textarea, select').forEach((el) => {
       el.addEventListener('input', () => setFieldError(container, null, errorClass), { once: true })
       el.addEventListener('change', () => setFieldError(container, null, errorClass), { once: true })
     })
   }
+}
+
+export function bindOptionalMessageField(
+  field: HTMLTextAreaElement | null,
+  container: HTMLElement | null,
+  errorClass = 'fg--error',
+): void {
+  if (!field || !container) return
+  field.addEventListener('input', () => {
+    queueMicrotask(() => {
+      setFieldError(container, validateOptionalMessage(field.value), errorClass, false)
+    })
+  })
 }
 
 export function applyFieldErrors(

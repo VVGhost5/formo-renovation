@@ -112,6 +112,7 @@ const bgStyleAttr = bgStyle(hero.backgroundImageUrl)
           Name: name.trim(),
           Phone: phone.trim(),
           'Email Address': email.trim(),
+          Timestamp: new Date().toISOString(),
         }),
       })
       const data = await res.json()

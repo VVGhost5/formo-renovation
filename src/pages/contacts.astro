@@ -167,7 +167,7 @@ const waHref = `https://wa.me/${site.whatsapp.replace(/\D/g, '')}`
             <input type="text" id="f-date" placeholder="e.g. September 2025, ASAP, or flexible" />
           </div>
           <div class="fg" data-field="message">
-            <label for="f-message">Tell Us About Your Project *</label>
+            <label for="f-message">Tell Us About Your Project</label>
             <textarea id="f-message" placeholder="Describe your project — what you'd like to change, your goals, any specific materials or styles in mind…"></textarea>
           </div>
           <div class="fg">
@@ -291,11 +291,15 @@ const waHref = `https://wa.me/${site.whatsapp.replace(/\D/g, '')}`
 </Layout>
 
 <script>
-  import { applyFieldErrors, validateContactFields } from '../utils/formValidation'
+  import { applyFieldErrors, bindOptionalMessageField, validateContactFields } from '../utils/formValidation'
   import { initPhoneMasks } from '../utils/phoneMask'
 
   const mainForm = document.getElementById('main-form') as HTMLElement | null
   if (mainForm) initPhoneMasks(mainForm)
+  bindOptionalMessageField(
+    document.getElementById('f-message') as HTMLTextAreaElement | null,
+    mainForm?.querySelector('[data-field="message"]') as HTMLElement | null,
+  )
 
   // Service checkboxes
   document.querySelectorAll('.sc-item').forEach(item => {
@@ -370,6 +374,7 @@ const waHref = `https://wa.me/${site.whatsapp.replace(/\D/g, '')}`
           'Start Date': startDate,
           Message: message.trim(),
           'How Did You Hear': source,
+          Timestamp: new Date().toISOString(),
         }),
       });
       const data = await res.json();

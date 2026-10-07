@@ -3,6 +3,7 @@ import Layout from '../../layouts/Layout.astro'
 import TheNav from '../../components/vue/TheNav.vue'
 import TheFooter from '../../components/TheFooter.astro'
 import SectionContact from '../../components/SectionContact.astro'
+import { serviceInterestForPage } from '../../utils/serviceInterest'
 import DoorsServiceCard from '../../components/DoorsServiceCard.astro'
 import {
 	getDoorsPage,
@@ -32,6 +33,9 @@ const installServices = [...page.residentialCards, ...page.commercialCards].map(
 const repairServices = [...page.repairCards.map((card) => card.title), page.emergencyService].filter(
 	(name, index, all) => name && all.indexOf(name) === index,
 )
+const doorServiceNames = [...installServices, ...repairServices]
+const presetDoorService = doorServiceNames.find((name) => name.toLowerCase() === 'doors') ?? 'Doors'
+const showPresetDoorOption = !doorServiceNames.includes(presetDoorService)
 
 let pageJsonLd: object | undefined
 if (page.seo.jsonLd) {
@@ -39,6 +43,9 @@ if (page.seo.jsonLd) {
 }
 
 const lines = (value: string) => value.split(/\r?\n/).map((line) => line.trim()).filter((line) => line.length > 0)
+const phoneHref = `tel:${site.phone.replace(/\D/g, '')}`
+const weekdayHours = site.officeWeekdayHours.trim()
+const hoursNote = site.phoneHours.trim()
 ---
 
 <Layout title={page.seo.title} description={page.seo.description} jsonLd={pageJsonLd}>
@@ -87,8 +94,24 @@ const lines = (value: string) => value.split(/\r?\n/).map((line) => line.trim())
         <a class="doors-text-link" href={page.introLinkHref}>{page.introLinkLabel} <span aria-hidden="true">↗</span></a>
         <div class="doors-availability">
           <span class="doors-availability-label">{page.availabilityLabel}</span>
-          <strong>{page.availabilityHeadline}</strong>
-          <span>{page.availabilityHours}</span>
+          {weekdayHours ? (
+            <ul class="doors-hours">
+              <li>
+                <span>Monday – Friday</span>
+                <span>{weekdayHours}</span>
+              </li>
+              <li>
+                <span>Saturday</span>
+                <span class="is-closed">Closed</span>
+              </li>
+              <li>
+                <span>Sunday</span>
+                <span class="is-closed">Closed</span>
+              </li>
+            </ul>
+          ) : (
+            <span class="doors-hours-note">{hoursNote || 'Mon – Fri, 8:00 AM – 5:00 PM'}</span>
+          )}
         </div>
       </div>
 
@@ -121,21 +144,28 @@ const lines = (value: string) => value.split(/\r?\n/).map((line) => line.trim())
             <label for="doors-service">Service <span aria-hidden="true">*</span></label>
             <select id="doors-service" name="service">
               <option value="">Select a service</option>
+              {showPresetDoorOption && (
+                <option value={presetDoorService} selected>{presetDoorService}</option>
+              )}
               {installServices.length > 0 && (
                 <optgroup label="Installation">
-                  {installServices.map((name) => <option value={name}>{name}</option>)}
+                  {installServices.map((name) => (
+                    <option value={name} selected={name === presetDoorService}>{name}</option>
+                  ))}
                 </optgroup>
               )}
               {repairServices.length > 0 && (
                 <optgroup label="Repair">
-                  {repairServices.map((name) => <option value={name}>{name}</option>)}
+                  {repairServices.map((name) => (
+                    <option value={name} selected={name === presetDoorService}>{name}</option>
+                  ))}
                 </optgroup>
               )}
             </select>
           </div>
           <div class="doors-field" data-field="message">
             <label for="doors-message">Project details <span class="doors-optional">(optional)</span></label>
-            <textarea id="doors-message" name="message" rows="3" maxlength="4000" placeholder="What would you like us to help with?"></textarea>
+            <textarea id="doors-message" name="message" rows="3" placeholder="What would you like us to help with?"></textarea>
           </div>
           <button class="btn-dark doors-submit" id="doors-submit" type="submit">
             {page.estimateSubmitLabel} <span aria-hidden="true">↗</span>
@@ -173,14 +203,12 @@ const lines = (value: string) => value.split(/\r?\n/).map((line) => line.trim())
         </div>
       </figure>
       <ul class="doors-grid" id="residential-services">
-        {page.residentialCards.map((card, index) => (
+        {page.residentialCards.map((card) => (
           <li>
             <DoorsServiceCard
               title={card.title}
               description={card.description}
               imageKey={card.imageKey}
-              index={index}
-              category="Installation"
             />
           </li>
         ))}
@@ -206,14 +234,12 @@ const lines = (value: string) => value.split(/\r?\n/).map((line) => line.trim())
           </figure>
         </div>
         <ul class="doors-grid doors-commercial-grid" id="commercial-services">
-          {page.commercialCards.map((card, index) => (
+          {page.commercialCards.map((card) => (
             <li>
               <DoorsServiceCard
                 title={card.title}
                 description={card.description}
                 imageKey={card.imageKey}
-                index={index}
-                category="Installation"
               />
             </li>
           ))}
@@ -235,14 +261,12 @@ const lines = (value: string) => value.split(/\r?\n/).map((line) => line.trim())
         </p>
       </div>
       <ul class="doors-grid doors-repair-grid" id="repair-services">
-        {page.repairCards.map((card, index) => (
+        {page.repairCards.map((card) => (
           <li>
             <DoorsServiceCard
               title={card.title}
               description={card.description}
               imageKey={card.imageKey}
-              index={index}
-              category="Repair"
             />
           </li>
         ))}
@@ -253,8 +277,9 @@ const lines = (value: string) => value.split(/\r?\n/).map((line) => line.trim())
           <h3>{page.emergencyTitle}</h3>
           <p>{page.emergencyLead}</p>
         </div>
-        <a class="btn-dark" href="#estimate" data-door-service={page.emergencyService}>
-          {page.emergencyCtaLabel} <span aria-hidden="true">↗</span>
+        <a class="btn-dark" href={phoneHref}>
+          <i class="fa-solid fa-phone" aria-hidden="true"></i>
+          {page.emergencyCtaLabel}
         </a>
       </div>
     </section>
@@ -297,12 +322,12 @@ const lines = (value: string) => value.split(/\r?\n/).map((line) => line.trim())
     </section>
   </main>
 
-  <SectionContact content={contact} site={site} />
+  <SectionContact content={contact} site={site} serviceInterest={serviceInterestForPage({ pageSlug: 'doors', quickName: 'Doors' })} />
   <TheFooter site={site} />
 </Layout>
 
 <script>
-  import { applyFieldErrors, validateDoorsEstimateFields } from '../../utils/formValidation'
+  import { applyFieldErrors, bindOptionalMessageField, validateDoorsEstimateFields } from '../../utils/formValidation'
   import { initPhoneMasks } from '../../utils/phoneMask'
 
   const form = document.getElementById('doors-estimate-form') as HTMLFormElement | null
@@ -313,6 +338,10 @@ const lines = (value: string) => value.split(/\r?\n/).map((line) => line.trim())
   const submitHtml = submit?.innerHTML ?? 'Request a free estimate'
 
   if (form) initPhoneMasks(form)
+  bindOptionalMessageField(
+    document.getElementById('doors-message') as HTMLTextAreaElement | null,
+    form?.querySelector('[data-field="message"]') as HTMLElement | null,
+  )
 
   document.querySelectorAll<HTMLAnchorElement>('[data-door-service]').forEach((link) => {
     link.addEventListener('click', (event) => {
@@ -336,13 +365,14 @@ const lines = (value: string) => value.split(/\r?\n/).map((line) => line.trim())
     const service = serviceSelect?.value ?? ''
     const message = (document.getElementById('doors-message') as HTMLTextAreaElement)?.value ?? ''
 
-    const errors = validateDoorsEstimateFields({name, email, phone, service})
+    const errors = validateDoorsEstimateFields({name, email, phone, service, message})
     const valid = applyFieldErrors(
       {
         name: form.querySelector('[data-field="name"]') as HTMLElement,
         email: form.querySelector('[data-field="email"]') as HTMLElement,
         phone: form.querySelector('[data-field="phone"]') as HTMLElement,
         service: form.querySelector('[data-field="service"]') as HTMLElement,
+        message: form.querySelector('[data-field="message"]') as HTMLElement,
       },
       errors,
     )
@@ -366,6 +396,7 @@ const lines = (value: string) => value.split(/\r?\n/).map((line) => line.trim())
           Phone: phone.trim(),
           Service: service,
           Message: message.trim(),
+          Timestamp: new Date().toISOString(),
         }),
       })
       const data = await res.json()

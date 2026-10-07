@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
-import { validateQuickContactFields } from '../../utils/formValidation'
+import { validateOptionalMessage, validateQuickContactFields } from '../../utils/formValidation'
 import { formatContactInput } from '../../utils/phoneMask'
 
 const props = defineProps<{
@@ -15,6 +15,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{ close: [] }>()
 
+const mounted = ref(false)
 const name  = ref('')
 const contact = ref('')
 const message = ref('')
@@ -45,6 +46,7 @@ async function handleSubmit() {
         Name: name.value.trim(),
         'Phone or Email': contact.value.trim(),
         Message: message.value.trim(),
+        Timestamp: new Date().toISOString(),
       }),
     })
     const data = await res.json()
@@ -68,6 +70,13 @@ function clearFieldError(field: string) {
   }
 }
 
+function onMessageInput(event: Event) {
+  const value = (event.target as HTMLTextAreaElement).value
+  const error = validateOptionalMessage(value)
+  if (error) fieldErrors.value = { ...fieldErrors.value, message: error }
+  else clearFieldError('message')
+}
+
 function onContactInput() {
   const formatted = formatContactInput(contact.value)
   if (formatted !== contact.value) contact.value = formatted
@@ -78,12 +87,15 @@ function onKey(e: KeyboardEvent) {
   if (e.key === 'Escape' && props.open) close()
 }
 
-onMounted(()  => document.addEventListener('keydown', onKey))
+onMounted(() => {
+  mounted.value = true
+  document.addEventListener('keydown', onKey)
+})
 onUnmounted(() => document.removeEventListener('keydown', onKey))
 </script>
 
 <template>
-  <Teleport to="body">
+  <Teleport v-if="mounted" to="body">
     <Transition name="overlay-fade">
       <div v-if="open" class="cd-overlay" @click="close" aria-hidden="true" />
     </Transition>
@@ -188,13 +200,13 @@ onUnmounted(() => document.removeEventListener('keydown', onKey))
                 <span v-if="fieldErrors.contact" class="fg-error" role="alert">{{ fieldErrors.contact }}</span>
               </div>
               <div class="cd-fg" :class="{ 'fg--error': fieldErrors.message }">
-                <label for="cd-message">Tell us about your project *</label>
+                <label for="cd-message">Tell us about your project</label>
                 <textarea
                   id="cd-message"
                   v-model="message"
                   placeholder="Describe your project briefly…"
                   rows="3"
-                  @input="clearFieldError('message')"
+                  @input="onMessageInput"
                 ></textarea>
                 <span v-if="fieldErrors.message" class="fg-error" role="alert">{{ fieldErrors.message }}</span>
               </div>

@@ -1,12 +1,15 @@
 ---
 import type {HomeContactContent, SiteSettingsContent} from '../utils/sanity'
+import {contactServiceOptions} from '../utils/serviceInterest'
 
 interface Props {
 	content: HomeContactContent
 	site: SiteSettingsContent
+	serviceInterest?: string
 }
 
-const {content, site} = Astro.props
+const {content, site, serviceInterest = ''} = Astro.props
+const serviceOptions = contactServiceOptions(serviceInterest)
 const phoneHref = `tel:${site.phone.replace(/\D/g, '')}`
 const waHref = `https://wa.me/${site.whatsapp.replace(/\D/g, '')}`
 ---
@@ -23,7 +26,6 @@ const waHref = `https://wa.me/${site.whatsapp.replace(/\D/g, '')}`
           {content.headline}<br /><em>{content.headlineEmphasis}</em>
         </h2>
         <p class="contact-lead">{content.lead}</p>
-        <button class="btn-outline-light">{content.ctaLabel}</button>
       </div>
     </div>
 
@@ -61,19 +63,13 @@ const waHref = `https://wa.me/${site.whatsapp.replace(/\D/g, '')}`
           <label for="sc-service">Service Interested In</label>
           <select id="sc-service">
             <option value="">Select a service…</option>
-            <option>Interior Finishing</option>
-            <option>Finish Carpentry</option>
-            <option>Bathroom Renovations</option>
-            <option>Kitchen Renovations</option>
-            <option>Flooring</option>
-            <option>Painting</option>
-            <option>Project Management</option>
-            <option>Doors</option>
-            <option>Free Estimate Only</option>
+            {serviceOptions.map((option) => (
+              <option value={option} selected={option === serviceInterest}>{option}</option>
+            ))}
           </select>
         </div>
         <div class="fg" data-field="message">
-          <label for="sc-message">Tell Us About Your Project *</label>
+          <label for="sc-message">Tell Us About Your Project</label>
           <textarea id="sc-message" placeholder="Describe your project, location, timeline and any relevant details…"></textarea>
         </div>
         <button type="submit" class="cform-submit" id="sc-submit">Send Message →</button>
@@ -110,7 +106,7 @@ const waHref = `https://wa.me/${site.whatsapp.replace(/\D/g, '')}`
 </section>
 
 <script>
-  import { applyFieldErrors, validateContactFields } from '../utils/formValidation'
+  import { applyFieldErrors, bindOptionalMessageField, validateContactFields } from '../utils/formValidation'
   import { initPhoneMasks } from '../utils/phoneMask'
 
   const scForm = document.getElementById('section-contact-form') as HTMLFormElement | null
@@ -118,6 +114,10 @@ const waHref = `https://wa.me/${site.whatsapp.replace(/\D/g, '')}`
   const scSuccess = document.getElementById('sc-success') as HTMLElement | null
 
   if (scForm) initPhoneMasks(scForm)
+  bindOptionalMessageField(
+    document.getElementById('sc-message') as HTMLTextAreaElement | null,
+    scForm?.querySelector('[data-field="message"]') as HTMLElement | null,
+  )
 
   scForm?.addEventListener('submit', async (e) => {
     e.preventDefault()
@@ -153,6 +153,7 @@ const waHref = `https://wa.me/${site.whatsapp.replace(/\D/g, '')}`
           Phone: phone.trim(),
           Service: service,
           Message: message.trim(),
+          Timestamp: new Date().toISOString(),
         }),
       })
       const data = await res.json()

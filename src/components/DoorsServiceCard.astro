@@ -5,23 +5,19 @@ interface Props {
 	title: string
 	description: string
 	imageKey: string
-	index: number
-	category: string
 }
 
-const {title, description, imageKey, index, category} = Astro.props
+const {title, description, imageKey} = Astro.props
 const image = doorCardImage(imageKey)
-const number = String(index + 1).padStart(2, '0')
 ---
 
 <article class="doors-card">
   {image && (
     <figure class="doors-card-figure">
-      <img class="doors-card-photo" src={image.src} alt={image.alt} width="1024" height="768" loading="lazy" decoding="async" />
+      <img class="doors-card-photo" src={image.src} alt={image.alt} width="1500" height="900" loading="lazy" decoding="async" />
     </figure>
   )}
   <div class="doors-card-body">
-    <span class="doors-card-num" aria-hidden="true">{category} · {number}</span>
     <h3>{title}</h3>
     <p>{description}</p>
     <a

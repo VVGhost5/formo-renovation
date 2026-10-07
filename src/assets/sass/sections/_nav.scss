@@ -295,6 +295,11 @@
       box-shadow: 0 0 0 3px rgba(128,82,42,0.1);
     }
   }
+
+  textarea {
+    height: 160px;
+    min-height: 160px;
+  }
 }
 
 .cd-submit {

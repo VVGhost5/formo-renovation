@@ -6,6 +6,7 @@ import {
   isRequired,
   isValidEmail,
   isValidPhoneOrEmail,
+  validateOptionalMessage,
   validatePhoneField,
 } from '../../utils/formValidation'
 
@@ -14,6 +15,15 @@ const FORM_TYPE_LABELS: Record<string, string> = {
   'request-consultation': '02 · Send Us a Message',
   'request-message-response': '03 · Quick Contact (Sidebar)',
   'request-doors-estimate': '04 · Door Estimate',
+}
+
+function submissionTimestamp(date = new Date()): string {
+  const formatted = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'America/Vancouver',
+    dateStyle: 'medium',
+    timeStyle: 'medium',
+  }).format(date)
+  return `${formatted} PT`
 }
 
 function generateRequestId(): string {
@@ -114,6 +124,9 @@ function validateSubmission(formType: string, fields: Record<string, string>): s
   const message = fields.Message ?? ''
   const contact = fields['Phone or Email'] ?? ''
 
+  const messageError = validateOptionalMessage(message)
+  if (messageError) return messageError
+
   if (formType === 'request-call') {
     if (!isRequired(name)) return 'Name is required'
     const phoneError = validatePhoneField(phone)
@@ -127,7 +140,6 @@ function validateSubmission(formType: string, fields: Record<string, string>): s
     if (!isRequired(email) || !isValidEmail(email)) return 'Valid email is required'
     const phoneError = validatePhoneField(phone)
     if (phoneError) return phoneError
-    if (!isRequired(message)) return 'Project description is required'
     return null
   }
 
@@ -143,7 +155,6 @@ function validateSubmission(formType: string, fields: Record<string, string>): s
   if (formType === 'request-message-response') {
     if (!isRequired(name)) return 'Name is required'
     if (!isRequired(contact) || !isValidPhoneOrEmail(contact)) return 'Valid phone or email is required'
-    if (!isRequired(message)) return 'Project description is required'
     return null
   }
 
@@ -178,7 +189,15 @@ export const POST: APIRoute = async ({ request }) => {
     })
   }
 
-  const { formType, ...rawFields } = body
+  const { formType, ...clientFields } = body
+  delete clientFields.Timestamp
+  delete clientFields.timestamp
+  const rawFields = Object.fromEntries(
+    Object.entries(clientFields).map(([key, value]) => [
+      key,
+      typeof value === 'string' ? value.trim() : String(value ?? '').trim(),
+    ]),
+  )
 
   if (!formType || !FORM_TYPE_LABELS[formType]) {
     return new Response(JSON.stringify({ ok: false, error: 'Unknown form type' }), {
@@ -217,7 +236,11 @@ export const POST: APIRoute = async ({ request }) => {
 
   const requestId = generateRequestId()
   const label = FORM_TYPE_LABELS[formType]
-  const html = buildEmailHtml(rawFields, requestId, formType)
+  const fields = {
+    ...rawFields,
+    Timestamp: submissionTimestamp(),
+  }
+  const html = buildEmailHtml(fields, requestId, formType)
 
   try {
     const res = await fetch('https://api.brevo.com/v3/smtp/email', {

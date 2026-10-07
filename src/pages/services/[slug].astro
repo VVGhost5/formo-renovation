@@ -20,6 +20,7 @@ import {
 } from '../../utils/sanity'
 import {bgStyle} from '../../utils/sanity/backgrounds'
 import {buildServiceJsonLd} from '../../utils/structuredData'
+import {serviceInterestForPage} from '../../utils/serviceInterest'
 
 export async function getStaticPaths() {
 	const services = await getAllServicePages()
@@ -268,7 +269,15 @@ if (service.seo.jsonLd) {
   </section>
   )}
 
-  <SectionContact content={contact} site={site} />
+  <SectionContact
+    content={contact}
+    site={site}
+    serviceInterest={serviceInterestForPage({
+      pageSlug: service.pageSlug,
+      quickName: service.quickName,
+      stripName: service.stripName,
+    })}
+  />
   <TheFooter site={site} />
 </Layout>
 

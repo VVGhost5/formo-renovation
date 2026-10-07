@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
+import { validateOptionalMessage } from '../../utils/formValidation'
 
 interface Review {
   _id: string
@@ -47,11 +48,25 @@ const ratingCounts = computed(() => {
   return counts
 })
 
+function onCommentInput(event: Event) {
+  const value = (event.target as HTMLTextAreaElement).value
+  const error = validateOptionalMessage(value)
+  if (error) fieldErrors.value = { ...fieldErrors.value, comment: error }
+  else {
+    const next = { ...fieldErrors.value }
+    delete next.comment
+    fieldErrors.value = next
+  }
+}
+
 function validateForm() {
   const errors: Record<string, string> = {}
+  const comment = form.value.comment.trim()
   if (!form.value.name.trim()) errors.name = 'Please enter your name.'
-  if (!form.value.comment.trim()) errors.comment = 'Please write your review.'
-  if (form.value.comment.trim().length < 20) errors.comment = 'Review must be at least 20 characters.'
+  if (!comment) errors.comment = 'Please write your review.'
+  else if (comment.length < 20) errors.comment = 'Review must be at least 20 characters.'
+  const limitError = validateOptionalMessage(comment)
+  if (limitError) errors.comment = limitError
   fieldErrors.value = errors
   return Object.keys(errors).length === 0
 }
@@ -282,7 +297,7 @@ function setRating(n: number) {
               v-model="form.comment"
               rows="5"
               placeholder="Share your experience — the quality of work, communication, and overall satisfaction…"
-              @input="delete fieldErrors.comment"
+              @input="onCommentInput"
             ></textarea>
             <span v-if="fieldErrors.comment" class="fg-error">{{ fieldErrors.comment }}</span>
           </div>
