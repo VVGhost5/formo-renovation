@@ -5,6 +5,7 @@ import TheFooter from '../../components/TheFooter.astro'
 import SectionContact from '../../components/SectionContact.astro'
 import { serviceInterestForPage } from '../../utils/serviceInterest'
 import DoorsServiceCard from '../../components/DoorsServiceCard.astro'
+import BreadcrumbNav from '../../components/BreadcrumbNav.astro'
 import {
 	getDoorsPage,
 	getSiteSettings,
@@ -14,6 +15,7 @@ import {
 	DEFAULT_HOME_CONTACT,
 } from '../../utils/sanity'
 import {doorsCommercialSrc, doorsHeroSrc, doorsPatioSrc} from '../../utils/doorsImages'
+import {buildDoorsPageJsonLd} from '../../utils/structuredData'
 
 let page = DEFAULT_DOORS_PAGE
 let site = DEFAULT_SITE_SETTINGS
@@ -37,7 +39,18 @@ const doorServiceNames = [...installServices, ...repairServices]
 const presetDoorService = doorServiceNames.find((name) => name.toLowerCase() === 'doors') ?? 'Doors'
 const showPresetDoorOption = !doorServiceNames.includes(presetDoorService)
 
-let pageJsonLd: object | undefined
+let pageJsonLd: object = buildDoorsPageJsonLd({
+	name: page.seo.title,
+	description: page.seo.description,
+	catalogs: [
+		{name: page.catalogResidentialLabel, services: page.residentialCards.map((card) => card.title)},
+		{name: page.catalogCommercialLabel, services: page.commercialCards.map((card) => card.title)},
+		{
+			name: page.catalogRepairsLabel,
+			services: [...page.repairCards.map((card) => card.title), page.emergencyService],
+		},
+	],
+})
 if (page.seo.jsonLd) {
 	try { pageJsonLd = JSON.parse(page.seo.jsonLd) } catch {}
 }
@@ -53,6 +66,7 @@ const hoursNote = site.phoneHours.trim()
 
   <main class="doors-page" id="main">
     <section class="doors-hero" aria-labelledby="doors-hero-title">
+      <BreadcrumbNav tone="ink" items={[{ label: 'Services', href: '/services/' }, { label: 'Doors' }]} />
       <div class="doors-hero-copy doors-wrap">
         <p class="doors-eyebrow">{page.heroEyebrow}</p>
         <h1 id="doors-hero-title">

@@ -404,3 +404,88 @@ export function buildPrivacyPageJsonLd(): object {
 		breadcrumb: breadcrumb([{ name: 'Privacy Policy', item: `${SITE_URL}/privacy/` }]),
 	}
 }
+
+export type DoorsCatalogLd = {
+	name: string
+	services: string[]
+}
+
+/** WebPage + Service catalog — used on /services/doors/ */
+export function buildDoorsPageJsonLd(opts: {
+	name: string
+	description: string
+	catalogs: DoorsCatalogLd[]
+}): object {
+	const pageUrl = `${SITE_URL}/services/doors/`
+	const pageId = `${pageUrl}#webpage`
+	const serviceId = `${pageUrl}#service`
+	const breadcrumbId = `${pageUrl}#breadcrumb`
+	const catalogId = `${pageUrl}#catalog`
+
+	const catalogs = opts.catalogs
+		.map((catalog) => {
+			const services = catalog.services.map((service) => service.trim()).filter(Boolean)
+			const unique = services.filter((service, index) => services.indexOf(service) === index)
+			const name = catalog.name.trim()
+			if (!name || !unique.length) return null
+			return {
+				'@type': 'OfferCatalog',
+				name,
+				itemListElement: unique.map((serviceName) => ({
+					'@type': 'Offer',
+					itemOffered: {'@type': 'Service', name: serviceName},
+				})),
+			}
+		})
+		.filter((catalog) => catalog !== null)
+
+	return {
+		'@context': 'https://schema.org',
+		'@graph': [
+			{
+				'@type': 'WebPage',
+				'@id': pageId,
+				url: pageUrl,
+				name: opts.name,
+				description: opts.description,
+				isPartOf: {'@id': WEBSITE_ID},
+				about: {'@id': serviceId},
+				breadcrumb: {'@id': breadcrumbId},
+				mainEntity: {'@id': serviceId},
+			},
+			{
+				'@type': 'BreadcrumbList',
+				'@id': breadcrumbId,
+				itemListElement: [
+					{'@type': 'ListItem', position: 1, name: 'Home', item: `${SITE_URL}/`},
+					{'@type': 'ListItem', position: 2, name: 'Services', item: `${SITE_URL}/services/`},
+					{'@type': 'ListItem', position: 3, name: 'Doors', item: pageUrl},
+				],
+			},
+			{
+				'@type': 'Service',
+				'@id': serviceId,
+				name: 'Door Installation & Repair',
+				serviceType: 'Door installation and repair',
+				url: pageUrl,
+				description: opts.description,
+				provider: organizationRef(),
+				areaServed: [
+					{'@type': 'City', name: 'Victoria'},
+					{'@type': 'AdministrativeArea', name: 'Vancouver Island'},
+				],
+				...(catalogs.length ? {hasOfferCatalog: {'@id': catalogId}} : {}),
+			},
+			...(catalogs.length
+				? [
+						{
+							'@type': 'OfferCatalog',
+							'@id': catalogId,
+							name: 'Door services',
+							itemListElement: catalogs,
+						},
+					]
+				: []),
+		],
+	}
+}

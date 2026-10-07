@@ -6,12 +6,14 @@ interface BreadcrumbItem {
 
 interface Props {
 	items: BreadcrumbItem[]
+	/** overlay: light text on a dark photo hero. ink: dark text on a light hero. */
+	tone?: 'overlay' | 'ink'
 }
 
-const { items } = Astro.props
+const { items, tone = 'overlay' } = Astro.props
 ---
 
-<nav class="bc-nav" aria-label="Breadcrumb">
+<nav class:list={['bc-nav', tone === 'ink' && 'is-ink']} aria-label="Breadcrumb">
   <ol class="bc-list">
     <li class="bc-item">
       <a href="/" class="bc-link">Home</a>
@@ -77,6 +79,18 @@ const { items } = Astro.props
 
   .bc-current {
     color: rgba(255, 255, 255, 0.82);
+  }
+
+  .bc-nav.is-ink {
+    .bc-sep { color: rgba(26, 17, 8, 0.28); }
+
+    .bc-link {
+      color: rgba(26, 17, 8, 0.48);
+
+      &:hover { color: rgba(26, 17, 8, 0.88); }
+    }
+
+    .bc-current { color: rgba(26, 17, 8, 0.82); }
   }
 
   /* Mobile: nav shrinks to 54px */

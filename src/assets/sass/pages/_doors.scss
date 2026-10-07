@@ -63,7 +63,10 @@
   font-size: 1.2rem;
 }
 
-.doors-hero { padding-top: 108px; }
+.doors-hero {
+  position: relative;
+  padding-top: 108px;
+}
 
 .doors-hero-copy { text-align: center; }
 
@@ -661,7 +664,7 @@
 
 @media (max-width: 800px) {
   .doors-section { padding-block: 72px; }
-  .doors-hero { padding-top: 90px; }
+  .doors-hero { padding-top: 112px; }
   .doors-hero h1 { font-size: clamp(3.4rem, 8.5vw, 5.5rem); }
   .doors-hero-subtitle { font-size: 1.125rem; }
   .doors-hero-visual { margin-top: 40px; height: 360px; border-radius: 26px; }
@@ -696,7 +699,7 @@
 }
 
 @media (max-width: 560px) {
-  .doors-hero { padding-top: 84px; }
+  .doors-hero { padding-top: 108px; }
   .doors-hero h1 { font-size: clamp(2.8rem, 10.9vw, 4rem); letter-spacing: -0.06em; line-height: 1.07; }
   .doors-hero-subtitle { font-size: 1rem; margin-top: 21px; }
   .doors-hero-actions { gap: 24px; margin-top: 25px; }

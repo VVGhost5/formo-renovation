@@ -10,6 +10,12 @@
   }
 }
 
+.svc-bc-fallback {
+  position: relative;
+  height: 108px;
+  background: var(--hero-bg);
+}
+
 .svc-page-hero .hero-content {
   position: relative; z-index: 2; width: 100%;
   padding: 80px var(--px) 80px;
