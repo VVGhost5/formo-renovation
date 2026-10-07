@@ -463,8 +463,6 @@ export type DoorsPageContent = {
 	introLinkLabel: string
 	introLinkHref: string
 	availabilityLabel: string
-	availabilityHeadline: string
-	availabilityHours: string
 	estimateEyebrow: string
 	estimateTitle: string
 	estimateLead: string

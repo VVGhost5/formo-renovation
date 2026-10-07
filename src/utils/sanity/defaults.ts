@@ -344,8 +344,6 @@ export const DEFAULT_DOORS_PAGE: DoorsPageContent = {
 	introLinkLabel: 'About Formo Renovations',
 	introLinkHref: '/about-us/',
 	availabilityLabel: 'Here when you need us.',
-	availabilityHeadline: 'Open 7 days a week.',
-	availabilityHours: 'Monday–Sunday · 8:00 AM–5:00 PM',
 	estimateEyebrow: 'Your project starts here',
 	estimateTitle: 'Let’s talk doors.',
 	estimateLead: 'A few details. A clear next step.',

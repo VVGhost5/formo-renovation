@@ -86,8 +86,6 @@ export default defineType({
     defineField({name: 'introLinkLabel', title: 'Link label', type: 'string', fieldset: 'intro', initialValue: 'About Formo Renovations'}),
     defineField({name: 'introLinkHref', title: 'Link', type: 'string', fieldset: 'intro', initialValue: '/about-us/'}),
     defineField({name: 'availabilityLabel', title: 'Availability label', type: 'string', fieldset: 'intro', initialValue: 'Here when you need us.'}),
-    defineField({name: 'availabilityHeadline', title: 'Availability headline', type: 'string', fieldset: 'intro', initialValue: 'Open 7 days a week.'}),
-    defineField({name: 'availabilityHours', title: 'Availability hours', type: 'string', fieldset: 'intro', initialValue: 'Monday–Sunday · 8:00 AM–5:00 PM'}),
 
     defineField({name: 'estimateEyebrow', title: 'Eyebrow', type: 'string', fieldset: 'estimate', initialValue: 'Your project starts here'}),
     defineField({name: 'estimateTitle', title: 'Title', type: 'string', fieldset: 'estimate', initialValue: 'Let’s talk doors.'}),
