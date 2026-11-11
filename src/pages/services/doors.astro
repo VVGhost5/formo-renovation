@@ -57,12 +57,11 @@ if (page.seo.jsonLd) {
 
 const lines = (value: string) => value.split(/\r?\n/).map((line) => line.trim()).filter((line) => line.length > 0)
 const phoneHref = `tel:${site.phone.replace(/\D/g, '')}`
-const weekdayHours = site.officeWeekdayHours.trim()
-const hoursNote = site.phoneHours.trim()
+const hoursNote = site.workingHours.trim() || 'Mon – Sat, 8:00 AM – 6:00 PM'
 ---
 
 <Layout title={page.seo.title} description={page.seo.description} jsonLd={pageJsonLd}>
-  <TheNav client:load page="services" phone={site.phone} email={site.email} phoneHours={site.phoneHours} officeWeekdayHours={site.officeWeekdayHours} emailNote={site.emailNote} />
+  <TheNav client:load page="services" phone={site.phone} email={site.email} workingHours={site.workingHours} emailNote={site.emailNote} />
 
   <main class="doors-page" id="main">
     <section class="doors-hero" aria-labelledby="doors-hero-title">
@@ -108,24 +107,7 @@ const hoursNote = site.phoneHours.trim()
         <a class="doors-text-link" href={page.introLinkHref}>{page.introLinkLabel} <span aria-hidden="true">↗</span></a>
         <div class="doors-availability">
           <span class="doors-availability-label">{page.availabilityLabel}</span>
-          {weekdayHours ? (
-            <ul class="doors-hours">
-              <li>
-                <span>Monday – Friday</span>
-                <span>{weekdayHours}</span>
-              </li>
-              <li>
-                <span>Saturday</span>
-                <span class="is-closed">Closed</span>
-              </li>
-              <li>
-                <span>Sunday</span>
-                <span class="is-closed">Closed</span>
-              </li>
-            </ul>
-          ) : (
-            <span class="doors-hours-note">{hoursNote || 'Mon – Fri, 8:00 AM – 5:00 PM'}</span>
-          )}
+          <span class="doors-hours-note">{hoursNote}</span>
         </div>
       </div>
 

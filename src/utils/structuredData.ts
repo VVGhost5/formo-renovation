@@ -84,9 +84,9 @@ export function buildOrganizationJsonLd(opts?: {
 		openingHoursSpecification: [
 			{
 				'@type': 'OpeningHoursSpecification',
-				dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+				dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
 				opens: '08:00',
-				closes: '17:00',
+				closes: '18:00',
 			},
 		],
 		priceRange: '$$',
@@ -100,9 +100,9 @@ export function buildOrganizationJsonLd(opts?: {
 			availableLanguage: 'en',
 			hoursAvailable: {
 				'@type': 'OpeningHoursSpecification',
-				dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+				dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
 				opens: '08:00',
-				closes: '17:00',
+				closes: '18:00',
 			},
 		},
 		...(opts?.sameAs?.length ? {sameAs: opts.sameAs} : {}),

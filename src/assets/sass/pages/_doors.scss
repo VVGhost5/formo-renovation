@@ -177,37 +177,6 @@
   color: var(--doors-muted);
 }
 
-.doors-hours {
-  list-style: none;
-  margin: 8px 0 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-
-  li {
-    display: flex;
-    justify-content: space-between;
-    gap: 16px;
-    padding: 7px 0;
-    border-bottom: 1px solid var(--doors-line);
-    font-size: 0.875rem;
-    color: var(--doors-muted);
-
-    &:last-child { border-bottom: none; }
-  }
-
-  li span:last-child {
-    color: var(--doors-ink);
-    font-weight: 600;
-  }
-
-  li span.is-closed {
-    color: var(--doors-muted);
-    font-weight: 500;
-    font-style: italic;
-  }
-}
-
 .doors-availability-label {
   font-size: 0.8125rem;
   color: var(--doors-mocha);

@@ -14,20 +14,12 @@ export default defineType({
     }),
     defineField({name: 'phone', title: 'Phone', type: 'string'}),
     defineField({
-      name: 'phoneHours',
-      title: 'Phone hours note',
+      name: 'workingHours',
+      title: 'Working hours',
       type: 'string',
       description:
-        'Shown under the phone number in the contact drawer, footer, and contact sections. e.g. Mon – Fri, 8:00 AM – 5:00 PM',
-      initialValue: 'Mon – Fri, 8:00 AM – 5:00 PM',
-    }),
-    defineField({
-      name: 'officeWeekdayHours',
-      title: 'Office hours — Monday to Friday',
-      type: 'string',
-      description:
-        'Time range shown in the Office Hours card. Weekends are always closed. e.g. 8:00 AM – 5:00 PM',
-      initialValue: '8:00 AM – 5:00 PM',
+        'Shown wherever hours appear on the site. e.g. Mon – Sat, 8:00 AM – 6:00 PM',
+      initialValue: 'Mon – Sat, 8:00 AM – 6:00 PM',
     }),
     defineField({name: 'email', title: 'Email', type: 'string'}),
     defineField({

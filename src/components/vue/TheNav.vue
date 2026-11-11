@@ -8,8 +8,7 @@ const props = defineProps<{
   page?: Page
   phone?: string
   email?: string
-  phoneHours?: string
-  officeWeekdayHours?: string
+  workingHours?: string
   emailNote?: string
 }>()
 
@@ -68,8 +67,7 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
     :open="drawerOpen"
     :phone="phone"
     :email="email"
-    :phone-hours="phoneHours"
-    :office-weekday-hours="officeWeekdayHours"
+    :working-hours="workingHours"
     :email-note="emailNote"
     @close="closeDrawer"
   />

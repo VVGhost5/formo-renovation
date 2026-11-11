@@ -75,6 +75,7 @@
 #contact-main {
   background: var(--hero-bg);
   padding: 88px var(--px);
+  scroll-margin-top: 80px;
 }
 
 .contact-grid {
@@ -275,45 +276,6 @@ input[type="range"] {
 .ic-note { font-size: 0.8125rem; color: var(--text-mid); line-height: 1.4; }
 .ic-arrow { color: var(--text-dim); font-size: 16px; margin-top: 4px; flex-shrink: 0; }
 
-// Hours card
-.info-hours {
-  background: var(--numbers-bg);
-  border: 1px solid rgba(28,20,13,0.08);
-  border-radius: var(--r-md);
-  padding: 24px;
-}
-
-.ih-header {
-  display: flex; align-items: center; gap: 12px; margin-bottom: 18px;
-}
-
-.ih-icon {
-  width: 40px; height: 40px; border-radius: var(--r-sm);
-  background: var(--hero-bg); border: 1px solid rgba(28,20,13,0.1);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 16px;
-}
-
-.ih-title {
-  font-family: var(--font-mono);
-  font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase;
-  color: var(--gold);
-}
-
-.ih-rows { display: flex; flex-direction: column; }
-
-.ih-row {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 10px 0;
-  border-bottom: 1px solid rgba(28,20,13,0.07);
-
-  &:last-child { border-bottom: none; }
-}
-
-.ih-day { font-size: 0.875rem; color: var(--text-mid); }
-.ih-time { font-size: 0.875rem; font-weight: 600; color: var(--text-dark); }
-.ih-closed { font-size: 0.875rem; font-weight: 500; color: var(--text-dim); font-style: italic; }
-
 // ── Map Section ─────────────────────────────────────────────
 #map-section {
   background: var(--numbers-bg);
@@ -337,7 +299,8 @@ input[type="range"] {
 }
 
 .map-overlay-badge {
-  position: absolute; top: 20px; left: 20px;
+  position: absolute; top: 20px; right: 20px;
+  max-width: calc(100% - 40px);
   background: rgba(28,20,13,0.75);
   backdrop-filter: blur(12px);
   border: 1px solid rgba(255,255,255,0.14);
@@ -433,7 +396,6 @@ input[type="range"] {
   .map-frame { min-height: 320px; iframe { min-height: 320px; } }
   .info-side { flex-direction: column; }
   .info-channels { grid-template-columns: 1fr; }
-  .info-hours { grid-column: auto; }
   .service-checks { grid-template-columns: 1fr; }
 }
 

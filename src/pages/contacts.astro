@@ -42,7 +42,7 @@ const waHref = `https://wa.me/${site.whatsapp.replace(/\D/g, '')}`
   description="Get in touch with Formo Renovations. Free on-site consultations across Victoria and Vancouver Island, BC. Call, email, or fill in the form."
   jsonLd={pageJsonLd}
 >
-  <TheNav client:load page="contacts" phone={site.phone} email={site.email} phoneHours={site.phoneHours} officeWeekdayHours={site.officeWeekdayHours} emailNote={site.emailNote} />
+  <TheNav client:load page="contacts" phone={site.phone} email={site.email} workingHours={site.workingHours} emailNote={site.emailNote} />
 
   <!-- ══ HERO ══ -->
   <section id="hero" class="contact-page-hero">
@@ -71,7 +71,7 @@ const waHref = `https://wa.me/${site.whatsapp.replace(/\D/g, '')}`
           <div class="hc-icon-wrap"><i class="fa-solid fa-phone"></i></div>
           <div class="hc-body">
             <div class="hc-name">Call Us</div>
-            <div class="hc-value">{site.phone} · {site.phoneHours}</div>
+            <div class="hc-value">{site.phone} · {site.workingHours}</div>
           </div>
           <span class="hc-arrow">→</span>
         </a>
@@ -174,13 +174,10 @@ const waHref = `https://wa.me/${site.whatsapp.replace(/\D/g, '')}`
             <label>How Did You Hear About Us?</label>
             <select id="f-source">
               <option value="">Select an option…</option>
-              <option>Google Search</option>
-              <option>Word of Mouth / Referral</option>
+              <option>Google search</option>
               <option>Instagram</option>
               <option>Facebook</option>
-              <option>Houzz</option>
-              <option>HomeStars</option>
-              <option>Walked Past a Job Site</option>
+              <option>Recommendations</option>
               <option>Other</option>
             </select>
           </div>
@@ -200,7 +197,7 @@ const waHref = `https://wa.me/${site.whatsapp.replace(/\D/g, '')}`
           <div class="ic-body">
             <div class="ic-label">Phone</div>
             <div class="ic-value">{site.phone}</div>
-            <div class="ic-note">{site.phoneHours}</div>
+            <div class="ic-note">{site.workingHours}</div>
           </div>
           <span class="ic-arrow">→</span>
         </a>
@@ -228,18 +225,6 @@ const waHref = `https://wa.me/${site.whatsapp.replace(/\D/g, '')}`
         </a>
         </li>
         </ul>
-
-        <div class="info-hours">
-          <div class="ih-header">
-            <div class="ih-icon"><i class="fa-regular fa-clock"></i></div>
-            <div class="ih-title">Office Hours</div>
-          </div>
-          <ul class="ih-rows">
-            <li class="ih-row"><span class="ih-day">Monday – Friday</span><span class="ih-time">{site.officeWeekdayHours}</span></li>
-            <li class="ih-row"><span class="ih-day">Saturday</span><span class="ih-closed">Closed</span></li>
-            <li class="ih-row"><span class="ih-day">Sunday</span><span class="ih-closed">Closed</span></li>
-          </ul>
-        </div>
       </div>
 
     </div>
@@ -301,14 +286,15 @@ const waHref = `https://wa.me/${site.whatsapp.replace(/\D/g, '')}`
     mainForm?.querySelector('[data-field="message"]') as HTMLElement | null,
   )
 
-  // Service checkboxes
-  document.querySelectorAll('.sc-item').forEach(item => {
-    item.addEventListener('click', () => {
-      item.classList.toggle('checked');
-      const cb = item.querySelector('input[type="checkbox"]') as HTMLInputElement;
-      if (cb) cb.checked = item.classList.contains('checked');
-    });
-  });
+  // Service checkboxes — sync the visual state from the input.
+  // A click handler on the label fights the browser's own toggle and cancels the click.
+  document.querySelectorAll<HTMLLabelElement>('.sc-item').forEach((item) => {
+    const cb = item.querySelector<HTMLInputElement>('input[type="checkbox"]')
+    if (!cb) return
+    const sync = () => item.classList.toggle('checked', cb.checked)
+    cb.addEventListener('change', sync)
+    sync()
+  })
 
   // Budget slider
   const slider = document.getElementById('budget-slider') as HTMLInputElement;
@@ -354,8 +340,8 @@ const waHref = `https://wa.me/${site.whatsapp.replace(/\D/g, '')}`
     const budget = (document.getElementById('budget-display') as HTMLElement)?.textContent ?? '';
 
     const checkedServices = Array.from(
-      document.querySelectorAll<HTMLInputElement>('.sc-item.checked input[type="checkbox"]')
-    ).map(cb => cb.value).join(', ');
+      document.querySelectorAll<HTMLInputElement>('#service-checks input[type="checkbox"]:checked')
+    ).map((cb) => cb.closest('.sc-item')?.querySelector('.sc-label')?.textContent?.trim() || cb.value).join(', ')
 
     if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Sending…'; }
 

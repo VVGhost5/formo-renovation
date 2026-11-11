@@ -242,20 +242,11 @@
   color: #1a1208;
 }
 
-.cd-hours-rows { display: flex; flex-direction: column; gap: 7px; }
-
-.cd-hours-row {
-  display: flex; justify-content: space-between; align-items: center;
-  font-family: var(--font); font-size: 13px;
-  padding-bottom: 7px;
-  border-bottom: 1px solid #ede8e1;
-
-  &:last-child { border-bottom: none; padding-bottom: 0; }
+.cd-hours-value {
+  margin: 0;
+  font-family: var(--font); font-size: 13px; font-weight: 600;
+  color: #1a1208;
 }
-
-.cd-hours-day  { color: #4a3a28; }
-.cd-hours-time { color: #1a1208; font-weight: 600; }
-.cd-hours-closed { color: #b04040; font-weight: 600; }
 
 /* Quick form */
 .cd-form-wrap {

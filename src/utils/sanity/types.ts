@@ -33,8 +33,7 @@ export type SiteSettingsContent = {
 	testimonialsBackgroundAlt: string | null
 	footerDescription: string
 	phone: string
-	phoneHours: string
-	officeWeekdayHours: string
+	workingHours: string
 	email: string
 	emailNote: string
 	notificationEmail: string
