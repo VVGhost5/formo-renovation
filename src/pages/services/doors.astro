@@ -323,6 +323,7 @@ const hoursNote = site.workingHours.trim() || 'Mon – Sat, 8:00 AM – 6:00 PM'
 </Layout>
 
 <script>
+  import { trackLeadOnce } from '../../utils/analytics'
   import { applyFieldErrors, bindOptionalMessageField, validateDoorsEstimateFields } from '../../utils/formValidation'
   import { initPhoneMasks } from '../../utils/phoneMask'
 
@@ -399,6 +400,11 @@ const hoursNote = site.workingHours.trim() || 'Mon – Sat, 8:00 AM – 6:00 PM'
       if (data.ok) {
         form.hidden = true
         if (success) success.hidden = false
+        trackLeadOnce({
+          requestId: typeof data.requestId === 'string' ? data.requestId : '',
+          serviceCategory: 'doors',
+          formId: 'doors-estimate-form',
+        })
       } else {
         submit.disabled = false
         submit.innerHTML = submitHtml

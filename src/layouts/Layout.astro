@@ -43,11 +43,11 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site)
     {jsonLd && <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />}
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-HPTRQ67KC8"></script>
-    <script>
+    <script is:inline>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-    
+      gtag('config', 'AW-18500972696');
       gtag('config', 'G-HPTRQ67KC8');
     </script>
   </head>
