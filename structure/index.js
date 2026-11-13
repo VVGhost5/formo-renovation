@@ -71,6 +71,7 @@ export const structure = (S) =>
             .items([
               singleton(S, 'servicesHero', 'Hero', 'servicesHero'),
               singleton(S, 'servicePageHero', 'Service Pages — Hero', 'servicePageHero'),
+              singleton(S, 'servicesOrder', 'Service order', 'servicesOrder'),
               S.listItem()
                 .title('Services List')
                 .child(

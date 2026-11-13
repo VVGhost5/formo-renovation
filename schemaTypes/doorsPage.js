@@ -199,7 +199,7 @@ export default defineType({
   ],
   preview: {
     prepare() {
-      return {title: 'Doors Page'}
+      return {title: 'Doors'}
     },
   },
 })

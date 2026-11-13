@@ -7,6 +7,7 @@ import BreadcrumbNav from '../components/BreadcrumbNav.astro'
 import {
 	getServicesPage,
 	getServicesList,
+	getServiceOrder,
 	getSiteSettings,
 	getHomeContact,
 	getPageMetadata,
@@ -19,17 +20,20 @@ import {
 import {bgStyle} from '../utils/sanity/backgrounds'
 import {buildServicesCollectionJsonLd} from '../utils/structuredData'
 import {doorCardImage} from '../utils/doorsImages'
+import {orderServicesDirectory, type ServiceOrderRef} from '../utils/sanity/serviceOrder'
 
 let page = DEFAULT_SERVICES_PAGE
 let services = DEFAULT_SERVICES
+let serviceOrder: ServiceOrderRef[] = []
 let site = DEFAULT_SITE_SETTINGS
 let contact = DEFAULT_HOME_CONTACT
 let pageMeta = DEFAULT_PAGE_SEO.services
 
 try {
-	;[page, services, site, contact, pageMeta] = await Promise.all([
+	;[page, services, serviceOrder, site, contact, pageMeta] = await Promise.all([
 		getServicesPage(),
 		getServicesList(),
+		getServiceOrder(),
 		getSiteSettings(),
 		getHomeContact(),
 		getPageMetadata('services'),
@@ -38,7 +42,7 @@ try {
 	console.warn('[sanity] Services page fallback.', err)
 }
 
-services = services.filter((svc) => svc.pageSlug !== 'doors')
+const entries = orderServicesDirectory(services, serviceOrder)
 const doorsTeaser = doorCardImage('front-entry')
 
 const heroBg = bgStyle(page.heroImageUrl)
@@ -49,10 +53,13 @@ if (pageMeta.jsonLd) {
 	try { pageJsonLd = JSON.parse(pageMeta.jsonLd) } catch {}
 }
 if (!pageJsonLd) {
-	pageJsonLd = buildServicesCollectionJsonLd([
-		...services.map((s) => ({ pageSlug: s.pageSlug, quickName: s.quickName, lead: s.lead })),
-		{ pageSlug: 'doors', quickName: 'Doors', lead: 'Door installation and repair for homes and businesses in Victoria, BC.' },
-	])
+	pageJsonLd = buildServicesCollectionJsonLd(
+		entries.map((entry) =>
+			entry.kind === 'doors'
+				? { pageSlug: 'doors', quickName: 'Doors', lead: 'Door installation and repair for homes and businesses in Victoria, BC.' }
+				: { pageSlug: entry.service.pageSlug, quickName: entry.service.quickName, lead: entry.service.lead },
+		),
+	)
 }
 ---
 
@@ -89,18 +96,7 @@ if (!pageJsonLd) {
       <div class="hero-quick">
         <div class="hero-quick-label">Jump to a service</div>
         <ul>
-        {services.map((svc) => (
-          <li>
-          <a href={`/services/${svc.pageSlug}/`} class="hero-quick-item">
-            <div class="hqi-icon"><i class={svc.icon}></i></div>
-            <div class="hqi-body">
-              <div class="hqi-name">{svc.quickName}</div>
-              <div class="hqi-sub">{svc.quickSub}</div>
-            </div>
-            <span class="hqi-arr">→</span>
-          </a>
-          </li>
-        ))}
+        {entries.map((entry) => entry.kind === 'doors' ? (
           <li>
           <a href="/services/doors/" class="hero-quick-item">
             <div class="hqi-icon"><i class="fa-solid fa-door-open"></i></div>
@@ -111,6 +107,18 @@ if (!pageJsonLd) {
             <span class="hqi-arr">→</span>
           </a>
           </li>
+        ) : (
+          <li>
+          <a href={`/services/${entry.service.pageSlug}/`} class="hero-quick-item">
+            <div class="hqi-icon"><i class={entry.service.icon}></i></div>
+            <div class="hqi-body">
+              <div class="hqi-name">{entry.service.quickName}</div>
+              <div class="hqi-sub">{entry.service.quickSub}</div>
+            </div>
+            <span class="hqi-arr">→</span>
+          </a>
+          </li>
+        ))}
         </ul>
       </div>
 
@@ -122,56 +130,82 @@ if (!pageJsonLd) {
   <>
   <section id="services-strip">
     <ul class="strip-inner">
-      {services.map((svc, i) => (
-        <li class="strip-cell">
-        <a href={`/services/${svc.pageSlug}/`}>
-          <div class="sc-icon"><i class={svc.icon}></i></div>
-          <div class="sc-name">{svc.stripName}</div>
-          <div class="sc-count">Service {String(i + 1).padStart(2, '0')}</div>
-        </a>
-        </li>
-      ))}
+      {entries.map((entry, i) => entry.kind === 'doors' ? (
         <li class="strip-cell">
         <a href="/services/doors/">
           <div class="sc-icon"><i class="fa-solid fa-door-open"></i></div>
           <div class="sc-name">Doors</div>
-          <div class="sc-count">Service {String(services.length + 1).padStart(2, '0')}</div>
+          <div class="sc-count">Service {String(i + 1).padStart(2, '0')}</div>
         </a>
         </li>
+      ) : (
+        <li class="strip-cell">
+        <a href={`/services/${entry.service.pageSlug}/`}>
+          <div class="sc-icon"><i class={entry.service.icon}></i></div>
+          <div class="sc-name">{entry.service.stripName}</div>
+          <div class="sc-count">Service {String(i + 1).padStart(2, '0')}</div>
+        </a>
+        </li>
+      ))}
     </ul>
   </section>
 
   <!-- ══ SERVICES LIST ══ -->
   <section id="services-list">
-    {services.map((svc, i) => (
-      <div class={`svc-block${i % 2 !== 0 ? ' flip' : ''}`} id={svc.id}>
+    {entries.map((entry, i) => entry.kind === 'doors' ? (
+      <div class={`svc-block${i % 2 !== 0 ? ' flip' : ''}`} id="svc-doors">
         <div class="svc-img-col">
-          {svc.imageUrl && (
-            <img width="720" height="774" src={svc.imageUrl} alt={svc.imageAlt} loading="lazy" />
+          {doorsTeaser && (
+            <img width="720" height="540" src={doorsTeaser.src} alt={doorsTeaser.alt} loading="lazy" />
           )}
           <div class="svc-img-badge">
-            <span class="svc-img-badge-icon"><i class={svc.icon}></i></span>
-            <span class="svc-img-badge-text">{svc.eyebrow}</span>
+            <span class="svc-img-badge-icon"><i class="fa-solid fa-door-open"></i></span>
+            <span class="svc-img-badge-text">Door installation & repair</span>
           </div>
         </div>
         <div class="svc-text-col">
           <div class="svc-num">{String(i + 1).padStart(2, '0')}</div>
-          <div class="svc-eyebrow">{svc.eyebrow}</div>
-          <h2 class="svc-title">{svc.title}</h2>
-          <p class="svc-lead">{svc.lead}</p>
-          {svc.includes.length > 0 && (
+          <div class="svc-eyebrow">Victoria, BC</div>
+          <h2 class="svc-title">Doors</h2>
+          <p class="svc-lead">New installations, replacements, and repairs for homes and businesses — from the front entry to commercial and industrial doors.</p>
+          <div class="svc-includes-label">What's included</div>
+          <ul class="svc-includes">
+            <li>Front entry, patio, and interior doors</li>
+            <li>Garage and commercial entrances</li>
+            <li>Door repairs</li>
+          </ul>
+          <a href="/services/doors/" class="svc-cta">Explore Door Services →</a>
+        </div>
+      </div>
+    ) : (
+      <div class={`svc-block${i % 2 !== 0 ? ' flip' : ''}`} id={entry.service.id}>
+        <div class="svc-img-col">
+          {entry.service.imageUrl && (
+            <img width="720" height="774" src={entry.service.imageUrl} alt={entry.service.imageAlt} loading="lazy" />
+          )}
+          <div class="svc-img-badge">
+            <span class="svc-img-badge-icon"><i class={entry.service.icon}></i></span>
+            <span class="svc-img-badge-text">{entry.service.eyebrow}</span>
+          </div>
+        </div>
+        <div class="svc-text-col">
+          <div class="svc-num">{String(i + 1).padStart(2, '0')}</div>
+          <div class="svc-eyebrow">{entry.service.eyebrow}</div>
+          <h2 class="svc-title">{entry.service.title}</h2>
+          <p class="svc-lead">{entry.service.lead}</p>
+          {entry.service.includes.length > 0 && (
             <>
               <div class="svc-includes-label">What's included</div>
               <ul class="svc-includes">
-                {svc.includes.map((item) => (
+                {entry.service.includes.map((item) => (
                   <li>{item}</li>
                 ))}
               </ul>
             </>
           )}
-          {svc.meta.length > 0 && (
+          {entry.service.meta.length > 0 && (
             <ul class="svc-meta">
-              {svc.meta.map((m) => (
+              {entry.service.meta.map((m) => (
                 <li class="svc-meta-item">
                   <span class="svc-meta-key">{m.key}</span>
                   <span class="svc-meta-val">{m.val}</span>
@@ -179,34 +213,10 @@ if (!pageJsonLd) {
               ))}
             </ul>
           )}
-          <a href={`/services/${svc.pageSlug}/`} class="svc-cta">Learn More About This Service →</a>
+          <a href={`/services/${entry.service.pageSlug}/`} class="svc-cta">Learn More About This Service →</a>
         </div>
       </div>
     ))}
-    <div class={`svc-block${services.length % 2 !== 0 ? ' flip' : ''}`} id="svc-doors">
-      <div class="svc-img-col">
-        {doorsTeaser && (
-          <img width="720" height="540" src={doorsTeaser.src} alt={doorsTeaser.alt} loading="lazy" />
-        )}
-        <div class="svc-img-badge">
-          <span class="svc-img-badge-icon"><i class="fa-solid fa-door-open"></i></span>
-          <span class="svc-img-badge-text">Door installation & repair</span>
-        </div>
-      </div>
-      <div class="svc-text-col">
-        <div class="svc-num">{String(services.length + 1).padStart(2, '0')}</div>
-        <div class="svc-eyebrow">Victoria, BC</div>
-        <h2 class="svc-title">Doors</h2>
-        <p class="svc-lead">New installations, replacements, and repairs for homes and businesses — from the front entry to commercial and industrial doors.</p>
-        <div class="svc-includes-label">What's included</div>
-        <ul class="svc-includes">
-          <li>Front entry, patio, and interior doors</li>
-          <li>Garage and commercial entrances</li>
-          <li>Door repairs</li>
-        </ul>
-        <a href="/services/doors/" class="svc-cta">Explore Door Services →</a>
-      </div>
-    </div>
   </section>
   </>
   )}

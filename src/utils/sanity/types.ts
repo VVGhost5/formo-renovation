@@ -361,6 +361,7 @@ export type Review = {
 }
 
 export type ServiceDetail = {
+	_id: string
 	id: string
 	pageSlug: string
 	num: string

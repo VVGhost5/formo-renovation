@@ -4,6 +4,7 @@ import {defineQuery} from 'groq'
 import {urlForImage} from './image'
 import {categoryLabel, normalizeCategories, projectMatchesCategory, isPortfolioCategory} from './categories'
 import {servicePageSlug, DEFAULT_SERVICE_PORTFOLIO_CATEGORIES} from './serviceSlug'
+import type {ServiceOrderRef} from './serviceOrder'
 import {
 	DEFAULT_ABOUT_PAGE,
 	DEFAULT_CONTACTS_PAGE,
@@ -323,11 +324,19 @@ const REVIEWS_PAGE_Q = defineQuery(`*[_id == "reviewsPage"][0]{
   heroImage{ asset, alt }
 }`)
 
+const SERVICE_ORDER_Q = defineQuery(`*[_id == "servicesOrder"][0]{
+  "items": items[]->{
+    _id,
+    _type
+  }
+}`)
+
 const REVIEWS_Q = defineQuery(`*[_type == "review" && approved == true] | order(_createdAt desc){
   _id, name, location, service, rating, comment, approved, _createdAt
 }`)
 
 const SERVICES_LIST_Q = defineQuery(`*[_type == "service"] | order(${SORT_ORDER} asc, _createdAt asc){
+  _id,
   "id": slug.current,
   "pageSlug": pageSlug.current,
   num, icon, stripName, quickName, quickSub,
@@ -1052,6 +1061,7 @@ export function mapServicesList(docs: Record<string, unknown>[]): ServiceDetail[
 	return docs
 		.map((doc) => {
 			const d = doc as {
+				_id?: string
 				id?: string
 				pageSlug?: string
 				num?: string
@@ -1069,6 +1079,7 @@ export function mapServicesList(docs: Record<string, unknown>[]): ServiceDetail[
 			}
 			if (!d.id || !d.title) return null
 			return {
+				_id: str(d._id),
 				id: str(d.id),
 				pageSlug: servicePageSlug(str(d.id), d.pageSlug),
 				num: str(d.num),
@@ -1330,6 +1341,11 @@ export async function getServicesPage() {
 export async function getServicesList(): Promise<ServiceDetail[]> {
 	const docs = await safeFetch(SERVICES_LIST_Q, [] as Record<string, unknown>[])
 	return mapServicesList(docs)
+}
+
+export async function getServiceOrder(): Promise<ServiceOrderRef[]> {
+	const doc = await safeFetch(SERVICE_ORDER_Q, null as {items?: Array<ServiceOrderRef | null>} | null)
+	return (doc?.items ?? []).filter((item): item is ServiceOrderRef => Boolean(item?._id && item?._type))
 }
 
 export async function getServicePageHero() {

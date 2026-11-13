@@ -87,7 +87,8 @@ export default defineType({
       name: 'sortOrder',
       title: 'Sort order',
       type: 'number',
-      description: 'Lower number = earlier in the list. Leave empty to place at the end.',
+      description:
+        'Fallback only. The Services page order is set by dragging items in Services → Service order. Lower number = earlier among services that are not in that list.',
       fieldset: 'overview',
     }),
 
@@ -242,6 +243,9 @@ export default defineType({
     {title: 'Sort order', name: 'sortOrderAsc', by: [{field: 'sortOrder', direction: 'asc'}]},
   ],
   preview: {
-    select: {title: 'title', subtitle: 'eyebrow', media: 'image'},
+    select: {title: 'quickName', fallback: 'title', subtitle: 'title', media: 'image'},
+    prepare({title, fallback, subtitle, media}) {
+      return {title: title || fallback || 'Service', subtitle, media}
+    },
   },
 })

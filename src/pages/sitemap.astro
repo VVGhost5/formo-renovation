@@ -2,16 +2,20 @@
 import Layout from '../layouts/Layout.astro'
 import TheNav from '../components/vue/TheNav.vue'
 import TheFooter from '../components/TheFooter.astro'
-import {DEFAULT_SITE_SETTINGS, DEFAULT_SERVICES, getSiteSettings, getServicesList} from '../utils/sanity'
+import {DEFAULT_SITE_SETTINGS, DEFAULT_SERVICES, getSiteSettings, getServicesList, getServiceOrder} from '../utils/sanity'
+import {orderServicesDirectory, type ServiceOrderRef} from '../utils/sanity/serviceOrder'
 
 let site = DEFAULT_SITE_SETTINGS
 let services = DEFAULT_SERVICES
+let serviceOrder: ServiceOrderRef[] = []
 
 try {
-	;[site, services] = await Promise.all([getSiteSettings(), getServicesList()])
+	;[site, services, serviceOrder] = await Promise.all([getSiteSettings(), getServicesList(), getServiceOrder()])
 } catch (err) {
 	console.warn('[sanity] Sitemap site settings fallback.', err)
 }
+
+const serviceEntries = orderServicesDirectory(services, serviceOrder)
 
 const sections = [
 	{
@@ -27,20 +31,19 @@ const sections = [
 	},
 	{
 		title: 'Services',
-		items: [
-			...services
-				.filter((svc) => svc.pageSlug !== 'doors')
-				.map((svc) => ({
-					href: `/services/${svc.pageSlug}/`,
-					name: svc.quickName || svc.title,
-					desc: svc.quickSub || svc.lead,
-				})),
-			{
-				href: '/services/doors/',
-				name: 'Doors',
-				desc: 'Door installation and repair for homes and businesses in Victoria, BC',
-			},
-		],
+		items: serviceEntries.map((entry) =>
+			entry.kind === 'doors'
+				? {
+					href: '/services/doors/',
+					name: 'Doors',
+					desc: 'Door installation and repair for homes and businesses in Victoria, BC',
+				}
+				: {
+					href: `/services/${entry.service.pageSlug}/`,
+					name: entry.service.quickName || entry.service.title,
+					desc: entry.service.quickSub || entry.service.lead,
+				},
+		),
 	},
 ]
 ---

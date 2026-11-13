@@ -19,6 +19,7 @@ import servicePageHero from './servicePageHero'
 import servicesProcess from './servicesProcess'
 import servicesPricing from './servicesPricing'
 import servicesFaq from './servicesFaq'
+import servicesOrder from './servicesOrder'
 import portfolioPage from './portfolioPage'
 import aboutPage from './aboutPage'
 import aboutHero from './aboutHero'
@@ -78,6 +79,7 @@ export const schemaTypes = [
   servicesProcess,
   servicesPricing,
   servicesFaq,
+  servicesOrder,
   portfolioPage,
   aboutHero,
   aboutFounder,
