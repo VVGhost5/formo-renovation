@@ -3,9 +3,9 @@
 .nav-mobile-menu a.active { color: #fff !important; }
 
 // ── Portfolio Hero ──────────────────────────────────────────
-#hero.portfolio-hero-page {
+.hero.portfolio-hero-page {
   position: relative;
-  min-height: 100vh;
+  min-height: 60vh;
   display: flex;
   align-items: flex-end;
   padding-top: 60px;

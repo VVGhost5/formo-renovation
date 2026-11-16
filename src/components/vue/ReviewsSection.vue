@@ -127,6 +127,7 @@ function setRating(n: number) {
 <template>
   <!-- ══ REVIEWS GRID ══ -->
   <section id="reviews-list">
+    <div class="container">
     <div class="rvs-container">
 
       <div class="rvs-header">
@@ -212,10 +213,12 @@ function setRating(n: number) {
       </ul>
 
     </div>
+    </div>
   </section>
 
   <!-- ══ SUBMIT REVIEW ══ -->
   <section id="submit-review">
+    <div class="container">
     <div class="srvs-inner">
 
       <div class="srvs-left">
@@ -318,6 +321,7 @@ function setRating(n: number) {
         </form>
 
       </div>
+    </div>
     </div>
   </section>
 </template>

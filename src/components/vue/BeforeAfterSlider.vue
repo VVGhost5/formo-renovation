@@ -93,6 +93,7 @@ function startDrag(e: MouseEvent | TouchEvent) {
 
 <template>
   <section id="beforeafter" :style="bannerBg">
+    <div class="container">
     <div class="ba-grid">
 
       <!-- LEFT col (2fr): Drag slider -->
@@ -180,6 +181,7 @@ function startDrag(e: MouseEvent | TouchEvent) {
         <a href="/portfolio/" class="btn-outline">{{ banner.ctaLabel }}</a>
       </div>
 
+    </div>
     </div>
   </section>
 </template>

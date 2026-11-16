@@ -71,9 +71,10 @@ if (!pageJsonLd) {
   <TheNav client:load page="services" phone={site.phone} email={site.email} workingHours={site.workingHours} emailNote={site.emailNote} />
 
   {page.heroIsShowed && (
-  <section id="hero" class="svc-page-hero">
+  <section id="hero" class="hero svc-page-hero">
     <div class="hero-bg-img" style={heroBg} aria-hidden="true"></div>
     <BreadcrumbNav items={[{ label: 'Services' }]} />
+    <div class="container">
     <div class="hero-content">
 
       <div class="hero-left">
@@ -123,12 +124,14 @@ if (!pageJsonLd) {
       </div>
 
     </div>
+    </div>
   </section>
   )}
 
   {page.listIsShowed && (
   <>
   <section id="services-strip">
+    <div class="container">
     <ul class="strip-inner">
       {entries.map((entry, i) => entry.kind === 'doors' ? (
         <li class="strip-cell">
@@ -148,10 +151,12 @@ if (!pageJsonLd) {
         </li>
       ))}
     </ul>
+    </div>
   </section>
 
   <!-- ══ SERVICES LIST ══ -->
   <section id="services-list">
+    <div class="container">
     {entries.map((entry, i) => entry.kind === 'doors' ? (
       <div class={`svc-block${i % 2 !== 0 ? ' flip' : ''}`} id="svc-doors">
         <div class="svc-img-col">
@@ -217,6 +222,7 @@ if (!pageJsonLd) {
         </div>
       </div>
     ))}
+    </div>
   </section>
   </>
   )}
@@ -225,13 +231,16 @@ if (!pageJsonLd) {
   <section id="our-process">
     <div class="svc-process-hero">
       <div class="svc-process-hero-img" style={processBg}></div>
+      <div class="container">
       <div class="svc-process-hero-content">
         <span class="svc-process-eyebrow">{page.processEyebrow}</span>
         <h2 class="svc-process-headline">{page.processHeadline} <em>{page.processHeadlineEmphasis}</em></h2>
         <p class="svc-process-sub">{page.processDescription}</p>
       </div>
+      </div>
     </div>
 
+    <div class="container">
     <ul class="process-steps">
       {page.processSteps.map((step, i) => (
         <li class="pstep">
@@ -242,11 +251,13 @@ if (!pageJsonLd) {
         </li>
       ))}
     </ul>
+    </div>
   </section>
   )}
 
   {page.pricingIsShowed && (
   <section id="pricing-hint">
+    <div class="container">
     <div class="ph-inner">
       <div class="ph-left">
         <div class="ph-eyebrow">{page.pricingEyebrow}</div>
@@ -266,11 +277,13 @@ if (!pageJsonLd) {
         </li>
       ))}
     </ul>
+    </div>
   </section>
   )}
 
   {page.faqIsShowed && (
   <section id="faq">
+    <div class="container">
     <div class="faq-grid">
       <div class="faq-left">
         <span class="faq-eyebrow">{page.faqEyebrow}</span>
@@ -291,6 +304,7 @@ if (!pageJsonLd) {
           </li>
         ))}
       </ul>
+    </div>
     </div>
   </section>
   )}

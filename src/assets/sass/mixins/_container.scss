@@ -1,34 +1,15 @@
-@use 'sass:map';
-@use '../variables' as v;
-
 // ── Container ─────────────────────────────────────────────
-// Fluid on mobile/tablet, fixed max-width on desktop.
+// Full width below 2000px. On extra-large screens, a centered 1800px column
+// so section content does not stretch edge to edge.
 // Apply to any wrapper with class="container".
 @mixin container {
   box-sizing: border-box;
   width: 100%;
   margin-right: auto;
   margin-left: auto;
-  padding-right: v.$container-padding-mobile;
-  padding-left: v.$container-padding-mobile;
 
-  // ── Tablet (768–1023px): wider side padding ──
-  @media (min-width: #{map.get(v.$breakpoints-min, md)}) and (max-width: #{map.get(v.$breakpoints-max, md)}) {
-    padding-right: v.$container-padding-tablet;
-    padding-left: v.$container-padding-tablet;
-  }
-
-  // ── Desktop (1024–1439px): fixed max, no horizontal padding ──
-  @media (min-width: #{map.get(v.$breakpoints-min, lg)}) and (max-width: #{map.get(v.$breakpoints-max, lg)}) {
-    max-width: v.$container-max-lg;
-    padding-right: 0;
-    padding-left: 0;
-  }
-
-  // ── XL desktop (1440px+): wider max, no horizontal padding ──
-  @media (min-width: #{map.get(v.$breakpoints-min, xl)}) {
-    max-width: v.$container-max-xl;
-    padding-right: 0;
-    padding-left: 0;
+  @media (min-width: 2000px) {
+    width: 1800px;
+    max-width: 100%;
   }
 }

@@ -62,10 +62,11 @@ if (!pageJsonLd) {
   <TheNav client:load page="about-us" phone={site.phone} email={site.email} workingHours={site.workingHours} emailNote={site.emailNote} />
 
   {page.heroIsShowed && (
-  <section id="hero" class:list={['about-page-hero', !page.founderCardIsShowed && 'no-side-card']}>
+  <section id="hero" class:list={['hero', 'about-page-hero', !page.founderCardIsShowed && 'no-side-card']}>
     <div class="hero-bg-img" style={heroBg} aria-hidden="true"></div>
     <BreadcrumbNav items={[{ label: 'About Us' }]} />
 
+    <div class="container">
     <div class="hero-content">
       <div class="hero-left">
         <div class="hero-eyebrow">
@@ -111,11 +112,13 @@ if (!pageJsonLd) {
         </div>
       )}
     </div>
+    </div>
   </section>
   )}
 
   {page.whoIsShowed && (
   <section id="who-we-are">
+    <div class="container">
     <div class="who-grid">
       <div class="who-left">
         <span class="eyebrow-light">{page.whoEyebrow}</span>
@@ -137,6 +140,7 @@ if (!pageJsonLd) {
         <a href={page.whoCtaLink} class="btn-dark" style="width:fit-content;">{page.whoCtaLabel}</a>
       </div>
     </div>
+    </div>
   </section>
   )}
 
@@ -144,6 +148,7 @@ if (!pageJsonLd) {
 
   {page.storyIsShowed && (
   <section id="our-story">
+    <div class="container">
     <div class="story-head">
       <div>
         <span class="eyebrow-light">{page.storyEyebrow}</span>
@@ -167,6 +172,7 @@ if (!pageJsonLd) {
         </li>
       ))}
     </ul>
+    </div>
   </section>
   )}
 
@@ -174,6 +180,7 @@ if (!pageJsonLd) {
   <section id="our-values">
     <div class="values-hero">
       <div class="values-hero-img" style={valuesBg}></div>
+      <div class="container">
       <div class="values-hero-content">
         <span class="eyebrow-dark">{page.valuesEyebrow}</span>
         <h2 class="values-headline">
@@ -182,8 +189,10 @@ if (!pageJsonLd) {
         </h2>
         <p class="values-desc">{page.valuesDescription}</p>
       </div>
+      </div>
     </div>
 
+    <div class="container">
     <ul class="values-grid">
       {page.valueCards.map((card, i) => (
         <li class="val-card">
@@ -194,11 +203,13 @@ if (!pageJsonLd) {
         </li>
       ))}
     </ul>
+    </div>
   </section>
   )}
 
   {page.teamIsShowed && (
   <section id="our-team">
+    <div class="container">
     <div class="team-head">
       <div>
         <span class="eyebrow-light">{page.teamEyebrow}</span>
@@ -224,6 +235,7 @@ if (!pageJsonLd) {
         </li>
       ))}
     </ul>
+    </div>
   </section>
   )}
 
@@ -231,13 +243,16 @@ if (!pageJsonLd) {
   <section id="why-us">
     <div class="why-banner">
       <div class="why-banner-img" style={whyBg}></div>
+      <div class="container">
       <div class="why-banner-content">
         <span class="eyebrow-dark">{page.whyEyebrow}</span>
         <h2 class="why-banner-headline">{page.whyBannerHeadline} <em>{page.whyBannerHeadlineEmphasis}</em></h2>
         <p class="why-banner-desc">{page.whyBannerDescription}</p>
       </div>
+      </div>
     </div>
 
+    <div class="container">
     <ul class="why-rows">
       {page.whyRows.map((row, i) => (
         <li class={`why-row${i % 2 !== 0 ? ' alt' : ''}`}>
@@ -260,11 +275,13 @@ if (!pageJsonLd) {
         </li>
       ))}
     </ul>
+    </div>
   </section>
   )}
 
   {page.certIsShowed && (
   <section id="certifications">
+    <div class="container">
     <div class="cert-inner">
       <div class="cert-left">
         <span class="eyebrow-light">{page.certEyebrow}</span>
@@ -292,6 +309,7 @@ if (!pageJsonLd) {
         </li>
       ))}
     </ul>
+    </div>
   </section>
   )}
 

@@ -118,9 +118,10 @@ if (service.seo.jsonLd) {
   <TheNav client:load page="services" phone={site.phone} email={site.email} workingHours={site.workingHours} emailNote={site.emailNote} />
 
   {showHero ? (
-  <section id="hero" class="svc-page-hero">
+  <section id="hero" class="hero svc-page-hero">
     <div class="hero-bg-img" style={heroBg} aria-hidden="true"></div>
     <BreadcrumbNav items={crumbs} />
+    <div class="container">
     <div class="hero-content">
       <div class="hero-left">
         {heroEyebrow && (
@@ -145,6 +146,7 @@ if (service.seo.jsonLd) {
         </div>
       </div>
     </div>
+    </div>
   </section>
   ) : (
   <div class="svc-bc-fallback">
@@ -154,6 +156,7 @@ if (service.seo.jsonLd) {
 
   {service.detailIsShowed && (
   <section id="service-detail">
+    <div class="container">
     <div class="svc-block">
       <div class="svc-img-col">
         {service.imageUrl && (
@@ -192,6 +195,7 @@ if (service.seo.jsonLd) {
         <a href="#contact" class="svc-cta">Get a Quote for This Service →</a>
       </div>
     </div>
+    </div>
   </section>
   )}
 
@@ -199,13 +203,16 @@ if (service.seo.jsonLd) {
   <section id="our-process">
     <div class="svc-process-hero">
       <div class="svc-process-hero-img" style={processBg}></div>
+      <div class="container">
       <div class="svc-process-hero-content">
         <span class="svc-process-eyebrow">{page.processEyebrow}</span>
         <h2 class="svc-process-headline">{page.processHeadline} <em>{page.processHeadlineEmphasis}</em></h2>
         <p class="svc-process-sub">{page.processDescription}</p>
       </div>
+      </div>
     </div>
 
+    <div class="container">
     <ul class="process-steps">
       {page.processSteps.map((step, i) => (
         <li class="pstep">
@@ -216,11 +223,13 @@ if (service.seo.jsonLd) {
         </li>
       ))}
     </ul>
+    </div>
   </section>
   )}
 
   {page.pricingIsShowed && (
   <section id="pricing-hint">
+    <div class="container">
     <div class="ph-inner">
       <div class="ph-left">
         <div class="ph-eyebrow">{page.pricingEyebrow}</div>
@@ -240,6 +249,7 @@ if (service.seo.jsonLd) {
         </li>
       ))}
     </ul>
+    </div>
   </section>
   )}
 
@@ -257,6 +267,7 @@ if (service.seo.jsonLd) {
 
   {service.faqIsShowed && faqItems.length > 0 && (
   <section id="faq">
+    <div class="container">
     <div class="faq-grid">
       <div class="faq-left">
         <span class="faq-eyebrow">{faqEyebrow}</span>
@@ -277,6 +288,7 @@ if (service.seo.jsonLd) {
           </li>
         ))}
       </ul>
+    </div>
     </div>
   </section>
   )}

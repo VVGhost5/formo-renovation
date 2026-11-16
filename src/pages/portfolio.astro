@@ -66,10 +66,11 @@ if (!pageJsonLd) {
 >
   <TheNav client:load page="portfolio" phone={site.phone} email={site.email} workingHours={site.workingHours} emailNote={site.emailNote} />
 
-  <section id="hero" class="portfolio-hero-page">
+  <section id="hero" class="hero portfolio-hero-page">
     <div class="hero-bg-img" style={heroBg} aria-hidden="true"></div>
     <BreadcrumbNav items={[{ label: 'Portfolio' }]} />
 
+    <div class="container">
     <div class="port-hero-content">
       <div>
         <div class="port-hero-eyebrow">
@@ -92,6 +93,7 @@ if (!pageJsonLd) {
           )}
         </div>
       </div>
+    </div>
     </div>
   </section>
 

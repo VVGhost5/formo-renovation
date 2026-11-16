@@ -38,9 +38,10 @@ if (!pageJsonLd) {
   <TheNav client:load page="reviews" phone={site.phone} email={site.email} workingHours={site.workingHours} emailNote={site.emailNote} />
 
   <!-- ══ HERO ══ -->
-  <section id="hero" class="reviews-page-hero">
+  <section id="hero" class="hero reviews-page-hero">
     <div class="hero-bg-img reviews-hero-bg" style={heroBg} aria-hidden="true"></div>
     <BreadcrumbNav items={[{ label: 'Reviews' }]} />
+    <div class="container">
     <div class="hero-content">
 
       <div class="hero-left">
@@ -86,6 +87,7 @@ if (!pageJsonLd) {
         <a href="#submit-review" class="rhs-cta">Leave a Review →</a>
       </div>
 
+    </div>
     </div>
   </section>
 

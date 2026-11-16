@@ -14,6 +14,7 @@ const phoneHref = `tel:${site.phone.replace(/\D/g, '')}`
 const waHref = `https://wa.me/${site.whatsapp.replace(/\D/g, '')}`
 ---
 <section id="contact">
+  <div class="container">
   <div class="contact-top">
     <div class="contact-photo-side">
       {content.photoUrl && (
@@ -103,6 +104,7 @@ const waHref = `https://wa.me/${site.whatsapp.replace(/\D/g, '')}`
       <div class="cinfo-note">{site.serviceAreaNote}</div>
     </li>
   </ul>
+  </div>
 </section>
 
 <script>

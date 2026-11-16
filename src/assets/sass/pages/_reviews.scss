@@ -1,9 +1,9 @@
 // ── Reviews Page ────────────────────────────────────────────
 
 // Hero override
-#hero.reviews-page-hero {
+.hero.reviews-page-hero {
   display: flex; align-items: flex-end;
-  min-height: 72vh; padding-top: 60px;
+  min-height: 60vh; padding-top: 60px;
 }
 
 .reviews-hero-bg {

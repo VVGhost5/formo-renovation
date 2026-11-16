@@ -1,9 +1,9 @@
 // ── Services Page ──────────────────────────────────────────
 
 // Hero override — flex-end alignment instead of home's grid
-#hero.svc-page-hero {
+.hero.svc-page-hero {
   display: flex; align-items: flex-end;
-  min-height: 100vh; padding-top: 60px;
+  min-height: 60vh; padding-top: 60px;
 
   .hero-bg-img {
     background-position: center 40%;

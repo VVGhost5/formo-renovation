@@ -45,9 +45,10 @@ const waHref = `https://wa.me/${site.whatsapp.replace(/\D/g, '')}`
   <TheNav client:load page="contacts" phone={site.phone} email={site.email} workingHours={site.workingHours} emailNote={site.emailNote} />
 
   <!-- ══ HERO ══ -->
-  <section id="hero" class="contact-page-hero">
+  <section id="hero" class="hero contact-page-hero">
     <div class="hero-bg-img" style={heroBg} aria-hidden="true"></div>
     <BreadcrumbNav items={[{ label: 'Contact' }]} />
+    <div class="container">
     <div class="hero-content">
 
       <div class="hero-left">
@@ -110,10 +111,12 @@ const waHref = `https://wa.me/${site.whatsapp.replace(/\D/g, '')}`
       </div>
 
     </div>
+    </div>
   </section>
 
   <!-- ══ MAIN CONTACT FORM ══ -->
   <section id="contact-main">
+    <div class="container">
     <div class="contact-grid">
 
       <!-- FORM -->
@@ -228,10 +231,12 @@ const waHref = `https://wa.me/${site.whatsapp.replace(/\D/g, '')}`
       </div>
 
     </div>
+    </div>
   </section>
 
   <!-- ══ MAP ══ -->
   <section id="map-section">
+    <div class="container">
     <div class="map-grid">
       <div class="map-frame">
         <iframe
@@ -268,6 +273,7 @@ const waHref = `https://wa.me/${site.whatsapp.replace(/\D/g, '')}`
         </ul>
         <a href="#contact-main" class="map-consult-btn">Book a Free Consultation →</a>
       </div>
+    </div>
     </div>
   </section>
 

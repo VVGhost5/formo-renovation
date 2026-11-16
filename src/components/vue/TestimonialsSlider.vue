@@ -65,6 +65,7 @@ function goTo(i: number) {
       aria-hidden="true"
     ></div>
 
+    <div class="container">
     <div class="testi-head">
       <div class="testi-head-left">
         <div class="testi-eyebrow">Client Testimonials</div>
@@ -121,6 +122,7 @@ function goTo(i: number) {
 
     <div class="testi-cta">
       <a href="/reviews/" class="btn-outline-light">Read All Reviews →</a>
+    </div>
     </div>
   </section>
 </template>

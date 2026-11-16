@@ -1,9 +1,9 @@
 // ── About Us Page ───────────────────────────────────────────
 
 // Hero override with founder card (grid 1fr 420px)
-#hero.about-page-hero {
+.hero.about-page-hero {
   display: flex; align-items: flex-end;
-  min-height: 100vh; padding-top: 60px;
+  min-height: 60vh; padding-top: 60px;
 
   .hero-bg-img {
     background-position: center 45%;

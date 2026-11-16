@@ -1,9 +1,9 @@
 // ── Contacts Page ──────────────────────────────────────────
 
 // Hero override
-#hero.contact-page-hero {
+.hero.contact-page-hero {
   display: flex; align-items: flex-end;
-  min-height: 72vh; padding-top: 60px;
+  min-height: 60vh; padding-top: 60px;
 
   .hero-bg-img {
     background-position: center 40%;

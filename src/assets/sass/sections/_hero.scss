@@ -1,10 +1,16 @@
-#hero {
+.hero {
   position: relative;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  min-height: 100vh;
+  min-height: 60vh;
   padding-top: 60px;
   overflow: hidden;
+}
+
+// Homepage hero is a two-column grid. Page heroes keep their own layout
+// on .hero-content / .port-hero-content, so the grid lives on the container.
+.hero:not(.svc-page-hero):not(.contact-page-hero):not(.about-page-hero):not(.reviews-page-hero):not(.portfolio-hero-page) > .container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: calc(60vh - 60px);
 }
 
 .hero-bg-img {
@@ -108,7 +114,7 @@
   &:hover { opacity: 0.85; transform: translateY(-2px); }
 }
 
-#hero .btn-outline {
+.hero .btn-outline {
   background: transparent; color: rgba(255,255,255,0.92);
   border: 1px solid rgba(255,255,255,0.45); border-radius: var(--r-pill);
   padding: 14px 28px;
@@ -216,7 +222,11 @@
 
 // ── Tablet ──────────────────────────────────────────────
 @media (max-width: 1023px) {
-  #hero { grid-template-columns: 1fr; padding-top: 60px; min-height: auto; }
+  .hero { padding-top: 60px; min-height: auto; }
+  .hero:not(.svc-page-hero):not(.contact-page-hero):not(.about-page-hero):not(.reviews-page-hero):not(.portfolio-hero-page) > .container {
+    grid-template-columns: 1fr;
+    min-height: 0;
+  }
   .hero-left { padding: 56px var(--px) 36px; }
   .hero-h1   { font-size: 48px; }
   .hero-right { padding: 0 var(--px) 56px; justify-content: flex-start; }

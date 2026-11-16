@@ -12,6 +12,7 @@ const heroBg = bgStyle(content.heroImageUrl)
 <section id="pricing">
   <div class="pricing-hero">
     <div class="pricing-hero-img" style={heroBg}></div>
+    <div class="container">
     <div class="pricing-hero-content">
       <div class="pricing-eyebrow">{content.eyebrow}</div>
       <h2 class="pricing-headline">
@@ -23,8 +24,10 @@ const heroBg = bgStyle(content.heroImageUrl)
         {content.heroCtaLabel}
       </button>
     </div>
+    </div>
   </div>
 
+  <div class="container">
   <div class="pricing-content">
     <div class="pricing-intro-text">
       <h3>{content.introTitle}</h3>
@@ -58,5 +61,6 @@ const heroBg = bgStyle(content.heroImageUrl)
         </button>
       </div>
     </div>
+  </div>
   </div>
 </section>

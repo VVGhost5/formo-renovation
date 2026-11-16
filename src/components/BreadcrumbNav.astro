@@ -93,6 +93,13 @@ const { items, tone = 'overlay' } = Astro.props
     .bc-current { color: rgba(26, 17, 8, 0.82); }
   }
 
+  /* Line up with the centered 1800px section container */
+  :global(.hero) .bc-nav {
+    @media (min-width: 2000px) {
+      left: calc((100% - 1800px) / 2 + var(--px));
+    }
+  }
+
   /* Mobile: nav shrinks to 54px */
   @media (max-width: 767px) {
     .bc-nav {

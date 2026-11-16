@@ -12,6 +12,7 @@ const heroBg = bgStyle(content.heroImageUrl)
 <section id="process">
   <div class="process-hero">
     <div class="process-hero-img" style={heroBg}></div>
+    <div class="container">
     <div class="process-hero-content">
       <div class="process-eyebrow">{content.eyebrow}</div>
       <h2 class="process-headline">
@@ -23,8 +24,10 @@ const heroBg = bgStyle(content.heroImageUrl)
         {content.ctaLabel}
       </button>
     </div>
+    </div>
   </div>
 
+  <div class="container">
   <ul class="process-grid">
     {content.steps.map((s, i) => (
       <li class="pstep-card">
@@ -35,4 +38,5 @@ const heroBg = bgStyle(content.heroImageUrl)
       </li>
     ))}
   </ul>
+  </div>
 </section>

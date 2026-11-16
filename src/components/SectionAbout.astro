@@ -12,6 +12,7 @@ const heroBg = bgStyle(content.heroImageUrl)
 <section id="about">
   <div class="about-hero">
     <div class="about-hero-img" style={heroBg}></div>
+    <div class="container">
     <div class="about-hero-content">
       <div class="about-eyebrow">{content.eyebrow}</div>
       <h2 class="about-headline">
@@ -21,8 +22,10 @@ const heroBg = bgStyle(content.heroImageUrl)
       <p class="about-hero-desc">{content.heroDescription}</p>
       <a href={content.heroCtaLink} class="btn-outline-light">{content.heroCtaLabel}</a>
     </div>
+    </div>
   </div>
 
+  <div class="container">
   <ul class="about-rows">
     {content.rows.map((row) => (
       <li class={`about-row${row.reverse ? ' reverse' : ''}`}>
@@ -42,4 +45,5 @@ const heroBg = bgStyle(content.heroImageUrl)
       </li>
     ))}
   </ul>
+  </div>
 </section>

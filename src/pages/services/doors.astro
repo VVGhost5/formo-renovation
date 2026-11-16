@@ -66,6 +66,7 @@ const hoursNote = site.workingHours.trim() || 'Mon – Sat, 8:00 AM – 6:00 PM'
   <main class="doors-page" id="main">
     <section class="doors-hero" aria-labelledby="doors-hero-title">
       <BreadcrumbNav tone="ink" items={[{ label: 'Services', href: '/services/' }, { label: 'Doors' }]} />
+      <div class="container">
       <div class="doors-hero-copy doors-wrap">
         <p class="doors-eyebrow">{page.heroEyebrow}</p>
         <h1 id="doors-hero-title">
@@ -82,6 +83,7 @@ const hoursNote = site.workingHours.trim() || 'Mon – Sat, 8:00 AM – 6:00 PM'
         <img src={doorsHeroSrc} alt={page.heroImageAlt} width="1536" height="1024" fetchpriority="high" />
         <figcaption>{page.heroCaption}</figcaption>
       </figure>
+      </div>
     </section>
 
     <div class="doors-strip">
@@ -97,6 +99,7 @@ const hoursNote = site.workingHours.trim() || 'Mon – Sat, 8:00 AM – 6:00 PM'
     </div>
 
     <section class="doors-intro doors-section doors-wrap">
+      <div class="container">
       <div class="doors-intro-copy">
         <p class="doors-eyebrow">{page.introEyebrow}</p>
         <h2>
@@ -170,9 +173,11 @@ const hoursNote = site.workingHours.trim() || 'Mon – Sat, 8:00 AM – 6:00 PM'
           <p class="doors-status" id="doors-status" aria-live="polite" role="status"></p>
         </form>
       </aside>
+      </div>
     </section>
 
     <section class="doors-install doors-section doors-wrap" id="services" aria-labelledby="doors-residential-title">
+      <div class="container">
       <div class="doors-section-top">
         <div>
           <p class="doors-eyebrow">{page.residentialEyebrow}</p>
@@ -209,9 +214,11 @@ const hoursNote = site.workingHours.trim() || 'Mon – Sat, 8:00 AM – 6:00 PM'
           </li>
         ))}
       </ul>
+      </div>
     </section>
 
     <section class="doors-commercial doors-section" id="commercial" aria-labelledby="doors-commercial-title">
+      <div class="container">
       <div class="doors-wrap">
         <div class="doors-commercial-intro">
           <div>
@@ -241,9 +248,11 @@ const hoursNote = site.workingHours.trim() || 'Mon – Sat, 8:00 AM – 6:00 PM'
           ))}
         </ul>
       </div>
+      </div>
     </section>
 
     <section class="doors-repairs doors-section doors-wrap" id="repairs" aria-labelledby="doors-repairs-title">
+      <div class="container">
       <div class="doors-section-top">
         <div>
           <p class="doors-eyebrow">{page.repairsEyebrow}</p>
@@ -278,9 +287,11 @@ const hoursNote = site.workingHours.trim() || 'Mon – Sat, 8:00 AM – 6:00 PM'
           {page.emergencyCtaLabel}
         </a>
       </div>
+      </div>
     </section>
 
     <section class="doors-process doors-section">
+      <div class="container">
       <div class="doors-wrap">
         <div class="doors-section-top">
           <div>
@@ -314,6 +325,7 @@ const hoursNote = site.workingHours.trim() || 'Mon – Sat, 8:00 AM – 6:00 PM'
             <a class="doors-text-link" href={page.proofLinkHref}>{page.proofLinkLabel} <span aria-hidden="true">↗</span></a>
           </li>
         </ul>
+      </div>
       </div>
     </section>
   </main>

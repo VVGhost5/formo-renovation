@@ -192,6 +192,7 @@ function displayTags(project: Project): string[] {
 <template>
   <!-- ═══════════ OUR WORKS ═══════════ -->
   <section id="our-works">
+    <div class="container">
     <div class="works-intro">
       <div class="works-intro-left">
         <span class="eyebrow-light">{{ introEyebrow }}</span>
@@ -322,6 +323,7 @@ function displayTags(project: Project): string[] {
 
         </div>
       </div>
+    </div>
     </div>
   </section>
 

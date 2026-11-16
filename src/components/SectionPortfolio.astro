@@ -12,6 +12,7 @@ const heroBg = bgStyle(content.heroImageUrl)
 <section id="portfolio">
   <div class="portfolio-hero">
     <div class="portfolio-hero-img" style={heroBg}></div>
+    <div class="container">
     <div class="portfolio-hero-content">
       <div class="portfolio-eyebrow">{content.eyebrow}</div>
       <h2 class="portfolio-headline">
@@ -21,8 +22,10 @@ const heroBg = bgStyle(content.heroImageUrl)
       <p class="portfolio-desc">{content.description}</p>
       <a href={content.ctaLink} class="btn-outline-light">{content.ctaLabel}</a>
     </div>
+    </div>
   </div>
 
+  <div class="container">
   <ul class="portfolio-grid">
     {content.projects.map((p) => (
       <li>
@@ -40,4 +43,5 @@ const heroBg = bgStyle(content.heroImageUrl)
       </li>
     ))}
   </ul>
+  </div>
 </section>

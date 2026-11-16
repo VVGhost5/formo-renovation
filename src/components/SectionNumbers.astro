@@ -8,6 +8,7 @@ interface Props {
 const {content} = Astro.props
 ---
 <section id="trust-numbers">
+  <div class="container">
   <div class="numbers-inner">
     <div class="numbers-left">
       <div class="numbers-eyebrow">{content.eyebrow}</div>
@@ -24,5 +25,6 @@ const {content} = Astro.props
         </li>
       ))}
     </ul>
+  </div>
   </div>
 </section>

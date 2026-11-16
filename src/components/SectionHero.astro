@@ -10,7 +10,7 @@ const {hero} = Astro.props
 const bgStyleAttr = bgStyle(hero.backgroundImageUrl)
 ---
 
-<section id="hero">
+<section id="hero" class="hero">
   {bgStyleAttr && (
     <div
       class="hero-bg-img"
@@ -19,6 +19,7 @@ const bgStyleAttr = bgStyle(hero.backgroundImageUrl)
     ></div>
   )}
 
+  <div class="container">
   <div class="hero-left">
     {hero.locationLabel && (
       <div class="hero-location">
@@ -68,6 +69,7 @@ const bgStyleAttr = bgStyle(hero.backgroundImageUrl)
       </div>
       {hero.formNote && <div class="hfo-note">{hero.formNote}</div>}
     </div>
+  </div>
   </div>
 </section>
 
