@@ -76,6 +76,12 @@ const hoursNote = site.workingHours.trim() || 'Mon – Sat, 8:00 AM – 6:00 PM'
         <p class="doors-hero-subtitle">{page.heroSubtitle}</p>
         <div class="doors-hero-actions">
           <a class="btn-dark" href="#estimate">{page.heroPrimaryCtaLabel} <span aria-hidden="true">↗</span></a>
+          {phoneHref !== 'tel:' && (
+            <a class="btn-outline" href={phoneHref}>
+              <i class="fa-solid fa-phone" aria-hidden="true"></i>
+              Call now
+            </a>
+          )}
           <a class="doors-text-link" href="#services">{page.heroSecondaryCtaLabel} <span aria-hidden="true">↓</span></a>
         </div>
       </div>
@@ -135,7 +141,7 @@ const hoursNote = site.workingHours.trim() || 'Mon – Sat, 8:00 AM – 6:00 PM'
               <input id="doors-email" name="email" type="email" autocomplete="email" maxlength="254" placeholder="you@example.com" />
             </div>
             <div class="doors-field" data-field="phone">
-              <label for="doors-phone">Phone <span aria-hidden="true">*</span></label>
+              <label for="doors-phone">Phone</label>
               <input id="doors-phone" name="phone" type="tel" data-phone-mask autocomplete="tel" maxlength="17" placeholder={site.phone || '+1 (250) 555-0123'} />
             </div>
           </div>
@@ -330,7 +336,7 @@ const hoursNote = site.workingHours.trim() || 'Mon – Sat, 8:00 AM – 6:00 PM'
     </section>
   </main>
 
-  <SectionContact content={contact} site={site} serviceInterest={serviceInterestForPage({ pageSlug: 'doors', quickName: 'Doors' })} />
+  <SectionContact content={contact} site={site} serviceInterest={serviceInterestForPage({ pageSlug: 'doors', quickName: 'Doors' })} leadPage="services-doors" />
   <TheFooter site={site} />
 </Layout>
 

@@ -10,6 +10,22 @@ type LeadEvent = {
   formId: string
 }
 
+export type LeadTracking = {
+  serviceCategory: string
+  formId: string
+}
+
+/**
+ * Service category and form id for a contact form on this page.
+ * A service page (`services-<slug>`) uses the service slug. Any other page uses the page name.
+ */
+export function leadTrackingForPage(page: string): LeadTracking {
+  const key = page.trim().toLowerCase()
+  const serviceCategory = key.startsWith('services-') ? key.slice('services-'.length) : key
+  const formId = key === 'contacts' ? 'contacts-form' : `section-contact-${key}`
+  return { serviceCategory, formId }
+}
+
 /** Send one analytics event after the server has accepted the lead. */
 export function trackLeadOnce({ requestId, serviceCategory, formId }: LeadEvent): void {
   const id = requestId.trim()

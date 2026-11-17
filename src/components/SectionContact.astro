@@ -1,14 +1,18 @@
 ---
 import type {HomeContactContent, SiteSettingsContent} from '../utils/sanity'
+import {leadTrackingForPage} from '../utils/analytics'
 import {contactServiceOptions} from '../utils/serviceInterest'
 
 interface Props {
 	content: HomeContactContent
 	site: SiteSettingsContent
 	serviceInterest?: string
+	/** Page key for the lead event, e.g. "home" or "services-kitchen". */
+	leadPage: string
 }
 
-const {content, site, serviceInterest = ''} = Astro.props
+const {content, site, serviceInterest = '', leadPage} = Astro.props
+const lead = leadTrackingForPage(leadPage)
 const serviceOptions = contactServiceOptions(serviceInterest)
 const phoneHref = `tel:${site.phone.replace(/\D/g, '')}`
 const waHref = `https://wa.me/${site.whatsapp.replace(/\D/g, '')}`
@@ -40,7 +44,13 @@ const waHref = `https://wa.me/${site.whatsapp.replace(/\D/g, '')}`
         <p style="color:#666;margin:0;">We'll be in touch within one business day.</p>
       </div>
 
-      <form class="cform" id="section-contact-form" novalidate>
+      <form
+        class="cform"
+        id="section-contact-form"
+        data-service-category={lead.serviceCategory}
+        data-form-id={lead.formId}
+        novalidate
+      >
         <input type="hidden" name="formType" value="request-consultation" />
         <div class="cform-row">
           <div class="fg" data-field="firstName">
@@ -57,7 +67,7 @@ const waHref = `https://wa.me/${site.whatsapp.replace(/\D/g, '')}`
           <input id="sc-email" type="email" placeholder="john@email.com" autocomplete="email" />
         </div>
         <div class="fg" data-field="phone">
-          <label for="sc-phone">Phone *</label>
+          <label for="sc-phone">Phone</label>
           <input id="sc-phone" type="tel" data-phone-mask placeholder={site.phone} autocomplete="tel" />
         </div>
         <div class="fg">
@@ -108,6 +118,7 @@ const waHref = `https://wa.me/${site.whatsapp.replace(/\D/g, '')}`
 </section>
 
 <script>
+  import { trackLeadOnce } from '../utils/analytics'
   import { applyFieldErrors, bindOptionalMessageField, validateContactFields } from '../utils/formValidation'
   import { initPhoneMasks } from '../utils/phoneMask'
 
@@ -162,6 +173,11 @@ const waHref = `https://wa.me/${site.whatsapp.replace(/\D/g, '')}`
       if (data.ok) {
         scForm.style.display = 'none'
         if (scSuccess) scSuccess.style.display = 'block'
+        trackLeadOnce({
+          requestId: typeof data.requestId === 'string' ? data.requestId : '',
+          serviceCategory: scForm.dataset.serviceCategory ?? '',
+          formId: scForm.dataset.formId ?? 'section-contact-form',
+        })
       } else {
         if (scSubmit) { scSubmit.disabled = false; scSubmit.textContent = 'Send Message →' }
         alert('Something went wrong. Please try again.')

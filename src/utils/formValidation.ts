@@ -39,7 +39,7 @@ export function validateOptionalMessage(value: string): string | null {
 }
 
 export function validatePhoneField(value: string): string | null {
-  if (!isRequired(value)) return MESSAGES.required
+  if (!isRequired(value)) return null
   if (!isValidPhone(value)) return MESSAGES.phone
   return null
 }
